@@ -4,11 +4,11 @@ package Logic;
  * Created by talza on 20/11/2016.
  */
 public class Square {
-    int m_Row;
-    int m_Column;
-    char m_SquareSymbol;
-    // TODO: Color field
 
+    private int m_Row;
+    private int m_Column;
+    private char m_SquareSymbol;
+    // TODO: Color field
 
     public Square(int i_Row, int i_Column, char i_SquareSymbol ){
         m_Row = i_Row;
@@ -21,16 +21,15 @@ public class Square {
         return m_Column;
     }
 
-    public int GetSquareSymbol() {
-        return m_SquareSymbol;
-    }
-
     public int GetRow() {
         return m_Row;
     }
 
-    //SET METHODS
+    public int GetSquareSymbol() {
+        return m_SquareSymbol;
+    }
 
+    //SET METHODS
     public void SetRow(int i_Row){
         m_Row = i_Row;
     }
@@ -43,9 +42,23 @@ public class Square {
         m_SquareSymbol = i_SquareSymbol;
     }
 
-    public void SetSquare(char i_Symbol) {
+    //TODO: WRONG SQUARE INPUT
+    public class SquareCoordinatesNotSupported extends Exception {
+
+
+    }
+
+
+    //METHODS
+    public void ChangeSquareSymbole(char i_Symbol) {
+
+
         m_SquareSymbol = i_Symbol;
     }
+
+    //TODO: CHECK ALL SQUARES ARE WITH THE CORRECT COORDINATES
+
+
 
 
 }
