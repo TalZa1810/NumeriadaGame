@@ -11,25 +11,18 @@ public class Board {
 
 
     //TODO: SHOULD CATCH EXCEPTION IN CASE WRONG BOARD SIZE
-    public Board( int i_BoardSize)  {
+    public Board( int i_BoardSize) {
 
         m_BoardSize = i_BoardSize;
-        m_Board =  new Square[m_BoardSize][m_BoardSize];
+        m_Board = new Square[m_BoardSize][m_BoardSize];
 
-        for(Squares[] row: m_Board) {
-           for(Squares square: row){
-               square = new Square(0,0," ");
-           }
+        for (Squares[] row : m_Board) {
+            for (Squares square : row) {
+                square = new Square(0, 0, " ");
+            }
         }
     }
-
-
-    public
-
-
-
 }
-
 
     //==XML==
     //TODO:CREATING BOARD ACCORDING TO XML FILE
