@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GameLogic/GameLogic.iml" filepath="$PROJECT_DIR$/GameLogic/GameLogic.iml" />
       <module fileurl="file://$PROJECT_DIR$/GameUI/GameUI.iml" filepath="$PROJECT_DIR$/GameUI/GameUI.iml" />
-      <module fileurl="file://$PROJECT_DIR$/NumeriadaGame.iml" filepath="$PROJECT_DIR$/NumeriadaGame.iml" />
     </modules>
   </component>
 </project>
