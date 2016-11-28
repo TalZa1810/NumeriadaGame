@@ -3,62 +3,38 @@ package Logic;
 /**
  * Created by talza on 20/11/2016.
  */
-public class Square {
+public class Square extends Squares {
 
-    private int m_Row;
-    private int m_Column;
-    private char m_SquareSymbol;
+    private String m_SquareSymbol;
     // TODO: Color field
 
-    public Square(int i_Row, int i_Column, char i_SquareSymbol ){
-        m_Row = i_Row;
-        m_Column = i_Column;
+    public Square(int i_Row, int i_Column, String i_SquareSymbol ){
+        super(i_Row,i_Column);
         m_SquareSymbol =  i_SquareSymbol;
     }
 
     //GET METHODS
-    public int GetColumn() {
-        return m_Column;
-    }
-
-    public int GetRow() {
-        return m_Row;
-    }
-
-    public int GetSquareSymbol() {
+    public String GetSquareSymbol() {
         return m_SquareSymbol;
     }
 
-    //SET METHODS
-    public void SetRow(int i_Row){
-        m_Row = i_Row;
-    }
-
-    public void SetColumn(int i_Column){
-        m_Column = i_Column;
-    }
-
-    public void SetSquareSymbol(char i_SquareSymbol) {
+    //GET METHODS
+    public void SetSquareSymbol(String i_SquareSymbol) {
         m_SquareSymbol = i_SquareSymbol;
     }
 
-    //TODO: WRONG SQUARE INPUT
-    public class SquareCoordinatesNotSupported extends Exception {
-
-
-    }
-
-
     //METHODS
-    public void ChangeSquareSymbole(char i_Symbol) {
-
-
+    public void ChangeSquareSymbole(String i_Symbol) {
         m_SquareSymbol = i_Symbol;
     }
 
-    //TODO: CHECK ALL SQUARES ARE WITH THE CORRECT COORDINATES
+    public  boolean IsNumeric() {
+        return m_SquareSymbol.matches("-?\\d+");  //match a number with optional '-' and decimal.
+    }
 
+    public  int SquareNumber() {
 
+        return Integer.parseInt(m_SquareSymbol);
 
-
+    }
 }
