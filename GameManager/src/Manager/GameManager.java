@@ -12,8 +12,8 @@ import java.sql.Time;
  */
 public class GameManager {
 
-    public GameUI m_GameUI;
-    public BasicGame m_GameLogic;
+    private GameUI m_GameUI;
+    private BasicGame m_GameLogic;
 
 
     public enum eMenuOptions {
@@ -36,34 +36,35 @@ public class GameManager {
             GameUI.eMenuOptions menuSelection = GameUI.eMenuOptions.values()[m_GameUI.MainMenu()];
             switch (menuSelection) {
                 case LOAD_FILE:
-                    if (fileLoaded == false) {
-                        fileLoaded = true;
-                        //LOAD FILE
+                    if (!fileLoaded) {
+                        fileLoaded = m_GameUI.fromXmlFileToObject();
+                        //check input in engine
                     }
                     break;
                 case SET_GAME:
-                    if (fileLoaded != false) {
-                        //SET GAME AND SHOW BOARD
+                    if (fileLoaded) {
+                        //INITIATE GAME
+                        getBoard();
                     } else {
                         System.out.println("First load file");
                     }
                     break;
                 case GAME_STATUS:
-                    if (fileLoaded != false) {
+                    if (fileLoaded) {
                         GetGameStatus();
                     } else {
                         System.out.println("First load file");
                     }
                     break;
                 case MAKE_MOVE:
-                    if (fileLoaded != false) {
+                    if (fileLoaded) {
                         makeMove();
                     } else {
                         System.out.println("First load file");
                     }
                     break;
                 case GET_STATISTICS:
-                    if (fileLoaded != false) {
+                    if (fileLoaded) {
                         GetGameStatistics();
                     } else {
                         System.out.println("First load file");
@@ -97,5 +98,10 @@ public class GameManager {
         m_GameLogic.getCurrMarkerPosition();
         int move = m_GameUI.GetMoveFromUser();
         m_GameLogic.MakeMove(move);
+    }
+
+    private void getBoard() {
+        m_GameLogic.GetBoardToPrint(); //copy board to char[][] in game info object or do something so the ui knows the board and implement to string for square and to string for board
+        m_GameUI.ShowBoard(); //will use the game info object (a game ui data member) in the game ui
     }
 }

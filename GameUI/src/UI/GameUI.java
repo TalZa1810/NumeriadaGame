@@ -4,8 +4,13 @@ package UI;
  * Created by Tal on 11/26/2016.
  */
 
+import Logic.GameTypeFactory;
 import Shared.GameInfo;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 import java.util.Scanner;
 
 public class GameUI {
@@ -113,7 +118,7 @@ public class GameUI {
         Scanner s = new Scanner(System.in);
 
         System.out.print("Please enter your choice in ");
-        if (m_GameInfo.GetNextPlayer() == "row") {
+        if (m_GameInfo.GetNextPlayer().equals("row")) {
             System.out.println("row " + m_GameInfo.getMarkerRow());
         } else {
             System.out.println("row " + m_GameInfo.getMarkerCol());
@@ -122,8 +127,32 @@ public class GameUI {
         return s.nextInt();
     }
 
+    public boolean fromXmlFileToObject() {
+        System.out.println("Enter path for xml file");
+        Scanner s = new Scanner(System.in);
+        String path = s.nextLine(); //check path for .xml sufix
+        boolean loadSuccess = true;
+
+        try {
+
+            File file = new File(path);
+            JAXBContext jaxbContext = JAXBContext.newInstance(GameTypeFactory.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            GameTypeFactory factory = (GameTypeFactory) jaxbUnmarshaller.unmarshal(file);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            System.out.println("Failed to load file");
+            loadSuccess = false;
+        }
+
+        return loadSuccess;
+    }
+
+
     private boolean checkMenuInput(int i_Input) {
-        if (i_Input > 0 || i_Input > 6)
+        if (i_Input < 0 || i_Input > 6)
             return false;
 
         return true;
