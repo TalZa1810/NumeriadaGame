@@ -8,8 +8,8 @@ import java.sql.Time;
 public class GameInfo {
     private int m_MaxRange;
     private int m_BoardSize;
-    private char[][] m_Board;
-    private String m_NextPlayer;
+    private String[][] m_Board;
+    private String m_CurrPlayer;
     private int m_NumOfMoves;
     private Time m_ElapsedTime;
     private int m_RowPlayerScore;
@@ -25,7 +25,7 @@ public class GameInfo {
         return m_MarkerRow;
     }
 
-    public char[][] GetBoard() {
+    public String[][] GetBoard() {
         return m_Board;
     }
 
@@ -37,8 +37,8 @@ public class GameInfo {
         return m_MaxRange;
     }
 
-    public String GetNextPlayer() {
-        return m_NextPlayer;
+    public String GetCurrPlayer() {
+        return m_CurrPlayer;
     }
 
     public int GetNumOfMoves() {
@@ -73,7 +73,7 @@ public class GameInfo {
         this.m_RowPlayerScore = i_RowPlayerScore;
     }
 
-    public void setBoard(char[][] i_Board) {
+    public void setBoard(String[][] i_Board) {
         this.m_Board = i_Board;
     }
 
@@ -85,8 +85,8 @@ public class GameInfo {
         this.m_MaxRange = i_MaxRange;
     }
 
-    public void setNextPlayer(String i_NextPlayer) {
-        this.m_NextPlayer = i_NextPlayer;
+    public void setCurrPlayer(String i_CurrPlayer) {
+        this.m_CurrPlayer = i_CurrPlayer;
     }
 
     public void setMarkerCol(int i_MarkerCol) {

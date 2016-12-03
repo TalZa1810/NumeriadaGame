@@ -3,10 +3,11 @@ package Logic;
 /**
  * Created by talza on 20/11/2016.
  */
-public abstract class Player {
+public class Player {
 
-    protected int m_Points = 0;
-    protected ePlayerType m_PlayerType;
+    private int m_Points = 0;
+    private ePlayerType m_PlayerType;
+    private int m_PlayerScore;
 
     //// TODO: PLAYER ID
 
@@ -14,6 +15,23 @@ public abstract class Player {
         ROW_PLAYER, COLUMN_PLAYER
     }
 
-    //METHODS
-    public abstract void PickNumber(Square i_Square);
+    public String GetEPlayerTypeAsString(){
+        if (m_PlayerType == ePlayerType.COLUMN_PLAYER){
+            return ("column");
+        }
+
+        return ("row");
+    }
+
+    public ePlayerType getPlayerType() {
+        return m_PlayerType;
+    }
+
+    public void setPlayerType(ePlayerType i_PlayerType) {
+        this.m_PlayerType = i_PlayerType;
+    }
+
+    public int getPlayerScore() {
+        return m_PlayerScore;
+    }
 }

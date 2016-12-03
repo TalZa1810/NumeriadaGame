@@ -1,5 +1,8 @@
 package Logic;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -8,10 +11,22 @@ import java.io.FileNotFoundException;
 public class Board {
 
     private int m_BoardSize;
-    private Square m_Board[][];
+    private ArrayList<ArrayList<Squares>> m_Board;
     private Marker m_Mark;
     private eBoardType m_BoardType;
     private Range m_Range;
+    //start and end of iterator
+    protected Squares m_Start;
+    protected Squares m_End;
+
+    public String getSquareInPos(int i, int j) {
+
+        return m_Board.get(i).get(j).toString();
+    }
+
+    public void SetSquare(Player.ePlayerType i_player, int i_move) {
+
+    }
 
     private enum eBoardType{
         EXPLICIT, RANDOM
@@ -32,9 +47,6 @@ public class Board {
         //TODO- check range is valid (from < to )
         private class RangeException extends Exception {
 
-
-
-
         }
 
         //GET METHODS
@@ -46,7 +58,16 @@ public class Board {
             return m_To;
         }
 
-        //SET DATA MEMBERS WHEN USING THE CTOR.
+    }
+
+    //SET DATA MEMBERS WHEN USING THE CTOR.
+
+    public int GetMarkerCol() {
+        return m_Mark.GetColumn();
+    }
+
+    public int GetMarkerRow() {
+        return m_Mark.GetRow();
     }
 
 
@@ -54,13 +75,22 @@ public class Board {
     public Board(int i_BoardSize) {
 
         m_BoardSize = i_BoardSize;
-        m_Board = new Square[m_BoardSize][m_BoardSize];
+        m_Board = new ArrayList<ArrayList<Squares>>(m_BoardSize) ;
 
-        for (Squares[] row : m_Board) {
+        for(ArrayList<Squares> s: m_Board ){
+            s = new ArrayList<Squares> (m_BoardSize) ;
+        }
+
+        for (ArrayList<Squares> row : m_Board) {
             for (Squares square : row) {
                 square = new Square(0, 0, " ");
             }
         }
+    }
+
+
+    public int getBoardSize() {
+        return m_BoardSize;
     }
 
     //TODO: PRINTLN??
@@ -107,6 +137,19 @@ public class Board {
         }
     }
 
+    public void SetMarker(Player.ePlayerType i_Player, int i_Move) {
+        Square s =  new Square();
+
+        if(i_Player == Player.ePlayerType.COLUMN_PLAYER) {
+            m_Mark.SetRow(i_Move);
+        }
+        else {
+            m_Mark.SetColumn(i_Move);
+        }
+
+        s = (Square)m_Board.get(m_Mark.GetRow()).get(m_Mark.GetColumn());
+        s.SetSquareSymbol(m_Mark.GetSquareSymbol());
+    }
 
 
 

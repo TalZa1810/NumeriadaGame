@@ -15,7 +15,6 @@ public class GameManager {
     private GameUI m_GameUI;
     private BasicGame m_GameLogic;
 
-
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
@@ -23,9 +22,8 @@ public class GameManager {
     public GameManager() {
         GameInfo m_GameInfo = new GameInfo();
         m_GameUI = new GameUI(m_GameInfo);
-        m_GameLogic = new BasicGame(m_GameInfo);
+        m_GameLogic = new BasicGame(i_NumOfPlayers, i_BoardSize, eBoardStructure i_BoardStructure, m_GameInfo);
     }
-
 
     public void HandleMenuChoice() {
         boolean userWantsToPlay = true;
@@ -84,7 +82,6 @@ public class GameManager {
     }
 
     private void GetGameStatus() {
-
         m_GameLogic.GetGameStatus(); //will update game info object (a basic game data member) in game logic
         m_GameUI.ShowStatus(); //will use the game info object (a game ui data member) in the game ui
     }

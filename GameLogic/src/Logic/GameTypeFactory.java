@@ -7,13 +7,17 @@ public class GameTypeFactory {
 
     private Game m_Game;
 
+    public GameTypeFactory(){
+
+    }
+
 
 
     public GameTypeFactory(int i_NumberOfPlayers, int i_BoardSize ){
 
         if ( i_NumberOfPlayers == 2)
         {
-            m_Game = new BasicGame(2, i_BoardSize  );
+            //m_Game = new BasicGame(2, i_BoardSize  );
             //    public BasicGame(int i_NumberOfPlayers,int i_BoardSize, eBoardStructure i_BoardStructure ){
         }
 

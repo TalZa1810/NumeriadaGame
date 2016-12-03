@@ -7,10 +7,25 @@ public class Squares {
 
     private int m_Row;
     private int m_Column;
+    private String m_SquareSymbol;
 
     public Squares(int i_Row, int i_Column ){
         m_Row = i_Row;
         m_Column = i_Column;
+    }
+
+    public Squares() {
+
+    }
+
+    //GET METHODS
+    public String GetSquareSymbol() {
+        return m_SquareSymbol;
+    }
+
+    //GET METHODS
+    public void SetSquareSymbol(String i_SquareSymbol) {
+        m_SquareSymbol = i_SquareSymbol;
     }
 
     //GET METHODS

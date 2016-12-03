@@ -25,8 +25,7 @@ public class GameUI {
         m_GameInfo = i_GameInfo;
     }
 
-    public int MainMenu()
-    {
+    public int MainMenu() {
         int choice = -1;
         Scanner s = new Scanner(System.in);
         boolean validInput = true;
@@ -49,7 +48,7 @@ public class GameUI {
     public void ShowBoard() {
         int maxRange = m_GameInfo.GetMaxRange();
         int boardSize = m_GameInfo.GetBoardSize();
-        char[][] board = m_GameInfo.GetBoard();
+        String[][] board = m_GameInfo.GetBoard();
 
         int numOfSpaces = getNumOfDigits(maxRange) + 2;
         String strOfSpaces = " ";
@@ -80,7 +79,7 @@ public class GameUI {
                         System.out.print('|');
                     }
                     else {
-                        if (i % 2 == 0 && (j - 2) % numOfSpaces == 0 && board[(i / 2)][(j / numOfSpaces)] != ' ') {
+                        if (i % 2 == 0 && (j - 2) % numOfSpaces == 0 && board[(i / 2)][(j / numOfSpaces)] != " ") {
                             System.out.print(board[(i / 2)][(j / 4)]);
                         }
                         else {
@@ -104,7 +103,7 @@ public class GameUI {
 
     public void ShowStatus() {
         ShowBoard(); //show board from game info object
-        System.out.println("Next is the " + m_GameInfo.GetNextPlayer() + " player's turn");
+        System.out.println("Last move was made by the " + m_GameInfo.GetCurrPlayer() + " player");
     }
 
     public void ShowStatistics() {
@@ -118,10 +117,12 @@ public class GameUI {
         Scanner s = new Scanner(System.in);
 
         System.out.print("Please enter your choice in ");
-        if (m_GameInfo.GetNextPlayer().equals("row")) {
+
+        if (m_GameInfo.GetCurrPlayer().equals("row")) {
+            System.out.println("col " + m_GameInfo.getMarkerCol());
+        }
+        else {
             System.out.println("row " + m_GameInfo.getMarkerRow());
-        } else {
-            System.out.println("row " + m_GameInfo.getMarkerCol());
         }
 
         return s.nextInt();
