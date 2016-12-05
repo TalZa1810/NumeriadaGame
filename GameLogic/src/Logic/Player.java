@@ -7,7 +7,6 @@ public class Player {
 
     private int m_Points = 0;
     private ePlayerType m_PlayerType;
-    private int m_PlayerScore;
 
     //// TODO: PLAYER ID
 
@@ -32,6 +31,10 @@ public class Player {
     }
 
     public int getPlayerScore() {
-        return m_PlayerScore;
+        return m_Points;
+    }
+
+    public void addToPlayerScore(int i_PointsToAdd){
+        m_Points += i_PointsToAdd;
     }
 }

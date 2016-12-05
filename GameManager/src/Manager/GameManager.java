@@ -1,10 +1,9 @@
 package Manager;
 
 import Logic.BasicGame;
+import Logic.Game;
 import Shared.GameInfo;
 import UI.GameUI;
-
-import java.sql.Time;
 
 
 /**
@@ -13,7 +12,7 @@ import java.sql.Time;
 public class GameManager {
 
     private GameUI m_GameUI;
-    private BasicGame m_GameLogic;
+    private Game m_GameLogic;
 
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
@@ -22,7 +21,7 @@ public class GameManager {
     public GameManager() {
         GameInfo m_GameInfo = new GameInfo();
         m_GameUI = new GameUI(m_GameInfo);
-        m_GameLogic = new BasicGame(i_NumOfPlayers, i_BoardSize, eBoardStructure i_BoardStructure, m_GameInfo);
+        m_GameLogic = new BasicGame(m_GameInfo);
     }
 
     public void HandleMenuChoice() {

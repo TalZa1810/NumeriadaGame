@@ -1,8 +1,6 @@
 package Logic;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 
 /**
@@ -19,13 +17,13 @@ public class Board {
     protected Squares m_Start;
     protected Squares m_End;
 
-    public String getSquareInPos(int i, int j) {
-
-        return m_Board.get(i).get(j).toString();
+    public Marker getMark() {
+        return m_Mark;
     }
 
-    public void SetSquare(Player.ePlayerType i_player, int i_move) {
+    public Squares getSquareInPos(int i, int j) {
 
+        return m_Board.get(i).get(j);
     }
 
     private enum eBoardType{
@@ -125,30 +123,13 @@ public class Board {
         }
     }
 
-    private void bucketBoard( int[] i_BucketBoard){
 
-        for (int i=0; i < m_BoardSize; i++){
-
-            for (int j=0; j < m_BoardSize; j++){
-
-               //TODO
-
-            }
-        }
+    public void SetMarker(Player i_Player, Squares i_MarkToChange) {
+        i_MarkToChange.SetSquareSymbol("");
     }
 
-    public void SetMarker(Player.ePlayerType i_Player, int i_Move) {
-        Square s =  new Square();
-
-        if(i_Player == Player.ePlayerType.COLUMN_PLAYER) {
-            m_Mark.SetRow(i_Move);
-        }
-        else {
-            m_Mark.SetColumn(i_Move);
-        }
-
-        s = (Square)m_Board.get(m_Mark.GetRow()).get(m_Mark.GetColumn());
-        s.SetSquareSymbol(m_Mark.GetSquareSymbol());
+    public void SetSquare(Player i_Player, Squares i_SquareToChange) {
+        i_SquareToChange.SetSquareSymbol(m_Mark.GetSquareSymbol());
     }
 
 

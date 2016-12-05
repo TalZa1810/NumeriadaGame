@@ -115,6 +115,7 @@ public class GameUI {
 
     public int GetMoveFromUser() {
         Scanner s = new Scanner(System.in);
+        int choice;
 
         System.out.print("Please enter your choice in ");
 
@@ -125,7 +126,14 @@ public class GameUI {
             System.out.println("row " + m_GameInfo.getMarkerRow());
         }
 
-        return s.nextInt();
+        choice = s.nextInt();
+        while(choice < 1 || choice > m_GameInfo.GetBoardSize())
+        {
+            System.out.println("Invalid input/nPlease enter number between 1 to " + m_GameInfo.GetBoardSize());
+            choice = s.nextInt();
+        }
+
+        return choice;
     }
 
     public boolean fromXmlFileToObject() {
