@@ -17,6 +17,8 @@ public class GameInfo {
     private int m_MarkerRow;
     private int m_MarkerCol;
 
+    private Validator m_Validator = new Validator();
+
     public int getMarkerCol() {
         return m_MarkerCol;
     }
