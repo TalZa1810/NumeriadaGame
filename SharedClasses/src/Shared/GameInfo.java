@@ -1,10 +1,10 @@
 package Shared;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Time;
 
-/**
- * Created by Tal on 11/28/2016.
- */
+
+@XmlRootElement
 public class GameInfo {
     private int m_MaxRange;
     private int m_BoardSize;

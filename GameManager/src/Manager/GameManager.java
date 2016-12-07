@@ -69,6 +69,7 @@ public class GameManager {
                     break;
                 case END_GAME:
                     fileLoaded = false;
+                    System.out.println("Load new file to begin new game");
                     break;
                 case EXIT_GAME:
                     userWantsToPlay = false;

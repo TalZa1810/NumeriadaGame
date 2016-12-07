@@ -4,7 +4,7 @@ package UI;
  * Created by Tal on 11/26/2016.
  */
 
-import Logic.GameTypeFactory;
+import Generated.GameDescriptor;
 import Shared.GameInfo;
 
 import javax.xml.bind.JAXBContext;
@@ -28,9 +28,9 @@ public class GameUI {
     public int MainMenu() {
         int choice = -1;
         Scanner s = new Scanner(System.in);
-        boolean validInput = true;
+        boolean validInput = false;
 
-        while (validInput) {
+        while (!validInput) {
             System.out.println("1. LOAD GAME - load board game from xml");
             System.out.println("2. SET GAME - initiate game components and show board");
             System.out.println("3. GAME STATUS - show status");
@@ -145,10 +145,11 @@ public class GameUI {
         try {
 
             File file = new File(path);
-            JAXBContext jaxbContext = JAXBContext.newInstance(GameTypeFactory.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(GameDescriptor.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            GameTypeFactory factory = (GameTypeFactory) jaxbUnmarshaller.unmarshal(file);
+            GameDescriptor descriptor = (GameDescriptor) jaxbUnmarshaller.unmarshal(file);
+            System.out.println(descriptor);
 
         } catch (JAXBException e) {
             e.printStackTrace();
