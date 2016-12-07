@@ -8,7 +8,7 @@ import java.sql.Time;
 /**
  * Created by talza on 20/11/2016.
  */
-public abstract class Game extends GameTypeFactory{
+public abstract class Game {
 
     private Player [] m_Players;
     Board m_Board;
@@ -18,19 +18,25 @@ public abstract class Game extends GameTypeFactory{
     private int m_NumOfMoves;
     private Time m_Timer;
     private GameDescriptor m_GameDescriptor =  new GameDescriptor();
-    private GameTypeFactory.eBoardStructure m_BoardStructure;
-    private GameTypeFactory.eGameType m_GameType;
+    private eBoardStructure m_BoardStructure;
+    private eGameType m_GameType;
+
+
+    public enum eGameType {
+        BASIC, ADVANCED
+    }
+
+    public enum eBoardStructure {
+        EXPLICIT, RANDOM
+    }
 
     public Game(){
 
     }
 
     public Game(GameInfo i_GameInfo){
-
         m_GameInfo = i_GameInfo;
         m_Board = new Board(m_GameInfo.GetBoardSize());
-
-
     }
 
     //TODO

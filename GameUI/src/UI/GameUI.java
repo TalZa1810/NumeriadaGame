@@ -139,7 +139,14 @@ public class GameUI {
     public boolean fromXmlFileToObject() {
         System.out.println("Enter path for xml file");
         Scanner s = new Scanner(System.in);
-        String path = s.nextLine(); //check path for .xml sufix
+        String path =  s.nextLine();
+
+        //checking if file type is correct
+        while (!s.toString().endsWith( ".xml" )){
+            System.out.println("wrong xml file");
+            path =  s.nextLine();
+        }
+
         boolean loadSuccess = true;
 
         try {

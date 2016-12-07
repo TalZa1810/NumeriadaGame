@@ -4,6 +4,7 @@ import Generated.GameDescriptor;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Time;
+import java.util.List;
 
 @XmlRootElement
 public class GameInfo {
@@ -26,7 +27,43 @@ public class GameInfo {
         m_GameType = m_GameDescriptor.getGameType();
         m_BoardSize = m_GameDescriptor.getBoard().getSize().intValue();
         m_BoardStructure = m_GameDescriptor.getBoard().getStructure().getType();
+        m_Board = new String[m_BoardSize][m_BoardSize];
+        initBoard();
+        setBoardValuesFromXML();
+    }
 
+    private void setBoardValuesFromXML(){
+        int row , col;
+
+        List<GameDescriptor.Board.Structure.Squares.Square> squares = m_GameDescriptor.getBoard().getStructure().getSquares().getSquare();
+
+        for( GameDescriptor.Board.Structure.Squares.Square s : squares){
+
+            col = s.getColumn().intValue();
+            row = s.getRow().intValue();
+             m_Board[row][col] = s.getValue().toString();
+
+        }
+
+        GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
+        m_Board[marker.getRow().intValue()][marker.getColumn().intValue()]= "@";
+
+    }
+
+    private  void initBoard (){
+        for(String [] row: m_Board ){
+            for( String square: row){
+                square = "";
+            }
+        }
+    }
+
+    public String getGameType() {
+        return m_GameType;
+    }
+
+    public String getBoardStructure() {
+        return m_BoardStructure;
     }
 
     public int getMarkerCol() {

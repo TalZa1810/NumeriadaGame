@@ -1,26 +1,26 @@
 package Manager;
 
+import Logic.BasicGame;
 import Logic.Game;
 import Shared.GameInfo;
 import UI.GameUI;
 
 
-/**
- * Created by Tal on 11/28/2016.
- */
 public class GameManager {
 
     private GameUI m_GameUI;
     private Game m_GameLogic;
     GameInfo m_GameInfo = new GameInfo();
 
-    public enum eMenuOptions {
+
+    private enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
 
+
+
     public GameManager() {
         m_GameUI = new GameUI(m_GameInfo);
-        //m_GameLogic = new BasicGame(m_GameInfo);
     }
 
     public void HandleMenuChoice() {
@@ -40,6 +40,7 @@ public class GameManager {
                 case SET_GAME:
                     if (fileLoaded) {
                         //INITIATE GAME
+                        m_GameLogic = new BasicGame(m_GameInfo);
                         getBoard();
                     } else {
                         System.out.println("First load file");
