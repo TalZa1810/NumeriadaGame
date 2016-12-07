@@ -7,10 +7,18 @@ public class GameTypeFactory {
 
     private Game m_Game;
 
+
+    public enum eGameType {
+        BASIC, ADVANCED
+    }
+
+    public enum eBoardStructure {
+        EXPLICIT, RANDOM
+    }
+
     public GameTypeFactory(){
 
     }
-
 
 
     public GameTypeFactory(int i_NumberOfPlayers, int i_BoardSize ){

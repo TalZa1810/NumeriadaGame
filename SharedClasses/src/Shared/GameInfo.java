@@ -1,11 +1,14 @@
 package Shared;
 
+import Generated.GameDescriptor;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Time;
 
-
 @XmlRootElement
 public class GameInfo {
+    private GameDescriptor m_GameDescriptor = new GameDescriptor();
+
     private int m_MaxRange;
     private int m_BoardSize;
     private String[][] m_Board;
@@ -16,8 +19,15 @@ public class GameInfo {
     private int m_ColPlayerScore;
     private int m_MarkerRow;
     private int m_MarkerCol;
+    private String m_GameType;
+    private String m_BoardStructure;
 
-    private Validator m_Validator = new Validator();
+    public void GetDataFromGeneratedXML() {
+        m_GameType = m_GameDescriptor.getGameType();
+        m_BoardSize = m_GameDescriptor.getBoard().getSize().intValue();
+        m_BoardStructure = m_GameDescriptor.getBoard().getStructure().getType();
+
+    }
 
     public int getMarkerCol() {
         return m_MarkerCol;

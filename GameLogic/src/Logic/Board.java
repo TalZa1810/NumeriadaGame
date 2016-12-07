@@ -26,6 +26,10 @@ public class Board {
         return m_Board.get(i).get(j);
     }
 
+    public void setBoardSize(int i_BoardSize) {
+        this.m_BoardSize = i_BoardSize;
+    }
+
     private enum eBoardType{
         EXPLICIT, RANDOM
     }

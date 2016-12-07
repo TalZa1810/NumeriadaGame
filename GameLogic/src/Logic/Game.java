@@ -1,5 +1,6 @@
 package Logic;
 
+import Generated.GameDescriptor;
 import Shared.GameInfo;
 
 import java.sql.Time;
@@ -11,35 +12,25 @@ public abstract class Game extends GameTypeFactory{
 
     private Player [] m_Players;
     Board m_Board;
-    private eBoardStructure m_BoardStructure;
+
     GameInfo m_GameInfo;
     protected  Player m_CurrentPlayer;
     private int m_NumOfMoves;
     private Time m_Timer;
-
-    private enum eBoardStructure {
-        EXPLICIT, RANDOM
-    }
+    private GameDescriptor m_GameDescriptor =  new GameDescriptor();
+    private GameTypeFactory.eBoardStructure m_BoardStructure;
+    private GameTypeFactory.eGameType m_GameType;
 
     public Game(){
 
     }
 
     public Game(GameInfo i_GameInfo){
-        /*m_Players = new Player[i_NumOfPlayers];
-        m_Board = new Board(i_BoardSize);
-        m_BoardStructure = i_BoardStructure;
-        m_GameInfo = i_GameInfo;
 
-        if (i_BoardStructure == eBoardStructure.EXPLICIT)
-        {
-            //USE
-        }
-        else
-        {
-
-        }*/
         m_GameInfo = i_GameInfo;
+        m_Board = new Board(m_GameInfo.GetBoardSize());
+
+
     }
 
     //TODO
