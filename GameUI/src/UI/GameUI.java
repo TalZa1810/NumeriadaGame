@@ -17,6 +17,10 @@ public class GameUI {
 
     private GameInfo m_GameInfo;
 
+    public void ShowExceptionThrown(String message) {
+        System.out.println(message);
+    }
+
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
@@ -46,7 +50,7 @@ public class GameUI {
     }
 
     public void ShowBoard() {
-        int maxRange = m_GameInfo.GetMaxRange();
+        int maxRange = m_GameInfo.GetRangeTo();
         int boardSize = m_GameInfo.GetBoardSize();
         String[][] board = m_GameInfo.GetBoard();
 

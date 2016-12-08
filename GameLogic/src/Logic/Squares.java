@@ -9,9 +9,10 @@ public class Squares {
     private int m_Column;
     private String m_SquareSymbol;
 
-    public Squares(int i_Row, int i_Column ){
+    public Squares(int i_Row, int i_Column, String i_SquareSymbol){
         m_Row = i_Row;
         m_Column = i_Column;
+        m_SquareSymbol = i_SquareSymbol;
     }
 
     public Squares() {

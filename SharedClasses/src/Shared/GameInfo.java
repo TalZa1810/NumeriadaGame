@@ -1,16 +1,13 @@
 package Shared;
 
-import Generated.GameDescriptor;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Time;
-import java.util.List;
 
 @XmlRootElement
 public class GameInfo {
-    private GameDescriptor m_GameDescriptor = new GameDescriptor();
-
-    private int m_MaxRange;
+    private int m_RangeFrom;
+    private int m_RangeTo;
     private int m_BoardSize;
     private String[][] m_Board;
     private String m_CurrPlayer;
@@ -22,40 +19,10 @@ public class GameInfo {
     private int m_MarkerCol;
     private String m_GameType;
     private String m_BoardStructure;
+    private  int m_NumOfPlayers = 2;
 
-    public void GetDataFromGeneratedXML() {
-        m_GameType = m_GameDescriptor.getGameType();
-        m_BoardSize = m_GameDescriptor.getBoard().getSize().intValue();
-        m_BoardStructure = m_GameDescriptor.getBoard().getStructure().getType();
-        m_Board = new String[m_BoardSize][m_BoardSize];
-        initBoard();
-        setBoardValuesFromXML();
-    }
-
-    private void setBoardValuesFromXML(){
-        int row , col;
-
-        List<GameDescriptor.Board.Structure.Squares.Square> squares = m_GameDescriptor.getBoard().getStructure().getSquares().getSquare();
-
-        for( GameDescriptor.Board.Structure.Squares.Square s : squares){
-
-            col = s.getColumn().intValue();
-            row = s.getRow().intValue();
-             m_Board[row][col] = s.getValue().toString();
-
-        }
-
-        GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
-        m_Board[marker.getRow().intValue()][marker.getColumn().intValue()]= "@";
-
-    }
-
-    private  void initBoard (){
-        for(String [] row: m_Board ){
-            for( String square: row){
-                square = "";
-            }
-        }
+    public int getNumOfPlayers() {
+        return m_NumOfPlayers;
     }
 
     public String getGameType() {
@@ -82,8 +49,12 @@ public class GameInfo {
         return m_BoardSize;
     }
 
-    public int GetMaxRange() {
-        return m_MaxRange;
+    public int GetRangeFrom() {
+        return m_RangeFrom;
+    }
+
+    public int GetRangeTo() {
+        return m_RangeTo;
     }
 
     public String GetCurrPlayer() {
@@ -130,8 +101,12 @@ public class GameInfo {
         this.m_BoardSize = i_BoardSize;
     }
 
-    public void setMaxRange(int i_MaxRange) {
-        this.m_MaxRange = i_MaxRange;
+    public void setRangeFrom(int i_RangeFrom) {
+        this.m_RangeFrom = i_RangeFrom;
+    }
+
+    public void setRangeTo(int i_setRangeTo) {
+        this.m_RangeTo = i_setRangeTo;
     }
 
     public void setCurrPlayer(String i_CurrPlayer) {
@@ -144,5 +119,22 @@ public class GameInfo {
 
     public void setMarkerRow(int i_MarkerRow) {
         this.m_MarkerRow = i_MarkerRow;
+    }
+
+    public void setGameType(String i_GameType) {
+        this.m_GameType = i_GameType;
+    }
+
+    public void setBoardStructure(String i_BoardStructure) {
+        this.m_BoardStructure = i_BoardStructure;
+    }
+
+    public void setSquare(int i_Row, int i_Col, String i_Str) {
+        m_Board[i_Row][i_Col] = i_Str;
+
+        if(i_Str.equals("@")) {
+            m_MarkerRow = i_Row;
+            m_MarkerCol = i_Col;
+        }
     }
 }

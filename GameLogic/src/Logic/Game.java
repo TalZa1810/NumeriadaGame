@@ -1,6 +1,5 @@
 package Logic;
 
-import Generated.GameDescriptor;
 import Shared.GameInfo;
 
 import java.sql.Time;
@@ -12,34 +11,60 @@ public abstract class Game {
 
     private Player [] m_Players;
     Board m_Board;
-
     GameInfo m_GameInfo;
     protected  Player m_CurrentPlayer;
     private int m_NumOfMoves;
     private Time m_Timer;
-    private GameDescriptor m_GameDescriptor =  new GameDescriptor();
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
 
+    public Board getBoard() {
+        return m_Board;
+    }
 
     public enum eGameType {
-        BASIC, ADVANCED
+        Basic, Advanced
     }
 
     public enum eBoardStructure {
-        EXPLICIT, RANDOM
+        Explicit, Random
     }
 
-    public Game(){
-
-    }
 
     public Game(GameInfo i_GameInfo){
         m_GameInfo = i_GameInfo;
         m_Board = new Board(m_GameInfo.GetBoardSize());
+        m_Players = new Player[m_GameInfo.getNumOfPlayers()];
+        for(int i = 0; i < m_Players.length; i++ ){
+            m_Players[i] = new Player();
+            if(i % 2 == 0){
+                m_Players[i].setPlayerType(Player.ePlayerType.ROW_PLAYER);
+            }
+            else{
+                m_Players[i].setPlayerType(Player.ePlayerType.COLUMN_PLAYER);
+            }
+        }
+        m_CurrentPlayer = m_Players[0];
+        m_NumOfMoves = 0;
+
+        if(m_GameInfo.getGameType().equals(eGameType.Basic.toString())) {
+            m_GameType = eGameType.Basic;
+        }
+        else{
+            m_GameType = eGameType.Advanced;
+        }
+
+        if(m_GameInfo.getBoardStructure().equals(eBoardStructure.Explicit.toString())) {
+            m_BoardStructure = eBoardStructure.Explicit;
+        }
+        else{
+            m_BoardStructure = eBoardStructure.Random;
+        }
+
+        //board exists, values need to be initiated (if explicit from m_board in gameinfo, if random, then randomly)
+        initBoard(m_BoardStructure);
     }
 
-    //TODO
     public void MakeMove(int i_Move) {
         playTurn(m_CurrentPlayer, i_Move);
         m_NumOfMoves++;

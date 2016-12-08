@@ -16,8 +16,6 @@ public class BasicGame extends Game {
     @Override
     //used only in ex1, can be erased for ex2 and 3
     public void GetBoardToPrint() {
-        //TODO: CHECK ITERATOR
-
         String board[][] = new String[m_Board.getBoardSize()][m_Board.getBoardSize()];
 
         for (int i=0; i< m_Board.getBoardSize(); i++) {

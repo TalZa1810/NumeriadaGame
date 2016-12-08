@@ -7,8 +7,7 @@ public class Square extends Squares {
     // TODO: Color field
 
     public Square(int i_Row, int i_Column, String i_SquareSymbol ){
-        super(i_Row,i_Column);
-        super.SetSquareSymbol("@");
+        super(i_Row,i_Column, i_SquareSymbol);
     }
 
     public Square() {
