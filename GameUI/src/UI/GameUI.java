@@ -1,8 +1,5 @@
 package UI;
 
-/**
- * Created by Tal on 11/26/2016.
- */
 
 import Generated.GameDescriptor;
 import Shared.GameInfo;
@@ -153,7 +150,8 @@ public class GameUI {
         String path =  s.nextLine();
 
         //checking if file type is correct
-        while (!s.toString().endsWith( ".xml" )){
+        //******while (!s.toString().endsWith( ".xml" ))******{
+        while (!path.endsWith( ".xml" )){
             System.out.println("wrong xml file");
             path =  s.nextLine();
         }

@@ -81,7 +81,47 @@ public abstract class Game {
         }
     }
 
+    private void initRandomBoard() {
+
+        final int markerCount=1;
+        int boardSize=m_Board.getBoardSize();
+        Integer toRange = m_Board.GetToRange();
+        Integer fromRange =m_Board.GetFromRange();
+
+        int randomCol = generateRandomPositionForRandomSquuere(boardSize);
+        int randomRow = generateRandomPositionForRandomSquuere(boardSize);
+
+        int amoutOfNumsInRange = Math.abs(toRange) - Math.abs(fromRange)  + 1;
+
+        int amountOfEachNumInRange= (boardSize * boardSize - markerCount) / amoutOfNumsInRange;
+
+        for (int i=m_Board.GetFromRange(); i < m_Board.GetToRange() ; i++){
+
+            for(int j=0; j < amountOfEachNumInRange; j++){
+
+                //generate random position for square
+                while(!m_GameInfo.getValueInPos(randomRow,randomCol).equals("")){
+                    randomCol = generateRandomPositionForRandomSquuere(boardSize);
+                    randomRow = generateRandomPositionForRandomSquuere(boardSize);
+                }
+
+                m_Board.getSquareInPos(randomRow,randomCol).SetSquareSymbol( Integer.toString(i));
+            }
+        }
+    }
+
+    private int generateRandomPositionForRandomSquuere(int i_BoardSize){
+
+        final int minBoardSize = 5;
+        Random rand = new Random();
+
+        int randomNum= rand.nextInt((i_BoardSize - minBoardSize) + 1) + minBoardSize;
+
+        return randomNum;
+    }
+
     private void initExplicitBoard() {
+
         for(int i = 0; i < m_Board.getBoardSize(); i++){
             for(int j = 0; i < m_Board.getBoardSize(); j++){
                 if(!m_GameInfo.getValueInPos(i,j).equals("")){
@@ -90,6 +130,7 @@ public abstract class Game {
             }
         }
     }
+
 
     public void MakeMove() {
         playTurn(m_CurrentPlayer, m_GameInfo.getMove());

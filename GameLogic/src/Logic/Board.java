@@ -29,6 +29,8 @@ public class Board {
         }
     }
 
+
+
     public Marker getMark() {
         return m_Mark;
     }
@@ -60,15 +62,28 @@ public class Board {
 
 
         //GET METHODS
-        public int GetFromRange(){
+         /*public int GetFromRange(){
             return m_From;
         }
 
-        public int GetToRange(){
+       public int GetToRange(){
             return m_To;
-        }
+        }*/
 
     }
+
+    public int GetToRange(){
+        return m_Range.m_To;
+    }
+
+    public int GetFromRange(){
+        return m_Range.m_From;
+    }
+
+
+
+
+
 
     public int GetMarkerCol() {
         return m_Mark.GetColumn();
