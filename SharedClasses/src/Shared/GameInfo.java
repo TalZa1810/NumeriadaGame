@@ -19,10 +19,24 @@ public class GameInfo {
     private int m_MarkerCol;
     private String m_GameType;
     private String m_BoardStructure;
+    private int m_GameMode;
     private  int m_NumOfPlayers = 2;
+    private int m_Move;
+
+    public int getGameMode() {
+        return m_GameMode;
+    }
+
+    public void setGameMode(int i_GameMode) {
+        this.m_GameMode = i_GameMode;
+    }
 
     public int getNumOfPlayers() {
         return m_NumOfPlayers;
+    }
+
+    public String getValueInPos(int i_Row, int i_Col) {
+        return m_Board[i_Row][i_Col];
     }
 
     public String getGameType() {
@@ -136,5 +150,13 @@ public class GameInfo {
             m_MarkerRow = i_Row;
             m_MarkerCol = i_Col;
         }
+    }
+
+    public void setMove(int i_Move) {
+        this.m_Move = i_Move;
+    }
+
+    public int getMove() {
+        return m_Move;
     }
 }

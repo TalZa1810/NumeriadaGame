@@ -3,6 +3,7 @@ package Logic;
 import Shared.GameInfo;
 
 import java.sql.Time;
+import java.util.Random;
 
 /**
  * Created by talza on 20/11/2016.
@@ -17,9 +18,10 @@ public abstract class Game {
     private Time m_Timer;
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
+    private eGameMode m_GameMode;
 
-    public Board getBoard() {
-        return m_Board;
+    public enum eGameMode {
+        HumanVsHuman, HumanVsComputer
     }
 
     public enum eGameType {
@@ -61,12 +63,36 @@ public abstract class Game {
             m_BoardStructure = eBoardStructure.Random;
         }
 
-        //board exists, values need to be initiated (if explicit from m_board in gameinfo, if random, then randomly)
-        initBoard(m_BoardStructure);
+        m_GameMode = eGameMode.values()[m_GameInfo.getGameMode()];
+
+        initBoard();
     }
 
-    public void MakeMove(int i_Move) {
-        playTurn(m_CurrentPlayer, i_Move);
+    public Board getBoard() {
+        return m_Board;
+    }
+
+    private void initBoard() {
+        if(m_BoardStructure == eBoardStructure.Explicit){
+            initExplicitBoard();
+        }
+        else{
+            initRandomBoard();
+        }
+    }
+
+    private void initExplicitBoard() {
+        for(int i = 0; i < m_Board.getBoardSize(); i++){
+            for(int j = 0; i < m_Board.getBoardSize(); j++){
+                if(!m_GameInfo.getValueInPos(i,j).equals("")){
+                    m_Board.getSquareInPos(i,j).SetSquareSymbol(m_GameInfo.getValueInPos(i,j));
+                }
+            }
+        }
+    }
+
+    public void MakeMove() {
+        playTurn(m_CurrentPlayer, m_GameInfo.getMove());
         m_NumOfMoves++;
         m_CurrentPlayer = m_Players[m_NumOfMoves % m_Players.length];
 
@@ -103,7 +129,6 @@ public abstract class Game {
         m_GameInfo.setCurrPlayer(m_CurrentPlayer.GetEPlayerTypeAsString());
     }
 
-    //TODO: CHANGE: PLAYER NEEDS TO HOLD SCORE AND PLAYRT TYPE(COL / ROW)
     public void GetGameStatistics() {
 
         m_GameInfo.setNumOfMoves(m_NumOfMoves);
@@ -121,8 +146,39 @@ public abstract class Game {
     }
 
     public void playTurn(Player i_Player, int i_Move){
-        Square squareToChange = new Square();
-        Marker markerToChange = new Marker();
+        if(m_GameMode == eGameMode.HumanVsHuman){
+            playHumanTurn(i_Player,i_Move);
+        }
+        else if(m_GameMode == eGameMode.HumanVsComputer && i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER){
+            playComputerTurn(i_Player);
+        }
+    }
+
+    private void playComputerTurn(Player i_Player) {
+        Random r = new Random();
+        int randomMove = r.nextInt(m_Board.getBoardSize()) + 1;
+
+        Square squareToChange;
+        Marker markerToChange;
+
+        if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
+            squareToChange = (Square)m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol());
+            markerToChange = (Marker)m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol());
+        }
+        else {
+            squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),randomMove);
+            markerToChange = (Marker)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),randomMove);
+        }
+
+        m_CurrentPlayer.addToPlayerScore(Integer.parseInt(squareToChange.GetSquareSymbol()));
+
+        m_Board.SetSquare(i_Player, squareToChange);
+        m_Board.SetMarker(i_Player, markerToChange);
+    }
+
+    private void playHumanTurn(Player i_Player, int i_Move) {
+        Square squareToChange;
+        Marker markerToChange;
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
             squareToChange = (Square)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
@@ -137,8 +193,6 @@ public abstract class Game {
 
         m_Board.SetSquare(i_Player, squareToChange);
         m_Board.SetMarker(i_Player, markerToChange);
-
-
     }
 }
 

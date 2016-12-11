@@ -97,6 +97,13 @@ public class GameUI {
         }
     }
 
+    public int getGameMode() {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Choose game mode:\n1. Human players\n2. Human and computer");
+        int res = s.nextInt();
+        return res;
+    }
+
     private int getNumOfDigits(int i_MaxRange) {
         int res = 0;
         for(int i = 0; i < i_MaxRange; i++)

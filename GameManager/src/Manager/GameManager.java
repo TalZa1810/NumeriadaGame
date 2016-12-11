@@ -50,6 +50,7 @@ public class GameManager {
                     break;
                 case SET_GAME:
                     if (fileLoaded) {
+                        m_GameInfo.setGameMode(m_GameUI.getGameMode());
                         m_GameLogic = new BasicGame(m_GameInfo);
                         getBoard();
                     } else {
@@ -103,8 +104,8 @@ public class GameManager {
 
     private void makeMove() {
         m_GameLogic.getCurrMarkerPosition();
-        int move = m_GameUI.GetMoveFromUser();
-        m_GameLogic.MakeMove(move);
+        m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
+        m_GameLogic.MakeMove();
     }
 
     private void getBoard() {
