@@ -18,8 +18,8 @@ public class BasicGame extends Game {
     public void GetBoardToPrint() {
         String board[][] = new String[m_Board.getBoardSize()][m_Board.getBoardSize()];
 
-        for (int i=0; i< m_Board.getBoardSize(); i++) {
-            for (int j=0; j< m_Board.getBoardSize(); j++) {
+        for (int i=0; i< m_Board.getBoardSize() - 1; i++) {
+            for (int j = 0; j< m_Board.getBoardSize() - 1; j++) {
                 board[i][j] = m_Board.getSquareInPos(i,j).toString();
             }
         }

@@ -123,11 +123,14 @@ public class GameManager {
         m_GameInfo.setGameType(m_GameDescriptor.getGameType());
         m_Validator.checkBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
+        m_GameInfo.initBoard();
         m_GameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
-        m_GameInfo.setRangeFrom(m_GameDescriptor.getBoard().getStructure().getRange().getFrom());
-        if(m_GameInfo.getBoardStructure().toString() == "Random") {
+
+        if(m_GameInfo.getBoardStructure().toString().equals("Random")) {
+            m_GameInfo.setRangeFrom(m_GameDescriptor.getBoard().getStructure().getRange().getFrom());
             m_GameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
         }
+
         initBoard();
         setBoardValuesFromXML();
 
@@ -135,6 +138,7 @@ public class GameManager {
     }
 
     private void setBoardValuesFromXML() throws Exception {
+        String str = m_GameInfo.getBoardStructure();
         if(m_GameInfo.getBoardStructure().equals("Explicit")) {
             int row, col;
 

@@ -156,8 +156,6 @@ public class GameUI {
             path =  s.nextLine();
         }
 
-        boolean loadSuccess = true;
-
         try {
 
             File file = new File(path);
@@ -166,12 +164,10 @@ public class GameUI {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
             descriptor = (GameDescriptor) jaxbUnmarshaller.unmarshal(file);
-            //System.out.println(descriptor);
 
         } catch (JAXBException e) {
             e.printStackTrace();
             System.out.println("Failed to load file");
-            loadSuccess = false;
         }
 
         return descriptor;

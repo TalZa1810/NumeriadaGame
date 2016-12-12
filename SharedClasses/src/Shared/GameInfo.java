@@ -159,4 +159,17 @@ public class GameInfo {
     public int getMove() {
         return m_Move;
     }
+
+    public void initBoard(){
+        m_Board = new String[m_BoardSize][m_BoardSize];
+        for(String[] row : m_Board) {
+            row = new String[m_BoardSize];
+        }
+
+        for(int i = 0; i < m_BoardSize; i++){
+            for(int j = 0; j < m_BoardSize; j++){
+                m_Board[i][j] = "";
+            }
+        }
+    }
 }
