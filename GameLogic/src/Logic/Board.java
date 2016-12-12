@@ -49,7 +49,7 @@ public class Board {
     }
 
     //SHOULD BE STATIC?
-    private static class Range{
+     class Range{
 
         private int m_From;
         private int m_To;
@@ -80,7 +80,13 @@ public class Board {
         return m_Range.m_From;
     }
 
+    public void SetToRange(int i_Range){
+        m_Range.m_To = i_Range;
+    }
 
+    public void SetFromRange(int i_Range){
+        m_Range.m_From = i_Range;
+    }
 
 
 

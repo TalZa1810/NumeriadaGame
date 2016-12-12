@@ -22,8 +22,8 @@ public class GameUI {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
 
-    public GameUI(GameInfo i_GameInfo) {
-        m_GameInfo = i_GameInfo;
+    public GameUI(GameInfo[] i_GameInfoWrapper) {
+        m_GameInfo = i_GameInfoWrapper[0];
     }
 
     public int MainMenu() {
@@ -144,13 +144,13 @@ public class GameUI {
         return choice;
     }
 
-    public boolean fromXmlFileToObject() {
+    public GameDescriptor fromXmlFileToObject() {
         System.out.println("Enter path for xml file");
         Scanner s = new Scanner(System.in);
         String path =  s.nextLine();
+        GameDescriptor descriptor = null;
 
         //checking if file type is correct
-        //******while (!s.toString().endsWith( ".xml" ))******{
         while (!path.endsWith( ".xml" )){
             System.out.println("wrong xml file");
             path =  s.nextLine();
@@ -164,8 +164,9 @@ public class GameUI {
             JAXBContext jaxbContext = JAXBContext.newInstance(GameDescriptor.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            GameDescriptor descriptor = (GameDescriptor) jaxbUnmarshaller.unmarshal(file);
-            System.out.println(descriptor);
+
+            descriptor = (GameDescriptor) jaxbUnmarshaller.unmarshal(file);
+            //System.out.println(descriptor);
 
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -173,7 +174,7 @@ public class GameUI {
             loadSuccess = false;
         }
 
-        return loadSuccess;
+        return descriptor;
     }
 
 

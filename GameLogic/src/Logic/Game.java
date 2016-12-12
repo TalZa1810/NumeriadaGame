@@ -33,8 +33,8 @@ public abstract class Game {
     }
 
 
-    public Game(GameInfo i_GameInfo){
-        m_GameInfo = i_GameInfo;
+    public Game(GameInfo[] i_GameInfoWrapper){
+        m_GameInfo = i_GameInfoWrapper[0];
         m_Board = new Board(m_GameInfo.GetBoardSize());
         m_Players = new Player[m_GameInfo.getNumOfPlayers()];
         for(int i = 0; i < m_Players.length; i++ ){
@@ -49,14 +49,14 @@ public abstract class Game {
         m_CurrentPlayer = m_Players[0];
         m_NumOfMoves = 0;
 
-        if(m_GameInfo.getGameType().equals(eGameType.Basic.toString())) {
+        if(m_GameInfo.getGameType() == eGameType.Basic.toString()) {
             m_GameType = eGameType.Basic;
         }
         else{
             m_GameType = eGameType.Advanced;
         }
-
-        if(m_GameInfo.getBoardStructure().equals(eBoardStructure.Explicit.toString())) {
+        String s = eBoardStructure.Explicit.name();
+        if(m_GameInfo.getBoardStructure().equals(eBoardStructure.Explicit.name())) {
             m_BoardStructure = eBoardStructure.Explicit;
         }
         else{
@@ -77,32 +77,34 @@ public abstract class Game {
             initExplicitBoard();
         }
         else{
+            m_Board.SetToRange(m_GameInfo.GetRangeTo());
+            m_Board.SetFromRange(m_GameInfo.GetRangeFrom());
             initRandomBoard();
         }
     }
 
     private void initRandomBoard() {
 
-        final int markerCount=1;
-        int boardSize=m_Board.getBoardSize();
+        final int markerCount = 1;
+        int boardSize = m_Board.getBoardSize();
         Integer toRange = m_Board.GetToRange();
-        Integer fromRange =m_Board.GetFromRange();
+        Integer fromRange = m_Board.GetFromRange();
 
-        int randomCol = generateRandomPositionForRandomSquuere(boardSize);
-        int randomRow = generateRandomPositionForRandomSquuere(boardSize);
+        int randomCol = generateRandomPositionForRandomSquare(boardSize);
+        int randomRow = generateRandomPositionForRandomSquare(boardSize);
 
-        int amoutOfNumsInRange = Math.abs(toRange) - Math.abs(fromRange)  + 1;
+        int amountOfNumsInRange = Math.abs(toRange) - Math.abs(fromRange)  + 1;
 
-        int amountOfEachNumInRange= (boardSize * boardSize - markerCount) / amoutOfNumsInRange;
+        int amountOfEachNumInRange = (boardSize * boardSize - markerCount) / amountOfNumsInRange;
 
-        for (int i=m_Board.GetFromRange(); i < m_Board.GetToRange() ; i++){
+        for (int i = fromRange; i < toRange ; i++){
 
-            for(int j=0; j < amountOfEachNumInRange; j++){
+            for(int j = 0; j < amountOfEachNumInRange; j++){
 
                 //generate random position for square
                 while(!m_GameInfo.getValueInPos(randomRow,randomCol).equals("")){
-                    randomCol = generateRandomPositionForRandomSquuere(boardSize);
-                    randomRow = generateRandomPositionForRandomSquuere(boardSize);
+                    randomCol = generateRandomPositionForRandomSquare(boardSize);
+                    randomRow = generateRandomPositionForRandomSquare(boardSize);
                 }
 
                 m_Board.getSquareInPos(randomRow,randomCol).SetSquareSymbol( Integer.toString(i));
@@ -110,7 +112,7 @@ public abstract class Game {
         }
     }
 
-    private int generateRandomPositionForRandomSquuere(int i_BoardSize){
+    private int generateRandomPositionForRandomSquare(int i_BoardSize){
 
         final int minBoardSize = 5;
         Random rand = new Random();

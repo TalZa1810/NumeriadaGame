@@ -9,8 +9,8 @@ import Shared.GameInfo;
 
 public class BasicGame extends Game {
 
-    public BasicGame(GameInfo i_GameInfo) {
-        super(i_GameInfo);
+    public BasicGame(GameInfo[] i_GameInfoWrapper) {
+        super(i_GameInfoWrapper);
     }
 
     @Override

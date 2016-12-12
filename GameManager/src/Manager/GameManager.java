@@ -16,6 +16,7 @@ public class GameManager {
     private GameUI m_GameUI;
     private Game m_GameLogic;
     GameInfo m_GameInfo = new GameInfo();
+    GameInfo[] m_GameInfoWrapper = new GameInfo[1];
 
 
     private enum eMenuOptions {
@@ -25,7 +26,8 @@ public class GameManager {
 
 
     public GameManager() {
-        m_GameUI = new GameUI(m_GameInfo);
+        m_GameInfoWrapper[0] = m_GameInfo;
+        m_GameUI = new GameUI(m_GameInfoWrapper);
     }
 
     public void HandleMenuChoice() {
@@ -39,19 +41,21 @@ public class GameManager {
                 case LOAD_FILE:
                     if (!fileLoaded) {
                         try {
-                            fileLoaded = m_GameUI.fromXmlFileToObject();
-                            fileLoaded = true;
+                            m_GameDescriptor = m_GameUI.fromXmlFileToObject();
+                            if(m_GameDescriptor != null) {
+                                fileLoaded = true;
+                                GetDataFromGeneratedXML();
+                            }
                         }
                         catch(Exception e){
                             m_GameUI.ShowExceptionThrown(e.getMessage());
-                            fileLoaded = false;
                         }
                     }
                     break;
                 case SET_GAME:
                     if (fileLoaded) {
                         m_GameInfo.setGameMode(m_GameUI.getGameMode());
-                        m_GameLogic = new BasicGame(m_GameInfo);
+                        m_GameLogic = new BasicGame(m_GameInfoWrapper);
                         getBoard();
                     } else {
                         System.out.println("First load file");
@@ -121,7 +125,9 @@ public class GameManager {
         m_GameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
         m_GameInfo.setRangeFrom(m_GameDescriptor.getBoard().getStructure().getRange().getFrom());
-        m_GameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
+        if(m_GameInfo.getBoardStructure().toString() == "Random") {
+            m_GameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
+        }
         initBoard();
         setBoardValuesFromXML();
 
