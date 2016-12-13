@@ -77,6 +77,8 @@ public abstract class Game {
             initExplicitBoard();
         }
         else{
+
+            //THROWS EXCEPTION HERE NULL PTR WITH THE SETTORANGE FUNCTION
             m_Board.SetToRange(m_GameInfo.GetRangeTo());
             m_Board.SetFromRange(m_GameInfo.GetRangeFrom());
             initRandomBoard();

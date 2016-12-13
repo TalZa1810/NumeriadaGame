@@ -7,7 +7,6 @@ public class Player {
 
     private int m_Points = 0;
     private ePlayerType m_PlayerType;
-
     //// TODO: PLAYER ID
 
     public enum ePlayerType {

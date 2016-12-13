@@ -50,7 +50,6 @@ public class Board {
         EXPLICIT, RANDOM
     }
 
-    //SHOULD BE STATIC?
      class Range{
 
         private int m_From;
@@ -62,16 +61,21 @@ public class Board {
             m_To = i_To;
         }
 
-
-        //GET METHODS
-         /*public int GetFromRange(){
-            return m_From;
+        public void setFrom(int i_From) {
+            this.m_From = i_From;
         }
 
-       public int GetToRange(){
-            return m_To;
-        }*/
+        public void setTo(int i_To) {
+            this.m_To = i_To;
+        }
 
+        public int getTo() {
+            return m_To;
+        }
+
+        public int getFrom() {
+            return m_From;
+        }
     }
 
     public int GetToRange(){
@@ -87,10 +91,9 @@ public class Board {
     }
 
     public void SetFromRange(int i_Range){
+
         m_Range.m_From = i_Range;
     }
-
-
 
 
     public int GetMarkerCol() {
@@ -118,6 +121,4 @@ public class Board {
 }
 
     //==XML==
-    //TODO:CREATING BOARD ACCORDING TO XML FILE
     //TODO: MAKE SURE THERE ARE NO TWO SQUARES ON THE XML FILE
-    //TODO: MAKE SURE THAT ALL NUMBERS APPEAR THE SAME NUMBER OF APPEARANCES
