@@ -23,17 +23,17 @@ public class Validator {
         String exceptionMessage = "";
 
         for(GameDescriptor.Board.Structure.Squares.Square s: squares){
-            if(s.getRow().intValue() > m_GameInfo.GetBoardSize() || s.getRow().intValue() < 0) {
+            if(s.getRow().intValue() > m_GameInfo.GetBoardSize() || s.getRow().intValue() < 1) {
                 validInput = false;
                 exceptionMessage = "Square row out of bounds";
             }
-            else if(s.getColumn().intValue() > m_GameInfo.GetBoardSize() || s.getColumn().intValue() < 0) {
+            else if(s.getColumn().intValue() > m_GameInfo.GetBoardSize() || s.getColumn().intValue() < 1) {
                 validInput = false;
                 exceptionMessage = "Square column out of bounds";
             }
 
             for(GameDescriptor.Board.Structure.Squares.Square currSquare: squares) {
-                if(s.getColumn() == currSquare.getColumn() && s.getRow() == currSquare.getRow()){
+                if(s.getColumn() == currSquare.getColumn() && s.getRow() == currSquare.getRow() && s != currSquare){
                     validInput = false;
                     exceptionMessage = "Two values assigned to same square";
                 }

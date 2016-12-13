@@ -123,7 +123,6 @@ public class GameManager {
         m_GameInfo.setGameType(m_GameDescriptor.getGameType());
         m_Validator.checkBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
-        m_GameInfo.initBoard();
         m_GameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
 
         if(m_GameInfo.getBoardStructure().toString().equals("Random")) {
@@ -131,7 +130,7 @@ public class GameManager {
             m_GameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
         }
 
-        initBoard();
+        m_GameInfo.initBoard();
         setBoardValuesFromXML();
 
 
@@ -148,14 +147,14 @@ public class GameManager {
 
             for (GameDescriptor.Board.Structure.Squares.Square s : squares) {
 
-                col = s.getColumn().intValue();
-                row = s.getRow().intValue();
+                col = s.getColumn().intValue() - 1;
+                row = s.getRow().intValue() - 1;
                 m_GameInfo.setSquare(row, col, s.getValue().toString());
 
             }
 
             GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
-            m_GameInfo.setSquare(marker.getRow().intValue(), marker.getColumn().intValue(), "@");
+            m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@");
 
 
         }
@@ -163,13 +162,4 @@ public class GameManager {
             m_Validator.checkRangeForRandomBoard();
         }
     }
-
-    private  void initBoard (){
-        for(String [] row: m_GameInfo.GetBoard()){
-            for( String square: row){
-                square = "";
-            }
-        }
-    }
-
 }

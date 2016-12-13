@@ -16,20 +16,22 @@ public class Board {
     public Board(int i_BoardSize) {
 
         m_BoardSize = i_BoardSize;
-        m_Board = new ArrayList<ArrayList<Squares>>(m_BoardSize) ;
+        m_Board = new ArrayList<ArrayList<Squares>>() ;
 
-        for(ArrayList<Squares> s: m_Board ){
-            s = new ArrayList<Squares> (m_BoardSize) ;
+        for(int i = 0; i < m_BoardSize; i++){
+            m_Board.add(new ArrayList<Squares>()) ;
         }
 
+        int i = 0;
         for (ArrayList<Squares> row : m_Board) {
-            for (Squares square : row) {
-                square = new Squares(0, 0, "");
+            for(int j = 0; j < m_BoardSize; j++) {
+                row.add(new Squares(i, j, ""));
             }
+            i++;
         }
+
+
     }
-
-
 
     public Marker getMark() {
         return m_Mark;
