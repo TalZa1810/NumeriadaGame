@@ -51,6 +51,8 @@ public class GameUI {
         String[][] board = m_GameInfo.GetBoard();
         int numOfSpaces = 5;
         String strOfSpaces = "";
+        int row = 0;
+        int col = 0;
 
         for(int i = 0; i < numOfSpaces; i++) {
             strOfSpaces += " ";
@@ -66,7 +68,7 @@ public class GameUI {
 
         for (int i = 0; i < boardSize * 2; i++) {
             if (i % 2 == 0) {
-                for (int j = 0; j < (boardSize * (numOfSpaces + 1)); j++) {
+                for (int j = 0; j < (boardSize * (numOfSpaces + 1) + 4); j++) {
                     System.out.print('=');
                 }
 
@@ -74,20 +76,23 @@ public class GameUI {
             }
             else {
                 for (int j = 0; j < (boardSize * numOfSpaces + 1); j++) {
-                    if (j % numOfSpaces == 0 && j != 0) {
-                        System.out.print('|');
+                    if (j == 0) {
+                        System.out.print("  " + (i / 2 + 1) + " |");
                     }
                     else {
-                        if (i % 2 == 1 && (j - 2) % numOfSpaces == 0 && board[(i / 2)][(j / numOfSpaces)] != " ") {
-                            System.out.print(board[(i / 2)][(j / numOfSpaces)]);
+                        if (board[row][col] != "") {
+                            String strToPrint = getStrOfValue(board[row][col]);
+                            System.out.print(strToPrint + "|");
                         }
                         else {
-                            System.out.print(strOfSpaces);
+                            System.out.print(strOfSpaces + "|");
                         }
+                        col++;
                     }
                 }
 
                 System.out.print("\n");
+                row++;
             }
         }
     }
@@ -99,10 +104,22 @@ public class GameUI {
         return res;
     }
 
-    private int getNumOfDigits(int i_MaxRange) {
-        int res = 0;
-        for(int i = 0; i < i_MaxRange; i++)
-            res++;
+    private String getStrOfValue(String i_Num) {
+        int count = 0;
+        String res;
+        for(int i = 0; i < i_Num.length(); i++) {
+            count++;
+        }
+
+        if(count == 1){
+            res = "  " + i_Num + "  ";
+        }
+        else if(count == 2){
+            res = "  " + i_Num + " ";
+        }
+        else{
+            res = " " + i_Num + " ";
+        }
 
         return res;
     }
