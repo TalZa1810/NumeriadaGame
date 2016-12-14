@@ -47,18 +47,16 @@ public class GameUI {
     }
 
     public void ShowBoard() {
-        int maxRange = m_GameInfo.GetRangeTo();
         int boardSize = m_GameInfo.GetBoardSize();
         String[][] board = m_GameInfo.GetBoard();
+        int numOfSpaces = 5;
+        String strOfSpaces = "";
 
-        int numOfSpaces = getNumOfDigits(maxRange) + 2;
-        String strOfSpaces = " ";
-
-        for(int i = 1; i < numOfSpaces; i++) {
+        for(int i = 0; i < numOfSpaces; i++) {
             strOfSpaces += " ";
         }
 
-        System.out.print(strOfSpaces);
+        System.out.print(strOfSpaces + "  ");
 
         for (int i = 0; i < boardSize; i++) {
             System.out.print((i + 1) + strOfSpaces);
@@ -67,21 +65,21 @@ public class GameUI {
         System.out.print("\n");
 
         for (int i = 0; i < boardSize * 2; i++) {
-            if (i % 2 == 1) {
-                for (int j = 0; j < (boardSize * numOfSpaces) + 1; j++) {
+            if (i % 2 == 0) {
+                for (int j = 0; j < (boardSize * (numOfSpaces + 1)); j++) {
                     System.out.print('=');
                 }
 
                 System.out.print("\n");
             }
             else {
-                for (int j = 0; j < (boardSize * numOfSpaces) + 1; j++) {
-                    if (j % numOfSpaces == 0) {
+                for (int j = 0; j < (boardSize * numOfSpaces + 1); j++) {
+                    if (j % numOfSpaces == 0 && j != 0) {
                         System.out.print('|');
                     }
                     else {
-                        if (i % 2 == 0 && (j - 2) % numOfSpaces == 0 && board[(i / 2)][(j / numOfSpaces)] != " ") {
-                            System.out.print(board[(i / 2)][(j / 4)]);
+                        if (i % 2 == 1 && (j - 2) % numOfSpaces == 0 && board[(i / 2)][(j / numOfSpaces)] != " ") {
+                            System.out.print(board[(i / 2)][(j / numOfSpaces)]);
                         }
                         else {
                             System.out.print(strOfSpaces);

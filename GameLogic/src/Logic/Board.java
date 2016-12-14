@@ -46,6 +46,10 @@ public class Board {
         this.m_BoardSize = i_BoardSize;
     }
 
+    public void CreateRange(int i_From, int i_To) {
+        m_Range = new Range(i_From,i_To);
+    }
+
     private enum eBoardType{
         EXPLICIT, RANDOM
     }
@@ -87,12 +91,12 @@ public class Board {
     }
 
     public void SetToRange(int i_Range){
-        m_Range.m_To = i_Range;
+        m_Range.setTo(i_Range);
     }
 
     public void SetFromRange(int i_Range){
 
-        m_Range.m_From = i_Range;
+        m_Range.setFrom(i_Range);
     }
 
 
