@@ -58,10 +58,10 @@ public class GameUI {
             strOfSpaces += " ";
         }
 
-        System.out.print(strOfSpaces + "  ");
+        System.out.print(strOfSpaces + "|");
 
         for (int i = 0; i < boardSize; i++) {
-            System.out.print((i + 1) + strOfSpaces);
+            System.out.print("  " + (i + 1) + "  |");
         }
 
         System.out.print("\n");
@@ -75,7 +75,7 @@ public class GameUI {
                 System.out.print("\n");
             }
             else {
-                for (int j = 0; j < (boardSize * numOfSpaces + 1); j++) {
+                for (int j = 0; j < boardSize; j++) {
                     if (j == 0) {
                         System.out.print("  " + (i / 2 + 1) + " |");
                     }
