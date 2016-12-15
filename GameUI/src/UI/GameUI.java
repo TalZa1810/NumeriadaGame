@@ -146,10 +146,10 @@ public class GameUI {
         System.out.print("Please enter your choice in ");
 
         if (m_GameInfo.GetCurrPlayer().equals("row")) {
-            System.out.println("col " + m_GameInfo.getMarkerCol());
+            System.out.println("row " + (m_GameInfo.getMarkerRow() + 1));
         }
         else {
-            System.out.println("row " + m_GameInfo.getMarkerRow());
+            System.out.println("column " + (m_GameInfo.getMarkerCol() + 1));
         }
 
         choice = s.nextInt();

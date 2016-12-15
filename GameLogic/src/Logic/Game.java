@@ -1,10 +1,9 @@
 package Logic;
 
 import Shared.GameInfo;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.sql.Time;
+
 import java.util.Random;
+import java.util.Timer;
 
 
 public abstract class Game {
@@ -179,7 +178,7 @@ public abstract class Game {
 
 
     public void MakeMove() {
-        playTurn(m_CurrentPlayer, m_GameInfo.getMove());
+        playTurn(m_CurrentPlayer, m_GameInfo.getMove() - 1);
         m_NumOfMoves++;
         m_CurrentPlayer = m_Players[m_NumOfMoves % m_Players.length];
 
@@ -261,6 +260,7 @@ public abstract class Game {
 
         m_Board.SetSquare(i_Player, squareToChange);
         m_Board.SetMarker(i_Player, markerToChange);
+
     }
 
     private void playHumanTurn(Player i_Player, int i_Move) {
@@ -272,11 +272,11 @@ public abstract class Game {
             markerToChange = (Square)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
         }
         else {
-            squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
+            squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),m_GameInfo.getMarkerCol());
             markerToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
         }
 
-        m_CurrentPlayer.addToPlayerScore(Integer.parseInt(squareToChange.GetSquareSymbol()));
+        m_CurrentPlayer.addToPlayerScore(Integer.parseInt(markerToChange.GetSquareSymbol()));
 
         m_Board.SetSquare(i_Player, squareToChange);
         m_Board.SetMarker(i_Player, markerToChange);

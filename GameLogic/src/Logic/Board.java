@@ -25,7 +25,7 @@ public class Board {
         int i = 0;
         for (ArrayList<Squares> row : m_Board) {
             for(int j = 0; j < m_BoardSize; j++) {
-                row.add(new Squares(i, j, ""));
+                row.add(new Square(i, j, ""));
             }
             i++;
         }
@@ -117,11 +117,11 @@ public class Board {
     }
 
     public void SetMarker(Player i_Player, Squares i_MarkToChange) {
-        i_MarkToChange.SetSquareSymbol("");
+        i_MarkToChange.SetSquareSymbol(m_Mark.GetSquareSymbol());
     }
 
     public void SetSquare(Player i_Player, Squares i_SquareToChange) {
-        i_SquareToChange.SetSquareSymbol(m_Mark.GetSquareSymbol());
+        i_SquareToChange.SetSquareSymbol("");
     }
 
 
