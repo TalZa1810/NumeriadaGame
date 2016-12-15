@@ -67,17 +67,18 @@ public class GameUI {
         System.out.print("\n");
 
         for (int i = 0; i < boardSize * 2; i++) {
+            col = 0;
             if (i % 2 == 0) {
-                for (int j = 0; j < (boardSize * (numOfSpaces + 1) + 4); j++) {
+                for (int j = 0; j < boardSize * (numOfSpaces + 2); j++) {
                     System.out.print('=');
                 }
 
                 System.out.print("\n");
             }
             else {
-                for (int j = 0; j < boardSize; j++) {
+                for (int j = 0; j <= boardSize; j++) {
                     if (j == 0) {
-                        System.out.print("  " + (i / 2 + 1) + " |");
+                        System.out.print("  " + (i / 2 + 1) + "  |");
                     }
                     else {
                         if (board[row][col] != "") {
