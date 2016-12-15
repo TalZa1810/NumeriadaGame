@@ -108,7 +108,6 @@ public class GameManager {
 
     private void makeMove() {
         m_GameLogic.getCurrMarkerPosition();
-        m_GameLogic.LoadCurrPlayerToGameInfo();
         m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
         m_GameLogic.MakeMove();
     }

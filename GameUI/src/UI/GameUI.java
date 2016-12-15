@@ -49,7 +49,7 @@ public class GameUI {
     public void ShowBoard() {
         int boardSize = m_GameInfo.GetBoardSize();
         String[][] board = m_GameInfo.GetBoard();
-        int numOfSpaces = 5;
+        final int numOfSpaces = 5;
         String strOfSpaces = "";
         int row = 0;
         int col = 0;
@@ -58,8 +58,10 @@ public class GameUI {
             strOfSpaces += " ";
         }
 
+        //printing indentation
         System.out.print(strOfSpaces + "|");
 
+        //printing columns
         for (int i = 0; i < boardSize; i++) {
             System.out.print("  " + (i + 1) + "  |");
         }
