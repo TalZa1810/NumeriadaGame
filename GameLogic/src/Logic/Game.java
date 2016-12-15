@@ -147,7 +147,6 @@ public abstract class Game {
             m_Board.getMark().SetRow(randomRow);
             m_Board.getMark().SetSquareSymbol("@");
         }
-
     }
 
     private int generateRandomPositionForRandomSquare(int i_BoardSize){
