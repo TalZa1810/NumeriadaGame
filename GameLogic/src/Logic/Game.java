@@ -52,23 +52,6 @@ public abstract class Game {
     }
 
 
-
-    /*
-
-    public class Reminder {
-    Timer timer;
-
-    public Reminder(int seconds) {
-        timer = new Timer();
-        timer.schedule(new RemindTask(), seconds*1000);
-	}
-
-
-    }
-
-
-    * */
-
     private  void setBoard(){
         m_Board = new Board(m_GameInfo.GetBoardSize());
 
