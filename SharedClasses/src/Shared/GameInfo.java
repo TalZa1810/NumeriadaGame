@@ -91,7 +91,7 @@ public class GameInfo {
         return m_ElapsedTime;
     }
 
-    public void setI_ColPlayerScore(int i_ColPlayerScore) {
+    public void setColPlayerScore(int i_ColPlayerScore) {
         this.m_ColPlayerScore = i_ColPlayerScore;
     }
 

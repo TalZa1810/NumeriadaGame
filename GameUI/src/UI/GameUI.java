@@ -104,6 +104,12 @@ public class GameUI {
         Scanner s = new Scanner(System.in);
         System.out.println("Choose game mode:\n1. Human players\n2. Human and computer");
         int res = s.nextInt();
+
+        while(res < 1 || res > 2) {
+            System.out.println("Invalid input");
+            res = s.nextInt();
+        }
+
         return res;
     }
 
@@ -129,7 +135,7 @@ public class GameUI {
 
     public void ShowStatus() {
         ShowBoard(); //show board from game info object
-        System.out.println("Last move was made by the " + m_GameInfo.GetCurrPlayer() + " player");
+        System.out.println("Current player is the " + m_GameInfo.GetCurrPlayer() + " player");
     }
 
     public void ShowStatistics() {

@@ -122,6 +122,8 @@ public class Board {
 
     public void changeMarker(Player i_Player, Squares i_MarkToChange) {
         i_MarkToChange.SetSquareSymbol(m_Mark.GetSquareSymbol());
+        getMark().SetRow(i_MarkToChange.GetRow());
+        getMark().SetColumn(i_MarkToChange.GetColumn());
     }
 
     public void SetSquare(Player i_Player, Squares i_SquareToChange) {

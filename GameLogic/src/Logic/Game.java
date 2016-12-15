@@ -218,9 +218,8 @@ public abstract class Game {
         m_GameInfo.setNumOfMoves(m_NumOfMoves);
         //m_GameInfo.setElapsedTime(m_Timer);
 
-        for (Player p: m_Players){
-            m_GameInfo.setRowPlayerScore(p.getPlayerScore());
-        }
+        m_GameInfo.setRowPlayerScore(m_Players[0].getPlayerScore());
+        m_GameInfo.setColPlayerScore(m_Players[1].getPlayerScore());
     }
 
 
@@ -256,9 +255,8 @@ public abstract class Game {
 
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(squareToChange.GetSquareSymbol()));
 
-        m_Board.SetSquare(i_Player, squareToChange);
         m_Board.changeMarker(i_Player, markerToChange);
-
+        m_Board.SetSquare(i_Player, squareToChange);
     }
 
     private void playHumanTurn(Player i_Player, int i_Move) {
@@ -276,8 +274,8 @@ public abstract class Game {
 
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(markerToChange.GetSquareSymbol()));
 
-        m_Board.SetSquare(i_Player, squareToChange);
         m_Board.changeMarker(i_Player, markerToChange);
+        m_Board.SetSquare(i_Player, squareToChange);
     }
 }
 
