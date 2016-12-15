@@ -33,9 +33,13 @@ public class Board {
 
     }
 
+
+
     public Square getMark() {
         return m_Mark;
     }
+
+
 
     public Squares getSquareInPos(int i, int j) {
 
@@ -116,7 +120,7 @@ public class Board {
         return m_BoardSize;
     }
 
-    public void SetMarker(Player i_Player, Squares i_MarkToChange) {
+    public void changeMarker(Player i_Player, Squares i_MarkToChange) {
         i_MarkToChange.SetSquareSymbol(m_Mark.GetSquareSymbol());
     }
 
@@ -124,8 +128,9 @@ public class Board {
         i_SquareToChange.SetSquareSymbol("");
     }
 
-
-
+    public void setMark(Square m_Mark) {
+        this.m_Mark = m_Mark;
+    }
 }
 
     //==XML==

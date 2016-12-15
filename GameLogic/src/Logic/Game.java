@@ -141,12 +141,15 @@ public abstract class Game {
         randomCol = generateRandomPositionForRandomSquare(boardSize);
         randomRow = generateRandomPositionForRandomSquare(boardSize);
 
-        //locate marker position
-        while(m_Board.getSquareInPos(randomRow,randomCol).GetSquareSymbol().equals("")){
-            m_Board.getMark().SetColumn(randomCol);
-            m_Board.getMark().SetRow(randomRow);
-            m_Board.getMark().SetSquareSymbol("@");
+        //generate random position for marker
+        while(!m_Board.getSquareInPos(randomRow,randomCol).GetSquareSymbol().equals("")){
+            randomCol = generateRandomPositionForRandomSquare(boardSize);
+            randomRow = generateRandomPositionForRandomSquare(boardSize);
         }
+
+        //setting marker symbole and position
+        m_Board.getSquareInPos(randomRow,randomCol).SetSquareSymbol("@");
+        m_Board.setMark((Square) m_Board.getSquareInPos(randomRow,randomCol));
     }
 
     private int generateRandomPositionForRandomSquare(int i_BoardSize){
@@ -254,7 +257,7 @@ public abstract class Game {
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(squareToChange.GetSquareSymbol()));
 
         m_Board.SetSquare(i_Player, squareToChange);
-        m_Board.SetMarker(i_Player, markerToChange);
+        m_Board.changeMarker(i_Player, markerToChange);
 
     }
 
@@ -274,7 +277,7 @@ public abstract class Game {
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(markerToChange.GetSquareSymbol()));
 
         m_Board.SetSquare(i_Player, squareToChange);
-        m_Board.SetMarker(i_Player, markerToChange);
+        m_Board.changeMarker(i_Player, markerToChange);
     }
 }
 
