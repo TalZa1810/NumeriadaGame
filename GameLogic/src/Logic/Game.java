@@ -1,13 +1,12 @@
 package Logic;
 
 import Shared.GameInfo;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import java.sql.Time;
 import java.util.Random;
 
-/**
- * Created by talza on 20/11/2016.
- */
+
 public abstract class Game {
 
     private Player [] m_Players;
@@ -15,7 +14,7 @@ public abstract class Game {
     GameInfo m_GameInfo;
     protected  Player m_CurrentPlayer;
     private int m_NumOfMoves;
-    private Time m_Timer;
+    private Timer m_Timer;
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
     private eGameMode m_GameMode;
@@ -36,12 +35,52 @@ public abstract class Game {
         Explicit, Random
     }
 
-
     public Game(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
+        //m_Timer = new Timer();
+        //m_Timer.schedule();
+
+        setPlayers();
+        setBoard();
+
+        m_NumOfMoves = 0;
+
+        setGameType();
+
+        m_GameMode = eGameMode.values()[m_GameInfo.getGameMode() - 1]; //two human players or human against computer
+
+        initBoard();
+    }
+
+
+
+    /*
+
+    public class Reminder {
+    Timer timer;
+
+    public Reminder(int seconds) {
+        timer = new Timer();
+        timer.schedule(new RemindTask(), seconds*1000);
+	}
+
+
+    }
+
+
+    * */
+
+    private  void setBoard(){
         m_Board = new Board(m_GameInfo.GetBoardSize());
-        m_Players = new Player[m_GameInfo.getNumOfPlayers()];
+
         m_Board.CreateMarker(m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
+        setBoardStructure();
+    }
+
+    private void setPlayers(){
+
+        m_Players = new Player[m_GameInfo.getNumOfPlayers()];
+
         for(int i = 0; i < m_Players.length; i++ ){
             m_Players[i] = new Player();
             if(i % 2 == 0){
@@ -51,8 +90,11 @@ public abstract class Game {
                 m_Players[i].setPlayerType(Player.ePlayerType.COLUMN_PLAYER);
             }
         }
+
         m_CurrentPlayer = m_Players[0];
-        m_NumOfMoves = 0;
+    }
+
+    private void setGameType(){
 
         if(m_GameInfo.getGameType().equals(eGameType.Basic.name())) {
             m_GameType = eGameType.Basic;
@@ -60,17 +102,15 @@ public abstract class Game {
         else{
             m_GameType = eGameType.Advanced;
         }
+    }
 
+    private void setBoardStructure(){
         if(m_GameInfo.getBoardStructure().equals(eBoardStructure.Explicit.name())) {
             m_BoardStructure = eBoardStructure.Explicit;
         }
         else{
             m_BoardStructure = eBoardStructure.Random;
         }
-
-        m_GameMode = eGameMode.values()[m_GameInfo.getGameMode() - 1];
-
-        initBoard();
     }
 
     public Board getBoard() {
@@ -179,7 +219,7 @@ public abstract class Game {
     public void GetGameStatistics() {
 
         m_GameInfo.setNumOfMoves(m_NumOfMoves);
-        m_GameInfo.setElapsedTime(m_Timer);
+        //m_GameInfo.setElapsedTime(m_Timer);
 
         for (Player p: m_Players){
             m_GameInfo.setRowPlayerScore(p.getPlayerScore());

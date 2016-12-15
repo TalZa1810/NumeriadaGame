@@ -9,7 +9,6 @@ import UI.GameUI;
 
 import java.util.List;
 
-
 public class GameManager {
     private GameDescriptor m_GameDescriptor = new GameDescriptor();
     private Validator m_Validator;
@@ -18,12 +17,9 @@ public class GameManager {
     GameInfo m_GameInfo = new GameInfo();
     GameInfo[] m_GameInfoWrapper = new GameInfo[1];
 
-
     private enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
-
-
 
     public GameManager() {
         m_GameInfoWrapper[0] = m_GameInfo;
@@ -33,6 +29,7 @@ public class GameManager {
     public void HandleMenuChoice() {
         boolean userWantsToPlay = true;
         boolean fileLoaded = false;
+        boolean isGameSet = false;
 
         while (userWantsToPlay) {
 
@@ -57,27 +54,44 @@ public class GameManager {
                         m_GameInfo.setGameMode(m_GameUI.getGameMode());
                         m_GameLogic = new BasicGame(m_GameInfoWrapper);
                         getBoard();
+                        isGameSet = true;
                     } else {
                         System.out.println("First load file");
                     }
                     break;
                 case GAME_STATUS:
                     if (fileLoaded) {
-                        GetGameStatus();
+                        if(isGameSet){
+                            GetGameStatus();
+                        }
+                        else{
+                            System.out.println("First set game");
+                        }
+
                     } else {
                         System.out.println("First load file");
                     }
                     break;
                 case MAKE_MOVE:
                     if (fileLoaded) {
-                        makeMove();
+                        if (isGameSet){
+                            makeMove();
+                        }
+                        else{
+                            System.out.println("First set game");
+                        }
                     } else {
                         System.out.println("First load file");
                     }
                     break;
                 case GET_STATISTICS:
                     if (fileLoaded) {
-                        GetGameStatistics();
+                        if(isGameSet) {
+                            GetGameStatistics();
+                        }
+                        else{
+                            System.out.println("First set game");
+                        }
                     } else {
                         System.out.println("First load file");
                     }
@@ -108,8 +122,10 @@ public class GameManager {
 
     private void makeMove() {
         m_GameLogic.getCurrMarkerPosition();
+        m_GameLogic.LoadCurrPlayerToGameInfo();
         m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
         m_GameLogic.MakeMove();
+        getBoard();
     }
 
     private void getBoard() {
@@ -132,8 +148,6 @@ public class GameManager {
 
         m_GameInfo.initBoard();
         setBoardValuesFromXML();
-
-
     }
 
     private void setBoardValuesFromXML() throws Exception {
@@ -155,8 +169,6 @@ public class GameManager {
 
             GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
             m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@");
-
-
         }
         else {
             m_Validator.checkRangeForRandomBoard();
