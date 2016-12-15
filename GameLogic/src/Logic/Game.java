@@ -20,6 +20,10 @@ public abstract class Game {
     private eGameType m_GameType;
     private eGameMode m_GameMode;
 
+    public void LoadCurrPlayerToGameInfo() {
+        m_GameInfo.setCurrPlayer(m_CurrentPlayer.GetEPlayerTypeAsString());
+    }
+
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
     }

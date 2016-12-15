@@ -172,4 +172,8 @@ public class GameInfo {
             }
         }
     }
+
+    public String getCurrPlayer() {
+        return m_CurrPlayer;
+    }
 }
