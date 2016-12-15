@@ -9,7 +9,7 @@ public class Board {
 
     private int m_BoardSize;
     private ArrayList<ArrayList<Squares>> m_Board;
-    private Marker m_Mark;
+    private Square m_Mark;
     private eBoardType m_BoardType;
     private Range m_Range;
 
@@ -33,7 +33,7 @@ public class Board {
 
     }
 
-    public Marker getMark() {
+    public Square getMark() {
         return m_Mark;
     }
 
@@ -48,6 +48,10 @@ public class Board {
 
     public void CreateRange(int i_From, int i_To) {
         m_Range = new Range(i_From,i_To);
+    }
+
+    public void CreateMarker(int i_MarkerRow, int i_MarkerCol) {
+        m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@");
     }
 
     private enum eBoardType{

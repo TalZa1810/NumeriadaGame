@@ -37,6 +37,7 @@ public abstract class Game {
         m_GameInfo = i_GameInfoWrapper[0];
         m_Board = new Board(m_GameInfo.GetBoardSize());
         m_Players = new Player[m_GameInfo.getNumOfPlayers()];
+        m_Board.CreateMarker(m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
         for(int i = 0; i < m_Players.length; i++ ){
             m_Players[i] = new Player();
             if(i % 2 == 0){
@@ -141,7 +142,7 @@ public abstract class Game {
         checkIfGameDone(m_Board.getMark());
     }
 
-    private boolean checkIfGameDone(Marker i_Mark) {
+    private boolean checkIfGameDone(Square i_Mark) {
         int markRow = i_Mark.GetRow();
         int markCol = i_Mark.GetColumn();
         boolean gameDone = true;
@@ -201,15 +202,15 @@ public abstract class Game {
         int randomMove = r.nextInt(m_Board.getBoardSize()) + 1;
 
         Square squareToChange;
-        Marker markerToChange;
+        Square markerToChange;
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
             squareToChange = (Square)m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol());
-            markerToChange = (Marker)m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol());
+            markerToChange = (Square)m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol());
         }
         else {
             squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),randomMove);
-            markerToChange = (Marker)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),randomMove);
+            markerToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),randomMove);
         }
 
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(squareToChange.GetSquareSymbol()));
@@ -220,15 +221,15 @@ public abstract class Game {
 
     private void playHumanTurn(Player i_Player, int i_Move) {
         Square squareToChange;
-        Marker markerToChange;
+        Square markerToChange;
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
             squareToChange = (Square)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
-            markerToChange = (Marker)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
+            markerToChange = (Square)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
         }
         else {
             squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
-            markerToChange = (Marker)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
+            markerToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
         }
 
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(squareToChange.GetSquareSymbol()));
