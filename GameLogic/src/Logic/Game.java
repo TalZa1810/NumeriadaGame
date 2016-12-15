@@ -113,8 +113,9 @@ public abstract class Game {
 
         final int markerCount = 1;
         int boardSize = m_Board.getBoardSize();
-        Integer toRange = m_Board.GetToRange();
-        Integer fromRange = m_Board.GetFromRange();
+        int toRange = m_Board.GetToRange();
+        int fromRange = m_Board.GetFromRange();
+        int randomCol= 0, randomRow= 0;
 
         int amountOfNumsInRange = toRange - fromRange + 1;
 
@@ -123,8 +124,9 @@ public abstract class Game {
         for (int i = fromRange; i <= toRange ; i++){
 
             for(int j = 0; j < amountOfEachNumInRange; j++){
-                int randomCol = generateRandomPositionForRandomSquare(boardSize);
-                int randomRow = generateRandomPositionForRandomSquare(boardSize);
+
+                randomCol = generateRandomPositionForRandomSquare(boardSize);
+                randomRow = generateRandomPositionForRandomSquare(boardSize);
 
                 //generate random position for square
                 while(!m_Board.getSquareInPos(randomRow,randomCol).GetSquareSymbol().equals("")){
@@ -135,6 +137,18 @@ public abstract class Game {
                 m_Board.getSquareInPos(randomRow,randomCol).SetSquareSymbol( Integer.toString(i));
             }
         }
+
+        randomCol = generateRandomPositionForRandomSquare(boardSize);
+        randomRow = generateRandomPositionForRandomSquare(boardSize);
+
+        //locate marker position
+        while(m_Board.getSquareInPos(randomRow,randomCol).GetSquareSymbol().equals("")){
+            m_Board.getMark().SetColumn(randomCol);
+            m_Board.getMark().SetRow(randomRow);
+            m_Board.getMark().SetSquareSymbol("@");
+    }
+
+
     }
 
     private int generateRandomPositionForRandomSquare(int i_BoardSize){
