@@ -55,7 +55,6 @@ public abstract class Game {
         initBoard();
     }
 
-
     private  void setBoard(){
         m_Board = new Board(m_GameInfo.GetBoardSize());
 
@@ -150,10 +149,13 @@ public abstract class Game {
             randomCol = generateRandomPositionForRandomSquare(boardSize);
             randomRow = generateRandomPositionForRandomSquare(boardSize);
         }
-        //setting marker symbole and position
+        //setting marker symbol and position
         m_Board.getSquareInPos(randomRow,randomCol).SetSquareSymbol("@");
         m_Board.setMark((Square) m_Board.getSquareInPos(randomRow,randomCol));
     }
+
+
+
 
     private int generateRandomPositionForRandomSquare(int i_BoardSize){
 
@@ -287,9 +289,3 @@ public abstract class Game {
         m_Board.changeMarker(squareToChange, markerToChange);
     }
 }
-
-
-
-/*
-* timer
-* */

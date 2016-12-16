@@ -30,6 +30,18 @@ public class GameUI {
         System.out.println("Ongoing game. To load new game first end the current by choosing option 6");
     }
 
+    public void notifyShouldSetGame() {
+        System.out.println("First set game");
+    }
+
+    public void notifyShouldLoadFile() {
+        System.out.println("First load file");
+    }
+
+    public void notifyPlayerExitGame(){
+        System.out.println("BYE");
+    }
+
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
@@ -156,7 +168,7 @@ public class GameUI {
         int gameMinutes =  m_GameInfo.GetElapsedTime() / 60 ;
 
         System.out.println("Number of moves made: " + m_GameInfo.GetNumOfMoves());
-        System.out.println("Time elapsed:" + gameMinutes + ':' + gameSeconds );
+        System.out.println("Time elapsed (min:sec) is:  " + gameMinutes + ':' + gameSeconds );
         System.out.println("Row player score: " + m_GameInfo.GetRowPlayerScore());
         System.out.println("Column player score: " + m_GameInfo.GetColPlayerScore());
     }

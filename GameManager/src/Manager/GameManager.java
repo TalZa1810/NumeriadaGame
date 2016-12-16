@@ -65,7 +65,7 @@ public class GameManager {
                             m_GameLogic.start();
                         }
                     } else {
-                        System.out.println("First load file");
+                        m_GameUI.notifyShouldLoadFile();
                     }
                     break;
                 case GAME_STATUS:
@@ -74,11 +74,11 @@ public class GameManager {
                             GetGameStatus();
                         }
                         else{
-                            System.out.println("First set game");
+                            m_GameUI.notifyShouldSetGame();
                         }
 
                     } else {
-                        System.out.println("First load file");
+                        m_GameUI.notifyShouldLoadFile();
                     }
                     break;
                 case MAKE_MOVE:
@@ -87,10 +87,10 @@ public class GameManager {
                             makeMove();
                         }
                         else{
-                            System.out.println("First set game");
+                            m_GameUI.notifyShouldSetGame();
                         }
                     } else {
-                        System.out.println("First load file");
+                        m_GameUI.notifyShouldLoadFile();
                     }
                     break;
                 case GET_STATISTICS:
@@ -99,21 +99,24 @@ public class GameManager {
                             GetGameStatistics();
                         }
                         else{
-                            System.out.println("First set game");
+                            m_GameUI.notifyShouldSetGame();
                         }
                     } else {
-                        System.out.println("First load file");
+                        m_GameUI.notifyShouldLoadFile();
+
                     }
                     break;
                 case END_GAME:
                     fileLoaded = false;
                     isGameSet = false;
                     notifyGameEnded();
-                    System.out.println("Load new file to begin new game");
+                    m_GameUI.notifyShouldLoadFile();
+                    //System.out.println("Load new file to begin new game");
                     break;
                 case EXIT_GAME:
                     userWantsToPlay = false;
-                    System.out.println("BYE");
+                    m_GameUI.notifyPlayerExitGame();
+                    //System.out.println("BYE");
                     break;
                 default:
                     userWantsToPlay = false;
