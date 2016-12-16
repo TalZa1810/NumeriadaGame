@@ -42,6 +42,19 @@ public class GameUI {
         System.out.println("BYE");
     }
 
+    public void FileWasLoadedSuccessfully() {
+        System.out.println("File was loaded successfully\n");
+    }
+
+    public void notifyLoadNewGame() {
+        System.out.println("Load new file to begin new game");
+    }
+
+    public void notifyGameWasNotSet() {
+        System.out.println("Game was not set. Therefore, there are no statistics.");
+    }
+
+
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }

@@ -10,6 +10,7 @@ import UI.GameUI;
 import java.util.List;
 
 public class GameManager {
+
     private GameDescriptor m_GameDescriptor = new GameDescriptor();
     private Validator m_Validator;
     private GameUI m_GameUI;
@@ -42,6 +43,7 @@ public class GameManager {
                             if(m_GameDescriptor != null) {
                                 fileLoaded = true;
                                 GetDataFromGeneratedXML();
+                                m_GameUI. FileWasLoadedSuccessfully();
                             }
                         }
                         catch(Exception e){
@@ -76,7 +78,6 @@ public class GameManager {
                         else{
                             m_GameUI.notifyShouldSetGame();
                         }
-
                     } else {
                         m_GameUI.notifyShouldLoadFile();
                     }
@@ -103,15 +104,19 @@ public class GameManager {
                         }
                     } else {
                         m_GameUI.notifyShouldLoadFile();
-
                     }
                     break;
                 case END_GAME:
                     fileLoaded = false;
-                    isGameSet = false;
-                    notifyGameEnded();
-                    m_GameUI.notifyShouldLoadFile();
-                    //System.out.println("Load new file to begin new game");
+                     if (isGameSet){
+                         isGameSet = false;
+                         GetGameStatistics();
+                         m_GameUI.notifyGameEndedByUser();
+                     } else{
+                         m_GameUI.notifyGameWasNotSet();
+                     }
+                    m_GameUI.notifyLoadNewGame();
+
                     break;
                 case EXIT_GAME:
                     userWantsToPlay = false;
@@ -124,10 +129,12 @@ public class GameManager {
         }
     }
 
-    private void notifyGameEnded() {
+    /*
+        private void notifyGameEnded() {
         GetGameStatistics();
         m_GameUI.notifyGameEndedByUser();
     }
+    * */
 
     private void GetGameStatus() {
         m_GameLogic.GetGameStatus(); //will update game info object (a basic game data member) in game logic
