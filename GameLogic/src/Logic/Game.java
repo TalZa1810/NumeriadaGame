@@ -4,6 +4,7 @@ import Shared.GameInfo;
 
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 
 public abstract class Game {
@@ -12,31 +13,26 @@ public abstract class Game {
     Board m_Board;
     GameInfo m_GameInfo;
     protected  Player m_CurrentPlayer;
-    private int m_NumOfMoves;
-    private Timer m_Timer;
+    private int m_NumOfMoves = 0;
+
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
     private eGameMode m_GameMode;
 
-    public void LoadCurrPlayerToGameInfo() {
-        m_GameInfo.setCurrPlayer(m_CurrentPlayer.GetEPlayerTypeAsString());
+    //Timer
+    int m_secondsPassed = 0;
+    private Timer m_Timer = new Timer();
+    TimerTask m_Task = new TimerTask() {
+        @Override
+        public void run() {
+            m_secondsPassed++;
+        }
+    };
+
+    public void start(){
+        m_Timer.scheduleAtFixedRate(m_Task, 1000, 1000);
     }
 
-    public boolean checkIfLegalMove(int i_Move) {
-        if(m_CurrentPlayer.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            if (m_Board.getSquareInPos(i_Move, m_Board.getMark().GetColumn()).GetSquareSymbol().equals(m_Board.getMark().GetSquareSymbol())
-                    || m_Board.getSquareInPos(i_Move, m_Board.getMark().GetColumn()).GetSquareSymbol().equals("")) {
-                return false;
-            }
-        }
-        else{
-            if (m_Board.getSquareInPos(m_Board.getMark().GetRow(), i_Move).GetSquareSymbol().equals(m_Board.getMark().GetSquareSymbol())
-                    || m_Board.getSquareInPos(m_Board.getMark().GetRow(), i_Move).GetSquareSymbol().equals("")) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
@@ -52,18 +48,10 @@ public abstract class Game {
 
     public Game(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
-        //m_Timer = new Timer();
-        //m_Timer.schedule();
-
         setPlayers();
         setBoard();
-
-        m_NumOfMoves = 0;
-
         setGameType();
-
         m_GameMode = eGameMode.values()[m_GameInfo.getGameMode() - 1]; //two human players or human against computer
-
         initBoard();
     }
 
@@ -162,7 +150,6 @@ public abstract class Game {
             randomCol = generateRandomPositionForRandomSquare(boardSize);
             randomRow = generateRandomPositionForRandomSquare(boardSize);
         }
-
         //setting marker symbole and position
         m_Board.getSquareInPos(randomRow,randomCol).SetSquareSymbol("@");
         m_Board.setMark((Square) m_Board.getSquareInPos(randomRow,randomCol));
@@ -190,6 +177,25 @@ public abstract class Game {
         }
     }
 
+    public void LoadCurrPlayerToGameInfo() {
+        m_GameInfo.setCurrPlayer(m_CurrentPlayer.GetEPlayerTypeAsString());
+    }
+
+    public boolean checkIfLegalMove(int i_Move) {
+        if(m_CurrentPlayer.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
+            if (m_Board.getSquareInPos(i_Move, m_Board.getMark().GetColumn()).GetSquareSymbol().equals(m_Board.getMark().GetSquareSymbol())
+                    || m_Board.getSquareInPos(i_Move, m_Board.getMark().GetColumn()).GetSquareSymbol().equals("")) {
+                return false;
+            }
+        }
+        else{
+            if (m_Board.getSquareInPos(m_Board.getMark().GetRow(), i_Move).GetSquareSymbol().equals(m_Board.getMark().GetSquareSymbol())
+                    || m_Board.getSquareInPos(m_Board.getMark().GetRow(), i_Move).GetSquareSymbol().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public boolean MakeMove() {
         playTurn(m_CurrentPlayer, m_GameInfo.getMove() - 1);
@@ -207,9 +213,7 @@ public abstract class Game {
         return gameDone;
     }
 
-
     public abstract void GetBoardToPrint();
-
 
     public void GetGameStatus() {
         GetBoardToPrint();
@@ -219,7 +223,7 @@ public abstract class Game {
     public void GetGameStatistics() {
 
         m_GameInfo.setNumOfMoves(m_NumOfMoves);
-        //m_GameInfo.setElapsedTime(m_Timer);
+        m_GameInfo.setElapsedTime(m_secondsPassed);
 
         m_GameInfo.setRowPlayerScore(m_Players[0].getPlayerScore());
         m_GameInfo.setColPlayerScore(m_Players[1].getPlayerScore());

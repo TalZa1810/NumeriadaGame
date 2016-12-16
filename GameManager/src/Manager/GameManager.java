@@ -62,6 +62,7 @@ public class GameManager {
                             m_GameLogic = new BasicGame(m_GameInfoWrapper);
                             getBoard();
                             isGameSet = true;
+                            m_GameLogic.start();
                         }
                     } else {
                         System.out.println("First load file");

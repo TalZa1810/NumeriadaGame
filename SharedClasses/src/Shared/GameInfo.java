@@ -12,7 +12,9 @@ public class GameInfo {
     private String[][] m_Board;
     private String m_CurrPlayer;
     private int m_NumOfMoves;
-    private Time m_ElapsedTime;
+
+
+    private int m_ElapsedTime;
     private int m_RowPlayerScore;
     private int m_ColPlayerScore;
     private int m_MarkerRow;
@@ -87,7 +89,7 @@ public class GameInfo {
         return m_RowPlayerScore;
     }
 
-    public Time GetElapsedTime() {
+    public int GetElapsedTime() {
         return m_ElapsedTime;
     }
 
@@ -95,7 +97,7 @@ public class GameInfo {
         this.m_ColPlayerScore = i_ColPlayerScore;
     }
 
-    public void setElapsedTime(Time i_ElapsedTime) {
+    public void setElapsedTime(int i_ElapsedTime) {
         this.m_ElapsedTime = i_ElapsedTime;
     }
 

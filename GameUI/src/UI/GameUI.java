@@ -151,8 +151,12 @@ public class GameUI {
     }
 
     public void ShowStatistics() {
+
+        int gameSeconds = m_GameInfo.GetElapsedTime() % 60;
+        int gameMinutes =  m_GameInfo.GetElapsedTime() / 60 ;
+
         System.out.println("Number of moves made: " + m_GameInfo.GetNumOfMoves());
-        System.out.println("Time elapsed: " + m_GameInfo.GetElapsedTime());
+        System.out.println("Time elapsed:" + gameMinutes + ':' + gameSeconds );
         System.out.println("Row player score: " + m_GameInfo.GetRowPlayerScore());
         System.out.println("Column player score: " + m_GameInfo.GetColPlayerScore());
     }
