@@ -22,6 +22,22 @@ public abstract class Game {
         m_GameInfo.setCurrPlayer(m_CurrentPlayer.GetEPlayerTypeAsString());
     }
 
+    public boolean checkIfLegalMove(int i_Move) {
+        if(m_CurrentPlayer.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
+            if (m_Board.getSquareInPos(i_Move, m_Board.getMark().GetColumn()).GetSquareSymbol().equals(m_Board.getMark().GetSquareSymbol())
+                    || m_Board.getSquareInPos(i_Move, m_Board.getMark().GetColumn()).GetSquareSymbol().equals("")) {
+                return false;
+            }
+        }
+        else{
+            if (m_Board.getSquareInPos(m_Board.getMark().GetRow(), i_Move).GetSquareSymbol().equals(m_Board.getMark().GetSquareSymbol())
+                    || m_Board.getSquareInPos(m_Board.getMark().GetRow(), i_Move).GetSquareSymbol().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
     }
@@ -175,32 +191,19 @@ public abstract class Game {
     }
 
 
-    public void MakeMove() {
+    public boolean MakeMove() {
         playTurn(m_CurrentPlayer, m_GameInfo.getMove() - 1);
         m_NumOfMoves++;
         m_CurrentPlayer = m_Players[m_NumOfMoves % m_Players.length];
 
-        checkIfGameDone(m_Board.getMark());
+        boolean gameDone = checkIfGameDone(m_Board.getMark());
+        return gameDone;
     }
 
-    private boolean checkIfGameDone(Square i_Mark) {
-        int markRow = i_Mark.GetRow();
-        int markCol = i_Mark.GetColumn();
-        boolean gameDone = true;
+    private boolean checkIfGameDone(Squares i_Mark) {
+        boolean gameDone;
 
-        for(int i = 0; i < m_Board.getBoardSize(); i++){
-            //check if row empty of numbers
-            if(m_Board.getSquareInPos(markRow,i).toString() != m_Board.getMark().GetSquareSymbol() &&
-                    m_Board.getSquareInPos(markRow,i).toString() != ""){
-                gameDone = false;
-            }
-            //check if col empty of numbers
-            if(m_Board.getSquareInPos(i,markCol).toString() != m_Board.getMark().GetSquareSymbol() &&
-                    m_Board.getSquareInPos(i, markCol).toString() != ""){
-                gameDone = false;
-            }
-        }
-
+        gameDone = m_Board.checkIfGameDone(m_CurrentPlayer.getPlayerType().name());
         return gameDone;
     }
 
@@ -220,6 +223,7 @@ public abstract class Game {
 
         m_GameInfo.setRowPlayerScore(m_Players[0].getPlayerScore());
         m_GameInfo.setColPlayerScore(m_Players[1].getPlayerScore());
+        LoadCurrPlayerToGameInfo();
     }
 
 
@@ -229,42 +233,44 @@ public abstract class Game {
     }
 
     public void playTurn(Player i_Player, int i_Move){
-        if(m_GameMode == eGameMode.HumanVsHuman){
-            playHumanTurn(i_Player,i_Move);
-        }
-        else if(m_GameMode == eGameMode.HumanVsComputer && i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER){
+        if(m_GameMode == eGameMode.HumanVsComputer && i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER){
             playComputerTurn(i_Player);
+        }
+        else{
+            playHumanTurn(i_Player,i_Move);
         }
     }
 
     private void playComputerTurn(Player i_Player) {
         Random r = new Random();
-        int randomMove = r.nextInt(m_Board.getBoardSize()) + 1;
-
-        Square squareToChange;
-        Square markerToChange;
+        int randomMove = r.nextInt(m_Board.getBoardSize());
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            squareToChange = (Square)m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol());
-            markerToChange = (Square)m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol());
+            while(m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol()).GetSquareSymbol().equals("") ||
+                    m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol()).GetSquareSymbol().equals("@")){
+                randomMove = r.nextInt(m_Board.getBoardSize());
+            }
         }
         else {
-            squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),randomMove);
-            markerToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),randomMove);
+            while(m_Board.getSquareInPos(m_GameInfo.getMarkerRow(), randomMove).GetSquareSymbol().equals("") ||
+                    m_Board.getSquareInPos(m_GameInfo.getMarkerRow(), randomMove).GetSquareSymbol().equals("@")){
+                randomMove = r.nextInt(m_Board.getBoardSize());
+            }
         }
 
-        m_CurrentPlayer.addToPlayerScore(Integer.parseInt(squareToChange.GetSquareSymbol()));
-
-        m_Board.changeMarker(i_Player, markerToChange);
-        m_Board.SetSquare(i_Player, squareToChange);
+        makePlayerMove(i_Player,randomMove);
     }
 
     private void playHumanTurn(Player i_Player, int i_Move) {
+        makePlayerMove(i_Player,i_Move);
+    }
+
+    private void makePlayerMove(Player i_Player, int i_Move){
         Square squareToChange;
         Square markerToChange;
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            squareToChange = (Square)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
+            squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
             markerToChange = (Square)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
         }
         else {
@@ -274,13 +280,12 @@ public abstract class Game {
 
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(markerToChange.GetSquareSymbol()));
 
-        m_Board.changeMarker(i_Player, markerToChange);
-        m_Board.SetSquare(i_Player, squareToChange);
+        m_Board.changeMarker(squareToChange, markerToChange);
     }
 }
 
+
+
 /*
-* update points
 * timer
-* move random
 * */

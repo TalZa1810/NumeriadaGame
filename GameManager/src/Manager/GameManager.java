@@ -14,8 +14,8 @@ public class GameManager {
     private Validator m_Validator;
     private GameUI m_GameUI;
     private Game m_GameLogic;
-    GameInfo m_GameInfo = new GameInfo();
-    GameInfo[] m_GameInfoWrapper = new GameInfo[1];
+    private GameInfo m_GameInfo = new GameInfo();
+    private GameInfo[] m_GameInfoWrapper = new GameInfo[1];
 
     private enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
@@ -48,13 +48,21 @@ public class GameManager {
                             m_GameUI.ShowExceptionThrown(e.getMessage());
                         }
                     }
+                    else{
+                        m_GameUI.notifyOngoingGame();
+                    }
                     break;
                 case SET_GAME:
                     if (fileLoaded) {
-                        m_GameInfo.setGameMode(m_GameUI.getGameMode());
-                        m_GameLogic = new BasicGame(m_GameInfoWrapper);
-                        getBoard();
-                        isGameSet = true;
+                        if(isGameSet){
+                            m_GameUI.notifyOngoingGame();
+                        }
+                        else {
+                            m_GameInfo.setGameMode(m_GameUI.getGameMode());
+                            m_GameLogic = new BasicGame(m_GameInfoWrapper);
+                            getBoard();
+                            isGameSet = true;
+                        }
                     } else {
                         System.out.println("First load file");
                     }
@@ -98,6 +106,8 @@ public class GameManager {
                     break;
                 case END_GAME:
                     fileLoaded = false;
+                    isGameSet = false;
+                    notifyGameEnded();
                     System.out.println("Load new file to begin new game");
                     break;
                 case EXIT_GAME:
@@ -108,6 +118,11 @@ public class GameManager {
                     userWantsToPlay = false;
             }
         }
+    }
+
+    private void notifyGameEnded() {
+        GetGameStatistics();
+        m_GameUI.notifyGameEndedByUser();
     }
 
     private void GetGameStatus() {
@@ -121,11 +136,24 @@ public class GameManager {
     }
 
     private void makeMove() {
+        boolean validInput;
+
         m_GameLogic.getCurrMarkerPosition();
         m_GameLogic.LoadCurrPlayerToGameInfo();
-        m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
-        m_GameLogic.MakeMove();
+        if(m_GameInfo.GetCurrPlayer().equals("row") || (!m_GameInfo.GetCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
+            m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
+            validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
+
+            while(!validInput){
+                m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
+            }
+        }
+        boolean gameDone = m_GameLogic.MakeMove();
         getBoard();
+        if(gameDone){
+            m_GameUI.notifyGameDone();
+            GetGameStatistics();
+        }
     }
 
     private void getBoard() {

@@ -18,6 +18,18 @@ public class GameUI {
         System.out.println(message);
     }
 
+    public void notifyGameDone() {
+        System.out.println("Game finished!");
+    }
+
+    public void notifyGameEndedByUser() {
+        System.out.println("Anyways, the loser is the " + m_GameInfo.GetCurrPlayer() + " player for quitting so soon");
+    }
+
+    public void notifyOngoingGame() {
+        System.out.println("Ongoing game. To load new game first end the current by choosing option 6");
+    }
+
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }

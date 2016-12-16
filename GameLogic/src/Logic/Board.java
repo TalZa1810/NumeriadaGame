@@ -9,7 +9,7 @@ public class Board {
 
     private int m_BoardSize;
     private ArrayList<ArrayList<Squares>> m_Board;
-    private Square m_Mark;
+    private Squares m_Mark;
     private eBoardType m_BoardType;
     private Range m_Range;
 
@@ -35,7 +35,7 @@ public class Board {
 
 
 
-    public Square getMark() {
+    public Squares getMark() {
         return m_Mark;
     }
 
@@ -56,6 +56,32 @@ public class Board {
 
     public void CreateMarker(int i_MarkerRow, int i_MarkerCol) {
         m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@");
+    }
+
+    public boolean checkIfGameDone(String i_PlayerType) {
+        boolean gameDone = true;
+
+        if(i_PlayerType.equals("ROW_PLAYER")){
+            for(int i = 0; i < m_BoardSize; i++) {
+                //check if row is empty of numbers
+                if (!getSquareInPos(m_Mark.GetRow(), i).GetSquareSymbol().equals(m_Mark.GetSquareSymbol()) &&
+                        !getSquareInPos(m_Mark.GetRow(), i).GetSquareSymbol().equals("")) {
+                    gameDone = false;
+                    break;
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < getBoardSize(); i++){
+                //check if column is empty of numbers
+                if(!getSquareInPos(i,m_Mark.GetColumn()).GetSquareSymbol().equals(m_Mark.GetSquareSymbol()) &&
+                        !getSquareInPos(i, m_Mark.GetColumn()).GetSquareSymbol().equals("")){
+                    gameDone = false;
+                    break;
+                }
+            }
+        }
+        return gameDone;
     }
 
     private enum eBoardType{
@@ -120,10 +146,15 @@ public class Board {
         return m_BoardSize;
     }
 
-    public void changeMarker(Player i_Player, Squares i_MarkToChange) {
-        i_MarkToChange.SetSquareSymbol(m_Mark.GetSquareSymbol());
-        getMark().SetRow(i_MarkToChange.GetRow());
-        getMark().SetColumn(i_MarkToChange.GetColumn());
+    public void changeMarker(Squares i_SquareToChange, Squares i_MarkToChange) {
+        i_SquareToChange.SwapSquare(i_MarkToChange);
+        ChangeMark(i_MarkToChange);
+        i_SquareToChange.SetSquareSymbol("");
+
+    }
+
+    private void ChangeMark(Squares i_squareToChange) {
+        m_Mark = i_squareToChange;
     }
 
     public void SetSquare(Player i_Player, Squares i_SquareToChange) {
