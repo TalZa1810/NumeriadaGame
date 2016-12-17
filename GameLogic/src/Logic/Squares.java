@@ -16,32 +16,32 @@ public class Squares {
     }
 
     //GET METHODS
-    public String GetSquareSymbol() {
+    public String getSquareSymbol() {
         return m_SquareSymbol;
     }
 
     //GET METHODS
-    public void SetSquareSymbol(String i_SquareSymbol) {
+    public void setSquareSymbol(String i_SquareSymbol) {
         m_SquareSymbol = i_SquareSymbol;
     }
 
     //GET METHODS
-    public int GetColumn() {
+    public int getColumn() {
         return m_Column;
     }
 
-    public int GetRow() {
+    public int getRow() {
         return m_Row;
     }
 
 
-    public void SwapSquare(Squares i_markToChange) {
+    public void swapSquare(Squares i_markToChange) {
         String symbolTemp;
 
-        symbolTemp = i_markToChange.GetSquareSymbol();
+        symbolTemp = i_markToChange.getSquareSymbol();
 
-        i_markToChange.SetSquareSymbol(this.GetSquareSymbol());
+        i_markToChange.setSquareSymbol(this.getSquareSymbol());
 
-        this.SetSquareSymbol(symbolTemp);
+        this.setSquareSymbol(symbolTemp);
     }
 }

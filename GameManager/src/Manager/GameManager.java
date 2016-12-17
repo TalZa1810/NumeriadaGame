@@ -27,14 +27,18 @@ public class GameManager {
         m_GameUI = new GameUI(m_GameInfoWrapper);
     }
 
-    public void HandleMenuChoice() {
+    public void run() {
+        handleMenuChoice();
+    }
+
+    private void handleMenuChoice() {
         boolean userWantsToPlay = true;
         boolean fileLoaded = false;
         boolean isGameSet = false;
 
         while (userWantsToPlay) {
 
-            GameUI.eMenuOptions menuSelection = GameUI.eMenuOptions.values()[m_GameUI.MainMenu()];
+            GameUI.eMenuOptions menuSelection = GameUI.eMenuOptions.values()[m_GameUI.mainMenu()];
             switch (menuSelection) {
                 case LOAD_FILE:
                     if (!fileLoaded) {
@@ -42,12 +46,13 @@ public class GameManager {
                             m_GameDescriptor = m_GameUI.fromXmlFileToObject();
                             if(m_GameDescriptor != null) {
                                 fileLoaded = true;
-                                GetDataFromGeneratedXML();
-                                m_GameUI. FileWasLoadedSuccessfully();
+                                getDataFromGeneratedXML();
+                                m_GameUI.fileWasLoadedSuccessfully();
                             }
                         }
                         catch(Exception e){
-                            m_GameUI.ShowExceptionThrown(e.getMessage());
+                            m_GameUI.showExceptionThrown(e.getMessage());
+                            fileLoaded = false;
                         }
                     }
                     else{
@@ -60,11 +65,18 @@ public class GameManager {
                             m_GameUI.notifyOngoingGame();
                         }
                         else {
+                            //if(!m_GameInfo.getPath().equals("")){
+                            //    m_GameUI.unmarshalFile(m_GameInfo.getPath());
+                            //}
                             m_GameInfo.setGameMode(m_GameUI.getGameMode());
                             m_GameLogic = new BasicGame(m_GameInfoWrapper);
                             getBoard();
                             isGameSet = true;
                             m_GameLogic.start();
+                            boolean gameDone = m_GameLogic.checkIfGameDone(m_GameLogic.getBoard().getMark());
+                            if(gameDone){
+                                gameDoneProcedure();
+                            }
                         }
                     } else {
                         m_GameUI.notifyShouldLoadFile();
@@ -73,7 +85,7 @@ public class GameManager {
                 case GAME_STATUS:
                     if (fileLoaded) {
                         if(isGameSet){
-                            GetGameStatus();
+                            getGameStatus();
                         }
                         else{
                             m_GameUI.notifyShouldSetGame();
@@ -97,7 +109,7 @@ public class GameManager {
                 case GET_STATISTICS:
                     if (fileLoaded) {
                         if(isGameSet) {
-                            GetGameStatistics();
+                            getGameStatistics();
                         }
                         else{
                             m_GameUI.notifyShouldSetGame();
@@ -110,7 +122,7 @@ public class GameManager {
                     fileLoaded = false;
                      if (isGameSet){
                          isGameSet = false;
-                         GetGameStatistics();
+                         getGameStatistics();
                          m_GameUI.notifyGameEndedByUser();
                      } else{
                          m_GameUI.notifyGameWasNotSet();
@@ -136,43 +148,55 @@ public class GameManager {
     }
     * */
 
-    private void GetGameStatus() {
-        m_GameLogic.GetGameStatus(); //will update game info object (a basic game data member) in game logic
-        m_GameUI.ShowStatus(); //will use the game info object (a game ui data member) in the game ui
+    private void getGameStatus() {
+        m_GameLogic.getGameStatus(); //will update game info object (a basic game data member) in game logic
+        m_GameUI.showStatus(); //will use the game info object (a game ui data member) in the game ui
     }
 
-    private void GetGameStatistics() {
-        m_GameLogic.GetGameStatistics();
-        m_GameUI.ShowStatistics();
+    private void getGameStatistics() {
+        m_GameLogic.getGameStatistics();
+        m_GameUI.showStatistics();
     }
 
     private void makeMove() {
         boolean validInput;
 
         m_GameLogic.getCurrMarkerPosition();
-        m_GameLogic.LoadCurrPlayerToGameInfo();
-        if(m_GameInfo.GetCurrPlayer().equals("row") || (!m_GameInfo.GetCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
-            m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
+        m_GameLogic.loadCurrPlayerToGameInfo();
+        if(m_GameInfo.getCurrPlayer().equals("row") || (!m_GameInfo.getCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
+            m_GameInfo.setMove(m_GameUI.getMoveFromUser());
             validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
 
             while(!validInput){
-                m_GameInfo.setMove(m_GameUI.GetMoveFromUser());
+                m_GameUI.notifyInvalidSquareChoice();
+                m_GameInfo.setMove(m_GameUI.getMoveFromUser());
+                validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
             }
         }
-        boolean gameDone = m_GameLogic.MakeMove();
+        boolean gameDone = m_GameLogic.makeMove();
         getBoard();
         if(gameDone){
-            m_GameUI.notifyGameDone();
-            GetGameStatistics();
+            gameDoneProcedure();
+        }
+    }
+
+    private void gameDoneProcedure(){
+        m_GameUI.notifyGameDone();
+        getGameStatistics();
+        if(m_GameInfo.getRowPlayerScore() != m_GameInfo.getColPlayerScore()) {
+            m_GameUI.announceWinner(Math.max(m_GameInfo.getRowPlayerScore(), m_GameInfo.getColPlayerScore()), m_GameInfo.getCurrPlayer());
+        }
+        else{
+            m_GameUI.announceTie(m_GameInfo.getRowPlayerScore());
         }
     }
 
     private void getBoard() {
-        m_GameLogic.GetBoardToPrint(); //copy board to char[][] in game info object or do something so the ui knows the board and implement to string for square and to string for board
-        m_GameUI.ShowBoard(); //will use the game info object (a game ui data member) in the game ui
+        m_GameLogic.getBoardToPrint(); //copy board to char[][] in game info object or do something so the ui knows the board and implement to string for square and to string for board
+        m_GameUI.showBoard(); //will use the game info object (a game ui data member) in the game ui
     }
 
-    public void GetDataFromGeneratedXML() throws Exception {
+    private void getDataFromGeneratedXML() throws Exception {
         m_Validator = new Validator(m_GameInfo);
 
         m_GameInfo.setGameType(m_GameDescriptor.getGameType());
@@ -180,7 +204,7 @@ public class GameManager {
         m_GameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
 
-        if(m_GameInfo.getBoardStructure().toString().equals("Random")) {
+        if(m_GameInfo.getBoardStructure().equals("Random")) {
             m_GameInfo.setRangeFrom(m_GameDescriptor.getBoard().getStructure().getRange().getFrom());
             m_GameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
         }
@@ -206,6 +230,7 @@ public class GameManager {
 
             }
 
+            m_Validator.checkValidMarkerLocation(m_GameDescriptor.getBoard().getStructure().getSquares().getMarker());
             GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
             m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@");
         }

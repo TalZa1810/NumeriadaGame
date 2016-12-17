@@ -1,19 +1,16 @@
 package Logic;
 
-/**
- * Created by talza on 20/11/2016.
- */
-public class Player {
+class Player {
 
     private int m_Points = 0;
     private ePlayerType m_PlayerType;
     //// TODO: PLAYER ID
 
-    public enum ePlayerType {
+    enum ePlayerType {
         ROW_PLAYER, COLUMN_PLAYER
     }
 
-    public String GetEPlayerTypeAsString(){
+    String getEPlayerTypeAsString(){
         if (m_PlayerType == ePlayerType.COLUMN_PLAYER){
             return ("column");
         }
@@ -21,11 +18,11 @@ public class Player {
         return ("row");
     }
 
-    public ePlayerType getPlayerType() {
+    ePlayerType getPlayerType() {
         return m_PlayerType;
     }
 
-    public void setPlayerType(ePlayerType i_PlayerType) {
+    void setPlayerType(ePlayerType i_PlayerType) {
         this.m_PlayerType = i_PlayerType;
     }
 
@@ -36,7 +33,4 @@ public class Player {
     public void addToPlayerScore(int i_PointsToAdd){
         m_Points += i_PointsToAdd;
     }
-
-
-
 }

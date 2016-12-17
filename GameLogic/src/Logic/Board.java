@@ -1,10 +1,6 @@
 package Logic;
 import java.util.ArrayList;
 
-
-/**
- * Created by talza on 20/11/2016.
- */
 public class Board {
 
     private int m_BoardSize;
@@ -13,82 +9,11 @@ public class Board {
     private eBoardType m_BoardType;
     private Range m_Range;
 
-    public Board(int i_BoardSize) {
-
-        m_BoardSize = i_BoardSize;
-        m_Board = new ArrayList<ArrayList<Squares>>() ;
-
-        for(int i = 0; i < m_BoardSize; i++){
-            m_Board.add(new ArrayList<Squares>()) ;
-        }
-
-        int i = 0;
-        for (ArrayList<Squares> row : m_Board) {
-            for(int j = 0; j < m_BoardSize; j++) {
-                row.add(new Square(i, j, ""));
-            }
-            i++;
-        }
-
-
-    }
-
-
-
-    public Squares getMark() {
-        return m_Mark;
-    }
-
-
-
-    public Squares getSquareInPos(int i, int j) {
-
-        return m_Board.get(i).get(j);
-    }
-
-    public void setBoardSize(int i_BoardSize) {
-        this.m_BoardSize = i_BoardSize;
-    }
-
-    public void CreateRange(int i_From, int i_To) {
-        m_Range = new Range(i_From,i_To);
-    }
-
-    public void CreateMarker(int i_MarkerRow, int i_MarkerCol) {
-        m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@");
-    }
-
-    public boolean checkIfGameDone(String i_PlayerType) {
-        boolean gameDone = true;
-
-        if(i_PlayerType.equals("ROW_PLAYER")){
-            for(int i = 0; i < m_BoardSize; i++) {
-                //check if row is empty of numbers
-                if (!getSquareInPos(m_Mark.GetRow(), i).GetSquareSymbol().equals(m_Mark.GetSquareSymbol()) &&
-                        !getSquareInPos(m_Mark.GetRow(), i).GetSquareSymbol().equals("")) {
-                    gameDone = false;
-                    break;
-                }
-            }
-        }
-        else{
-            for(int i = 0; i < getBoardSize(); i++){
-                //check if column is empty of numbers
-                if(!getSquareInPos(i,m_Mark.GetColumn()).GetSquareSymbol().equals(m_Mark.GetSquareSymbol()) &&
-                        !getSquareInPos(i, m_Mark.GetColumn()).GetSquareSymbol().equals("")){
-                    gameDone = false;
-                    break;
-                }
-            }
-        }
-        return gameDone;
-    }
-
     private enum eBoardType{
         EXPLICIT, RANDOM
     }
 
-     class Range{
+    private class Range{
 
         private int m_From;
         private int m_To;
@@ -116,30 +41,96 @@ public class Board {
         }
     }
 
-    public int GetToRange(){
+    public Board(int i_BoardSize) {
+
+        m_BoardSize = i_BoardSize;
+        m_Board = new ArrayList<ArrayList<Squares>>() ;
+
+        for(int i = 0; i < m_BoardSize; i++){
+            m_Board.add(new ArrayList<Squares>()) ;
+        }
+
+        int i = 0;
+        for (ArrayList<Squares> row : m_Board) {
+            for(int j = 0; j < m_BoardSize; j++) {
+                row.add(new Square(i, j, ""));
+            }
+            i++;
+        }
+
+
+    }
+
+    public Squares getMark() {
+        return m_Mark;
+    }
+
+    public Squares getSquareInPos(int i, int j) {
+
+        return m_Board.get(i).get(j);
+    }
+
+    public void setBoardSize(int i_BoardSize) {
+        this.m_BoardSize = i_BoardSize;
+    }
+
+    public void createRange(int i_From, int i_To) {
+        m_Range = new Range(i_From,i_To);
+    }
+
+    public void createMarker(int i_MarkerRow, int i_MarkerCol) {
+        m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@");
+    }
+
+    public boolean checkIfGameDone(String i_PlayerType) {
+        boolean gameDone = true;
+
+        if(i_PlayerType.equals("ROW_PLAYER")){
+            for(int i = 0; i < m_BoardSize; i++) {
+                //check if row is empty of numbers
+                if (!getSquareInPos(m_Mark.getRow(), i).getSquareSymbol().equals(m_Mark.getSquareSymbol()) &&
+                        !getSquareInPos(m_Mark.getRow(), i).getSquareSymbol().equals("")) {
+                    gameDone = false;
+                    break;
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < getBoardSize(); i++){
+                //check if column is empty of numbers
+                if(!getSquareInPos(i,m_Mark.getColumn()).getSquareSymbol().equals(m_Mark.getSquareSymbol()) &&
+                        !getSquareInPos(i, m_Mark.getColumn()).getSquareSymbol().equals("")){
+                    gameDone = false;
+                    break;
+                }
+            }
+        }
+        return gameDone;
+    }
+
+    public int getToRange(){
         return m_Range.m_To;
     }
 
-    public int GetFromRange(){
+    public int getFromRange(){
         return m_Range.m_From;
     }
 
-    public void SetToRange(int i_Range){
+    public void setToRange(int i_Range){
         m_Range.setTo(i_Range);
     }
 
-    public void SetFromRange(int i_Range){
+    public void setFromRange(int i_Range){
 
         m_Range.setFrom(i_Range);
     }
 
-
-    public int GetMarkerCol() {
-        return m_Mark.GetColumn();
+    public int getMarkerCol() {
+        return m_Mark.getColumn();
     }
 
-    public int GetMarkerRow() {
-        return m_Mark.GetRow();
+    public int getMarkerRow() {
+        return m_Mark.getRow();
     }
 
     public int getBoardSize() {
@@ -147,24 +138,13 @@ public class Board {
     }
 
     public void changeMarker(Squares i_SquareToChange, Squares i_MarkToChange) {
-        i_SquareToChange.SwapSquare(i_MarkToChange);
-        ChangeMark(i_MarkToChange);
-        i_SquareToChange.SetSquareSymbol("");
+        i_SquareToChange.swapSquare(i_MarkToChange);
+        setMark(i_MarkToChange);
+        i_SquareToChange.setSquareSymbol("");
 
     }
 
-    private void ChangeMark(Squares i_squareToChange) {
-        m_Mark = i_squareToChange;
-    }
-
-    public void SetSquare(Player i_Player, Squares i_SquareToChange) {
-        i_SquareToChange.SetSquareSymbol("");
-    }
-
-    public void setMark(Square m_Mark) {
-        this.m_Mark = m_Mark;
+    public void setMark(Squares i_Mark) {
+        this.m_Mark = i_Mark;
     }
 }
-
-    //==XML==
-    //TODO: MAKE SURE THERE ARE NO TWO SQUARES ON THE XML FILE

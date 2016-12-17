@@ -2,7 +2,6 @@ package Shared;
 
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Time;
 
 @XmlRootElement
 public class GameInfo {
@@ -12,6 +11,7 @@ public class GameInfo {
     private String[][] m_Board;
     private String m_CurrPlayer;
     private int m_NumOfMoves;
+    private String m_Path;
 
 
     private int m_ElapsedTime;
@@ -24,6 +24,14 @@ public class GameInfo {
     private int m_GameMode;
     private  int m_NumOfPlayers = 2;
     private int m_Move;
+
+    public String getPath() {
+        return m_Path;
+    }
+
+    public void setPath(String i_Path) {
+        this.m_Path = i_Path;
+    }
 
     public int getGameMode() {
         return m_GameMode;
@@ -57,39 +65,35 @@ public class GameInfo {
         return m_MarkerRow;
     }
 
-    public String[][] GetBoard() {
+    public String[][] getBoard() {
         return m_Board;
     }
 
-    public int GetBoardSize() {
+    public int getBoardSize() {
         return m_BoardSize;
     }
 
-    public int GetRangeFrom() {
+    public int getRangeFrom() {
         return m_RangeFrom;
     }
 
-    public int GetRangeTo() {
+    public int getRangeTo() {
         return m_RangeTo;
     }
 
-    public String GetCurrPlayer() {
-        return m_CurrPlayer;
-    }
-
-    public int GetNumOfMoves() {
+    public int getNumOfMoves() {
         return m_NumOfMoves;
     }
 
-    public int GetColPlayerScore() {
+    public int getColPlayerScore() {
         return m_ColPlayerScore;
     }
 
-    public int GetRowPlayerScore() {
+    public int getRowPlayerScore() {
         return m_RowPlayerScore;
     }
 
-    public int GetElapsedTime() {
+    public int getElapsedTime() {
         return m_ElapsedTime;
     }
 

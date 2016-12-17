@@ -14,7 +14,11 @@ public class GameUI {
 
     private GameInfo m_GameInfo;
 
-    public void ShowExceptionThrown(String message) {
+    public GameUI(GameInfo[] i_GameInfoWrapper) {
+        m_GameInfo = i_GameInfoWrapper[0];
+    }
+
+    public void showExceptionThrown(String message) {
         System.out.println(message);
     }
 
@@ -23,7 +27,7 @@ public class GameUI {
     }
 
     public void notifyGameEndedByUser() {
-        System.out.println("Anyways, the loser is the " + m_GameInfo.GetCurrPlayer() + " player for quitting so soon");
+        System.out.println("Anyways, the loser is the " + m_GameInfo.getCurrPlayer() + " player for quitting so soon");
     }
 
     public void notifyOngoingGame() {
@@ -42,7 +46,7 @@ public class GameUI {
         System.out.println("BYE");
     }
 
-    public void FileWasLoadedSuccessfully() {
+    public void fileWasLoadedSuccessfully() {
         System.out.println("File was loaded successfully\n");
     }
 
@@ -54,16 +58,24 @@ public class GameUI {
         System.out.println("Game was not set. Therefore, there are no statistics.");
     }
 
+    public void announceWinner(int i_Max, String i_Winner) {
+        System.out.println("The winner is the " + i_Winner + " player with " + i_Max + " points!");
+    }
+
+    public void notifyInvalidSquareChoice() {
+        System.out.println("Square can't be chosen becuase it's value is not a number");
+    }
+
+    public void announceTie(int i_Points) {
+        System.out.println("It's a tie! Both players with " + i_Points + " points\n");
+    }
+
 
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
 
-    public GameUI(GameInfo[] i_GameInfoWrapper) {
-        m_GameInfo = i_GameInfoWrapper[0];
-    }
-
-    public int MainMenu() {
+    public int mainMenu() {
         int choice = -1;
         Scanner s = new Scanner(System.in);
         boolean validInput = false;
@@ -83,13 +95,13 @@ public class GameUI {
         return choice;
     }
 
-    public void ShowBoard() {
-        int boardSize = m_GameInfo.GetBoardSize();
-        String[][] board = m_GameInfo.GetBoard();
+    public void showBoard() {
+        int boardSize = m_GameInfo.getBoardSize();
+        String[][] board = m_GameInfo.getBoard();
         final int numOfSpaces = 5;
         String strOfSpaces = "";
         int row = 0;
-        int col = 0;
+        int col;
 
         for(int i = 0; i < numOfSpaces; i++) {
             strOfSpaces += " ";
@@ -100,7 +112,12 @@ public class GameUI {
 
         //printing columns
         for (int i = 0; i < boardSize; i++) {
-            System.out.print("  " + (i + 1) + "  |");
+            if(i + 1 < 10) {
+                System.out.print("  " + (i + 1) + "  |");
+            }
+            else{
+                System.out.print(" " + (i + 1) + "  |");
+            }
         }
 
         System.out.print("\n");
@@ -108,7 +125,7 @@ public class GameUI {
         for (int i = 0; i < boardSize * 2; i++) {
             col = 0;
             if (i % 2 == 0) {
-                for (int j = 0; j < boardSize * (numOfSpaces + 2); j++) {
+                for (int j = 0; j < boardSize * (numOfSpaces + 1) + 6; j++) {
                     System.out.print('=');
                 }
 
@@ -117,10 +134,15 @@ public class GameUI {
             else {
                 for (int j = 0; j <= boardSize; j++) {
                     if (j == 0) {
-                        System.out.print("  " + (i / 2 + 1) + "  |");
+                        if(i / 2 + 1 < 10) {
+                            System.out.print("  " + (i / 2 + 1) + " ||");
+                        }
+                        else{
+                            System.out.print(" " + (i / 2 + 1) + " ||");
+                        }
                     }
                     else {
-                        if (board[row][col] != "") {
+                        if (!board[row][col].equals("")) {
                             String strToPrint = getStrOfValue(board[row][col]);
                             System.out.print(strToPrint + "|");
                         }
@@ -170,29 +192,29 @@ public class GameUI {
         return res;
     }
 
-    public void ShowStatus() {
-        ShowBoard(); //show board from game info object
-        System.out.println("Current player is the " + m_GameInfo.GetCurrPlayer() + " player");
+    public void showStatus() {
+        showBoard(); //show board from game info object
+        System.out.println("Current player is the " + m_GameInfo.getCurrPlayer() + " player");
     }
 
-    public void ShowStatistics() {
+    public void showStatistics() {
 
-        int gameSeconds = m_GameInfo.GetElapsedTime() % 60;
-        int gameMinutes =  m_GameInfo.GetElapsedTime() / 60 ;
+        int gameSeconds = m_GameInfo.getElapsedTime() % 60;
+        int gameMinutes =  m_GameInfo.getElapsedTime() / 60 ;
 
-        System.out.println("Number of moves made: " + m_GameInfo.GetNumOfMoves());
+        System.out.println("Number of moves made: " + m_GameInfo.getNumOfMoves());
         System.out.println("Time elapsed (min:sec) is:  " + gameMinutes + ':' + gameSeconds );
-        System.out.println("Row player score: " + m_GameInfo.GetRowPlayerScore());
-        System.out.println("Column player score: " + m_GameInfo.GetColPlayerScore());
+        System.out.println("Row player score: " + m_GameInfo.getRowPlayerScore());
+        System.out.println("Column player score: " + m_GameInfo.getColPlayerScore());
     }
 
-    public int GetMoveFromUser() {
+    public int getMoveFromUser() {
         Scanner s = new Scanner(System.in);
         int choice;
 
         System.out.print("Please enter your choice in ");
 
-        if (m_GameInfo.GetCurrPlayer().equals("row")) {
+        if (m_GameInfo.getCurrPlayer().equals("row")) {
             System.out.println("row " + (m_GameInfo.getMarkerRow() + 1));
         }
         else {
@@ -200,9 +222,9 @@ public class GameUI {
         }
 
         choice = s.nextInt();
-        while(choice < 1 || choice > m_GameInfo.GetBoardSize())
+        while(choice < 1 || choice > m_GameInfo.getBoardSize())
         {
-            System.out.println("Invalid input/nPlease enter number between 1 to " + m_GameInfo.GetBoardSize());
+            System.out.println("Invalid input/nPlease enter number between 1 to " + m_GameInfo.getBoardSize());
             choice = s.nextInt();
         }
 
@@ -213,17 +235,23 @@ public class GameUI {
         System.out.println("Enter path for xml file");
         Scanner s = new Scanner(System.in);
         String path =  s.nextLine();
-        GameDescriptor descriptor = null;
 
         //checking if file type is correct
         while (!path.endsWith( ".xml" )){
-            System.out.println("wrong xml file");
+            System.out.println("Wrong xml file. file must have .xml suffix");
             path =  s.nextLine();
         }
 
+        m_GameInfo.setPath(path);
+        return unmarshalFile(path);
+    }
+
+    private GameDescriptor unmarshalFile(String i_Path){
+        GameDescriptor descriptor = null;
+
         try {
 
-            File file = new File(path);
+            File file = new File(i_Path);
             JAXBContext jaxbContext = JAXBContext.newInstance(GameDescriptor.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -238,11 +266,7 @@ public class GameUI {
         return descriptor;
     }
 
-
     private boolean checkMenuInput(int i_Input) {
-        if (i_Input < 0 || i_Input > 6)
-            return false;
-
-        return true;
+        return !(i_Input < 0 || i_Input > 6);
     }
 }
