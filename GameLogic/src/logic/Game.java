@@ -1,6 +1,6 @@
-package Logic;
+package logic;
 
-import Shared.GameInfo;
+import shared.GameInfo;
 
 import java.util.Random;
 import java.util.Timer;

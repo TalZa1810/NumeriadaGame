@@ -1,6 +1,6 @@
-package Logic;
+package logic;
 
-import Shared.GameInfo;
+import shared.GameInfo;
 
 public class BasicGame extends Game {
 

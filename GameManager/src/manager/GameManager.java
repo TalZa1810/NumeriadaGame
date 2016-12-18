@@ -1,11 +1,11 @@
-package Manager;
+package manager;
 
 import Generated.GameDescriptor;
-import Logic.BasicGame;
-import Logic.Game;
-import Shared.GameInfo;
-import Shared.Validator;
-import UI.GameUI;
+import logic.BasicGame;
+import logic.Game;
+import shared.GameInfo;
+import shared.Validator;
+import ui.GameUI;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class GameManager {
     private GameInfo m_GameInfo = new GameInfo();
     private GameInfo[] m_GameInfoWrapper = new GameInfo[1];
 
-    private enum eMenuOptions {
+    /*private enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
-    }
+    }*/
 
     public GameManager() {
         m_GameInfoWrapper[0] = m_GameInfo;
@@ -133,20 +133,13 @@ public class GameManager {
                 case EXIT_GAME:
                     userWantsToPlay = false;
                     m_GameUI.notifyPlayerExitGame();
-                    //System.out.println("BYE");
-                    break;
+                   break;
                 default:
                     userWantsToPlay = false;
             }
         }
     }
 
-    /*
-        private void notifyGameEnded() {
-        GetGameStatistics();
-        m_GameUI.notifyGameEndedByUser();
-    }
-    * */
 
     private void getGameStatus() {
         m_GameLogic.getGameStatus(); //will update game info object (a basic game data member) in game logic
@@ -215,6 +208,7 @@ public class GameManager {
 
     private void setBoardValuesFromXML() throws Exception {
         String str = m_GameInfo.getBoardStructure();
+
         if(m_GameInfo.getBoardStructure().equals("Explicit")) {
             int row, col;
 

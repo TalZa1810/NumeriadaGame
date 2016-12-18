@@ -1,4 +1,4 @@
-package Shared;
+package shared;
 
 
 import javax.xml.bind.annotation.XmlRootElement;

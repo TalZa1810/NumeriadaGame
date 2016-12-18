@@ -1,8 +1,8 @@
-package UI;
+package ui;
 
 
 import Generated.GameDescriptor;
-import Shared.GameInfo;
+import shared.GameInfo;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

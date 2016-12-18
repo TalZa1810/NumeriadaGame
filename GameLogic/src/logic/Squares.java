@@ -1,4 +1,4 @@
-package Logic;
+package logic;
 
 /**
  * Created by talza on 27/11/2016.

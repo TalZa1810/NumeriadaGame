@@ -1,4 +1,4 @@
-import Manager.GameManager;
+import manager.GameManager;
 
 import static java.lang.System.exit;
 
