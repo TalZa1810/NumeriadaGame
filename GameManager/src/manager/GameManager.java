@@ -221,7 +221,6 @@ public class GameManager {
                 col = s.getColumn().intValue() - 1;
                 row = s.getRow().intValue() - 1;
                 m_GameInfo.setSquare(row, col, s.getValue().toString());
-
             }
 
             m_Validator.checkValidMarkerLocation(m_GameDescriptor.getBoard().getStructure().getSquares().getMarker());
