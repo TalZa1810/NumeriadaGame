@@ -1,13 +1,21 @@
 package logic;
 
-class Player {
+abstract class Player {
 
     private int m_Points = 0;
+    private int m_ID;
+    private String m_Name;
     private ePlayerType m_PlayerType;
-    //// TODO: PLAYER ID
+    private ePlayerColor m_PlayerColor;
+
+    public abstract void playTurn() {}
 
     enum ePlayerType {
-        ROW_PLAYER, COLUMN_PLAYER
+        HUMAN, COMPUTER
+    }
+
+    enum ePlayerColor {
+        RED, BLUE, YELLOW, GREEN, ORANGE, PURPLE
     }
 
     String getEPlayerTypeAsString(){
