@@ -152,7 +152,7 @@ public abstract class Game {
         }
         //setting marker symbol and position
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol("@");
-        m_Board.setMark((Squares) m_Board.getSquareInPos(randomRow,randomCol));
+        m_Board.setMark(m_Board.getSquareInPos(randomRow,randomCol));
     }
 
 
@@ -240,17 +240,16 @@ public abstract class Game {
     }
 
     public void playTurn(Player i_Player, int i_Move){
-        i_Player.playTurn(Player i_Player);
-        if(m_GameMode == eGameMode.HumanVsComputer && i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER){
-            playComputerTurn(i_Player);
-        }
-        else{
-            playHumanTurn(i_Player,i_Move);
-        }
+        i_Player.playTurn( m_Board, m_GameInfo ,i_Player , i_Move);
+
+
     }
 
+
+     /*
+
     private void playComputerTurn(Player i_Player) {
-        Random r = new Random();
+
         int randomMove = r.nextInt(m_Board.getBoardSize());
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
@@ -266,16 +265,19 @@ public abstract class Game {
             }
         }
 
-        makePlayerMove(i_Player,randomMove);
+        makePlayerMove(i_Player, randomMove);
+
     }
 
-    private void playHumanTurn(Player i_Player, int i_Move) {
+
+        private void playHumanTurn(Player i_Player, int i_Move) {
         makePlayerMove(i_Player,i_Move);
     }
+    *
 
     private void makePlayerMove(Player i_Player, int i_Move){
-        Squares squareToChange;
-        Squares markerToChange;
+        Square squareToChange;
+        Square markerToChange;
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
             squareToChange = m_Board.getSquareInPos( m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
@@ -289,5 +291,5 @@ public abstract class Game {
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(markerToChange.getSquareSymbol()));
 
         m_Board.changeMarker(squareToChange, markerToChange);
-    }
+    }*/
 }
