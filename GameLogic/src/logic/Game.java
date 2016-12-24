@@ -65,6 +65,8 @@ public abstract class Game {
 
         m_Players = new Player[m_GameInfo.getNumOfPlayers()];
 
+        //TODO: function add player everytime a new player is added
+        /*
         for(int i = 0; i < m_Players.length; i++ ){
             m_Players[i] = new Player();
             if(i % 2 == 0){
@@ -73,7 +75,7 @@ public abstract class Game {
             else{
                 m_Players[i].setPlayerType(Player.ePlayerType.COLUMN_PLAYER);
             }
-        }
+        }*/
 
         m_CurrentPlayer = m_Players[0];
     }
@@ -182,7 +184,8 @@ public abstract class Game {
         m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
     }
 
-    public boolean checkIfLegalMove(int i_Move) {
+    public boolean checkIfLegalMove(Player i_Player, int i_Move) {
+        //TODO: change fuction to check row and col according to the color
         if(m_CurrentPlayer.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
             if (m_Board.getSquareInPos(i_Move, m_Board.getMark().getColumn()).getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
                     || m_Board.getSquareInPos(i_Move, m_Board.getMark().getColumn()).getSquareSymbol().equals("")) {
@@ -207,7 +210,7 @@ public abstract class Game {
         return gameDone;
     }
 
-    public boolean checkIfGameDone(Squares i_Mark) {
+    public boolean checkIfGameDone(Square i_Mark) {
         boolean gameDone;
 
         gameDone = m_Board.checkIfGameDone(m_CurrentPlayer.getPlayerType().name());
@@ -237,6 +240,7 @@ public abstract class Game {
     }
 
     public void playTurn(Player i_Player, int i_Move){
+        i_Player.playTurn(Player i_Player);
         if(m_GameMode == eGameMode.HumanVsComputer && i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER){
             playComputerTurn(i_Player);
         }

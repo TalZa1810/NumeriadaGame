@@ -4,14 +4,9 @@ import java.util.ArrayList;
 public class Board {
 
     private int m_BoardSize;
-    private ArrayList<ArrayList<Squares>> m_Board;
-    private Squares m_Mark;
-    private eBoardType m_BoardType;
+    private ArrayList<ArrayList<Square>> m_Board;
+    private Square m_Mark;
     private Range m_Range;
-
-    private enum eBoardType{
-        EXPLICIT, RANDOM
-    }
 
     private class Range{
 
@@ -44,14 +39,14 @@ public class Board {
     public Board(int i_BoardSize) {
 
         m_BoardSize = i_BoardSize;
-        m_Board = new ArrayList<ArrayList<Squares>>() ;
+        m_Board = new ArrayList<ArrayList<Square>>() ;
 
         for(int i = 0; i < m_BoardSize; i++){
-            m_Board.add(new ArrayList<Squares>()) ;
+            m_Board.add(new ArrayList<Square>()) ;
         }
 
         int i = 0;
-        for (ArrayList<Squares> row : m_Board) {
+        for (ArrayList<Square> row : m_Board) {
             for(int j = 0; j < m_BoardSize; j++) {
                 row.add(new Square(i, j, ""));
             }
@@ -61,17 +56,13 @@ public class Board {
 
     }
 
-    public Squares getMark() {
+    public Square getMark() {
         return m_Mark;
     }
 
-    public Squares getSquareInPos(int i, int j) {
+    public Square getSquareInPos(int i, int j) {
 
         return m_Board.get(i).get(j);
-    }
-
-    public void setBoardSize(int i_BoardSize) {
-        this.m_BoardSize = i_BoardSize;
     }
 
     public void createRange(int i_From, int i_To) {
@@ -116,15 +107,6 @@ public class Board {
         return m_Range.m_From;
     }
 
-    public void setToRange(int i_Range){
-        m_Range.setTo(i_Range);
-    }
-
-    public void setFromRange(int i_Range){
-
-        m_Range.setFrom(i_Range);
-    }
-
     public int getMarkerCol() {
         return m_Mark.getColumn();
     }
@@ -137,14 +119,14 @@ public class Board {
         return m_BoardSize;
     }
 
-    public void changeMarker(Squares i_SquareToChange, Squares i_MarkToChange) {
+    public void changeMarker(Square i_SquareToChange, Square i_MarkToChange) {
         i_SquareToChange.swapSquare(i_MarkToChange);
         setMark(i_MarkToChange);
         i_SquareToChange.setSquareSymbol("");
 
     }
 
-    public void setMark(Squares i_Mark) {
+    public void setMark(Square i_Mark) {
         this.m_Mark = i_Mark;
     }
 }
