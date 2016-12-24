@@ -1,13 +1,12 @@
 package logic;
 
-/**
- * Created by talza on 27/11/2016.
- */
+
 public class Squares {
 
     private final int m_Row;
     private final int m_Column;
     private String m_SquareSymbol;
+    // TODO: Color field
 
     public Squares(int i_Row, int i_Column, String i_SquareSymbol){
         m_Row = i_Row;

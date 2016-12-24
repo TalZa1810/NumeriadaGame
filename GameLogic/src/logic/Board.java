@@ -53,7 +53,7 @@ public class Board {
         int i = 0;
         for (ArrayList<Squares> row : m_Board) {
             for(int j = 0; j < m_BoardSize; j++) {
-                row.add(new Square(i, j, ""));
+                row.add(new Squares(i, j, ""));
             }
             i++;
         }
@@ -79,7 +79,7 @@ public class Board {
     }
 
     public void createMarker(int i_MarkerRow, int i_MarkerCol) {
-        m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@");
+        m_Mark = new Squares(i_MarkerRow, i_MarkerCol, "@");
     }
 
     public boolean checkIfGameDone(String i_PlayerType) {

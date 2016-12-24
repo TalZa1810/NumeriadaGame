@@ -150,7 +150,7 @@ public abstract class Game {
         }
         //setting marker symbol and position
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol("@");
-        m_Board.setMark((Square) m_Board.getSquareInPos(randomRow,randomCol));
+        m_Board.setMark((Squares) m_Board.getSquareInPos(randomRow,randomCol));
     }
 
 
@@ -270,16 +270,16 @@ public abstract class Game {
     }
 
     private void makePlayerMove(Player i_Player, int i_Move){
-        Square squareToChange;
-        Square markerToChange;
+        Squares squareToChange;
+        Squares markerToChange;
 
         if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
-            markerToChange = (Square)m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
+            squareToChange = m_Board.getSquareInPos( m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
+            markerToChange = m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
         }
         else {
-            squareToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),m_GameInfo.getMarkerCol());
-            markerToChange = (Square)m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
+            squareToChange = m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),m_GameInfo.getMarkerCol());
+            markerToChange = m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
         }
 
         m_CurrentPlayer.addToPlayerScore(Integer.parseInt(markerToChange.getSquareSymbol()));
