@@ -8,7 +8,7 @@ import java.util.TimerTask;
 
 
 public abstract class Game {
-
+    //TODO: CHANGE TO ARRAYLIST IN ORDER TO ADD NEW PLAYERS AND SETTING THEM ON THE SPOT
     private Player [] m_Players;
     Board m_Board;
     GameInfo m_GameInfo;
@@ -18,6 +18,9 @@ public abstract class Game {
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
     private eGameMode m_GameMode;
+
+    private Square m_ChosenSquare= new Square();
+
 
     //Timer
     int m_secondsPassed = 0;
@@ -47,11 +50,15 @@ public abstract class Game {
 
     public Game(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
-        setPlayers();
+        //setPlayers();
         setBoard();
         setGameType();
         m_GameMode = eGameMode.values()[m_GameInfo.getGameMode() - 1]; //two human players or human against computer
         initBoard();
+
+        //String m_GameType;
+
+        m_CurrentPlayer = m_Players[0];
     }
 
     private  void setBoard(){
@@ -61,24 +68,28 @@ public abstract class Game {
         setBoardStructure();
     }
 
-    private void setPlayers(){
+    public Player[] getPlayers() {
+        return m_Players;
+    }
 
-        m_Players = new Player[m_GameInfo.getNumOfPlayers()];
+    /*public void setPlayers( ) {
+        this.m_Players = new Player[m_GameInfo.getNumOfPlayers()];
+        m_CurrentPlayer = m_Players[0];
+    }*/
+
+
+    abstract void setPlayers(int i_NumOfPlayers);
+
+    //TODO: SETTING PLAYERS ACCORDING TO GAME TYPE- ADVANCED OR BASIC
+
+    //private void setPlayers(){
+
+        //m_Players = new Player[m_GameInfo.getNumOfPlayers()];
 
         //TODO: function add player everytime a new player is added
-        /*
-        for(int i = 0; i < m_Players.length; i++ ){
-            m_Players[i] = new Player();
-            if(i % 2 == 0){
-                m_Players[i].setPlayerType(Player.ePlayerType.ROW_PLAYER);
-            }
-            else{
-                m_Players[i].setPlayerType(Player.ePlayerType.COLUMN_PLAYER);
-            }
-        }*/
 
-        m_CurrentPlayer = m_Players[0];
-    }
+        //m_CurrentPlayer = m_Players[0];
+    //
 
     private void setGameType(){
 
@@ -155,9 +166,6 @@ public abstract class Game {
         m_Board.setMark(m_Board.getSquareInPos(randomRow,randomCol));
     }
 
-
-
-
     private int generateRandomPositionForRandomSquare(int i_BoardSize){
 
         final int minBoardSize = 5;
@@ -181,11 +189,12 @@ public abstract class Game {
     }
 
     public void loadCurrPlayerToGameInfo() {
-        m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
+       // m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
     }
 
-    public boolean checkIfLegalMove(Player i_Player, int i_Move) {
-        //TODO: change fuction to check row and col according to the color
+   /* public boolean checkIfLegalMove(Player i_Player, int i_Move) {
+        //TODO: change function to check row and col according to the color
+        //TODO: change move to be square instead of int
         if(m_CurrentPlayer.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
             if (m_Board.getSquareInPos(i_Move, m_Board.getMark().getColumn()).getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
                     || m_Board.getSquareInPos(i_Move, m_Board.getMark().getColumn()).getSquareSymbol().equals("")) {
@@ -199,10 +208,13 @@ public abstract class Game {
             }
         }
         return true;
-    }
+    }*/
 
     public boolean makeMove() {
-        playTurn(m_CurrentPlayer, m_GameInfo.getMove() - 1);
+
+        //TODO:
+
+        playTurn();
         m_NumOfMoves++;
         m_CurrentPlayer = m_Players[m_NumOfMoves % m_Players.length];
 
@@ -219,9 +231,10 @@ public abstract class Game {
 
     public abstract void getBoardToPrint();
 
+    //TODO: FIX
     public void getGameStatus() {
         getBoardToPrint();
-        m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
+        //m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
     }
 
     public void getGameStatistics() {
@@ -239,15 +252,13 @@ public abstract class Game {
         m_GameInfo.setMarkerRow(m_Board.getMarkerRow());
     }
 
-    public void playTurn(Player i_Player, int i_Move){
-        i_Player.playTurn( m_Board, m_GameInfo ,i_Player , i_Move);
+    public void playTurn(){
+        m_CurrentPlayer.playTurn( m_Board, m_GameInfo , m_ChosenSquare);
 
 
     }
 
-
      /*
-
     private void playComputerTurn(Player i_Player) {
 
         int randomMove = r.nextInt(m_Board.getBoardSize());

@@ -1,6 +1,7 @@
 package manager;
 
 import Generated.GameDescriptor;
+import logic.AdvancedGame;
 import logic.BasicGame;
 import logic.Game;
 import shared.GameInfo;
@@ -69,7 +70,15 @@ public class GameManager {
                             //    m_GameUI.unmarshalFile(m_GameInfo.getPath());
                             //}
                             m_GameInfo.setGameMode(m_GameUI.getGameMode());
-                            m_GameLogic = new BasicGame(m_GameInfoWrapper);
+
+                            //advanced or basic
+                            if (m_GameInfo.getGameType().equals("Basic") ) {
+                                m_GameLogic = new BasicGame(m_GameInfoWrapper);
+                            }
+                            else{
+                                m_GameLogic = new AdvancedGame(m_GameInfoWrapper);
+                            }
+
                             getBoard();
                             isGameSet = true;
                             m_GameLogic.start();
@@ -158,13 +167,13 @@ public class GameManager {
         m_GameLogic.loadCurrPlayerToGameInfo();
         if(m_GameInfo.getCurrPlayer().equals("row") || (!m_GameInfo.getCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
             m_GameInfo.setMove(m_GameUI.getMoveFromUser());
-            validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
+            //validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
 
-            while(!validInput){
+            /*while(!validInput){
                 m_GameUI.notifyInvalidSquareChoice();
                 m_GameInfo.setMove(m_GameUI.getMoveFromUser());
                 validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
-            }
+            }*/
         }
         boolean gameDone = m_GameLogic.makeMove();
         getBoard();

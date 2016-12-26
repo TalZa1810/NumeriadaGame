@@ -24,6 +24,8 @@ public class GameInfo {
     private int m_GameMode;
     private  int m_NumOfPlayers = 2;
     private int m_Move;
+    private int m_ChosenRow;
+    private int m_ChosenCol;
 
     public String getPath() {
         return m_Path;

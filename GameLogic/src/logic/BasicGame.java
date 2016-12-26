@@ -4,7 +4,12 @@ import shared.GameInfo;
 
 public class BasicGame extends Game {
 
+    enum ePlayerType{
+        COLUMN_PLAYER, ROW_PLAYER
+    }
+
     public BasicGame(GameInfo[] i_GameInfoWrapper) {
+
         super(i_GameInfoWrapper);
     }
 
@@ -20,6 +25,21 @@ public class BasicGame extends Game {
         }
 
         m_GameInfo.setBoard(board);
+    }
+
+    private void setPlayers(int i_NumOfPlayers){
+
+        Player players[] = super.getPlayers();
+
+        for(int i = 0; i < players.length; i++ ){
+            players[i] = new Player();
+            if(i % 2 == 0){
+                players[i].setPlayerType(ePlayerType.ROW_PLAYER);
+            }
+            else{
+                players[i].setPlayerType(BasicGame.ePlayerType.COLUMN_PLAYER);
+            }
+        }
     }
 
 }

@@ -15,40 +15,32 @@ abstract class Player {
 
     }
 
-    public void playTurn(Board i_Board, GameInfo i_GameInfo , Player i_Player, int i_Move) {
-
-        Square squareToChange;
-        Square markerToChange;
-
-        if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            squareToChange = i_Board.getSquareInPos( i_GameInfo.getMarkerRow(), i_GameInfo.getMarkerCol());
-            markerToChange = i_Board.getSquareInPos(i_Move, i_GameInfo.getMarkerCol());
-        }
-        else {
-            squareToChange = i_Board.getSquareInPos( i_GameInfo.getMarkerRow(),i_GameInfo.getMarkerCol());
-            markerToChange = i_Board.getSquareInPos( i_GameInfo.getMarkerRow(),i_Move);
-        }
-
-        addToPlayerScore(Integer.parseInt(markerToChange.getSquareSymbol()));
-
-        i_Board.changeMarker(squareToChange, markerToChange);
+    enum ePlayerColor {
+        RED, BLUE, YELLOW, GREEN, ORANGE, PURPLE, BLACK
     }
 
+    public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
+
+        if ( i_ChosenSquare != null ){
+            addToPlayerScore(Integer.parseInt(i_ChosenSquare.getSquareSymbol()));
+            i_Board.changeMarker(i_Board.getMark(), i_ChosenSquare);
+        }
+    }
+
+    //TODO: create specific types
     enum ePlayerType {
         HUMAN, COMPUTER
     }
 
-    enum ePlayerColor {
-        RED, BLUE, YELLOW, GREEN, ORANGE, PURPLE
-    }
 
-    String getEPlayerTypeAsString(){
-        if (m_PlayerType == ePlayerType.COLUMN_PLAYER){
+
+   /* String getEPlayerTypeAsString(){
+        if (m_PlayerType == BasicGame.ePlayerType.COLUMN_PLAYER){
             return ("column");
         }
 
         return ("row");
-    }
+    }*/
 
     ePlayerType getPlayerType() {
         return m_PlayerType;
@@ -64,5 +56,9 @@ abstract class Player {
 
     public void addToPlayerScore(int i_PointsToAdd){
         m_Points += i_PointsToAdd;
+    }
+
+    public ePlayerColor getPlayerColor() {
+        return m_PlayerColor;
     }
 }

@@ -70,7 +70,6 @@ public class GameUI {
         System.out.println("It's a tie! Both players with " + i_Points + " points\n");
     }
 
-
     public enum eMenuOptions {
         LOAD_FILE, SET_GAME, GAME_STATUS, MAKE_MOVE, GET_STATISTICS, END_GAME, EXIT_GAME
     }
@@ -227,6 +226,7 @@ public class GameUI {
             System.out.println("Invalid input/nPlease enter number between 1 to " + m_GameInfo.getBoardSize());
             choice = s.nextInt();
         }
+
 
         return choice;
     }
