@@ -1,15 +1,16 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.PlayerData;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public abstract class Game {
-    //TODO: CHANGE TO ARRAYLIST IN ORDER TO ADD NEW PLAYERS AND SETTING THEM ON THE SPOT
-    private Player [] m_Players;
+    private ArrayList<Player> m_Players;
     Board m_Board;
     GameInfo m_GameInfo;
     private Player m_CurrentPlayer;
@@ -50,7 +51,7 @@ public abstract class Game {
 
     public Game(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
-        //setPlayers();
+        setPlayers();
         setBoard();
         setGameType();
         m_GameMode = eGameMode.values()[m_GameInfo.getGameMode() - 1]; //two human players or human against computer
@@ -58,7 +59,7 @@ public abstract class Game {
 
         //String m_GameType;
 
-        m_CurrentPlayer = m_Players[0];
+        m_CurrentPlayer = m_Players.get(0);
     }
 
     private  void setBoard(){
@@ -68,17 +69,20 @@ public abstract class Game {
         setBoardStructure();
     }
 
-    public Player[] getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return m_Players;
     }
 
-    /*public void setPlayers( ) {
-        this.m_Players = new Player[m_GameInfo.getNumOfPlayers()];
-        m_CurrentPlayer = m_Players[0];
-    }*/
+    public void setPlayers( ) {
+        ArrayList<Player> players = getPlayers();
+        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++) {
+            PlayerData currPlayerData = m_GameInfo.getPlayer(i);
+            players.add(Player.CreatePlayer(currPlayerData.getID(), currPlayerData.getName(), currPlayerData.getColor(), currPlayerData.getType()));
+        }
+    }
 
 
-    abstract void setPlayers(int i_NumOfPlayers);
+    //abstract void setPlayers();
 
     //TODO: SETTING PLAYERS ACCORDING TO GAME TYPE- ADVANCED OR BASIC
 
@@ -171,7 +175,7 @@ public abstract class Game {
         final int minBoardSize = 5;
         Random rand = new Random();
 
-        int randomNum= rand.nextInt(i_BoardSize);
+        int randomNum = rand.nextInt(i_BoardSize);
 
         return randomNum;
     }
@@ -216,7 +220,7 @@ public abstract class Game {
 
         playTurn();
         m_NumOfMoves++;
-        m_CurrentPlayer = m_Players[m_NumOfMoves % m_Players.length];
+        m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
 
         boolean gameDone = checkIfGameDone(m_Board.getMark());
         return gameDone;
@@ -229,11 +233,10 @@ public abstract class Game {
         return gameDone;
     }
 
-    public abstract void getBoardToPrint();
+    //public abstract void getBoardToPrint();
 
-    //TODO: FIX
     public void getGameStatus() {
-        getBoardToPrint();
+        //getBoardToPrint();
         //m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
     }
 
@@ -242,8 +245,8 @@ public abstract class Game {
         m_GameInfo.setNumOfMoves(m_NumOfMoves);
         m_GameInfo.setElapsedTime(m_secondsPassed);
 
-        m_GameInfo.setRowPlayerScore(m_Players[0].getPlayerScore());
-        m_GameInfo.setColPlayerScore(m_Players[1].getPlayerScore());
+        m_GameInfo.setRowPlayerScore(m_Players.get(0).getPlayerScore());
+        m_GameInfo.setColPlayerScore(m_Players.get(1).getPlayerScore());
         loadCurrPlayerToGameInfo();
     }
 

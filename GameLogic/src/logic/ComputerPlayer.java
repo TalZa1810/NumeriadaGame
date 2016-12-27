@@ -1,11 +1,16 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.eColor;
+import sharedStructures.ePlayerType;
 
 import java.util.Random;
-import java.util.prefs.Preferences;
 
 public class ComputerPlayer extends Player {
+
+    public ComputerPlayer(int i_ID, String i_Name, ePlayerType i_Type, eColor i_Color){
+        super(i_ID, i_Name, i_Type, i_Color);
+    }
 
     @Override
     public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
@@ -20,7 +25,7 @@ public class ComputerPlayer extends Player {
 
         if (i_GameInfo.getGameType().equals(Game.eGameType.Basic.name())){
 
-            if(getPlayerType().name().equals(BasicGame.ePlayerType.COLUMN_PLAYER.name())) {
+            if(getPlayerType().name().equals(BasicGame.ePlayerOrientation.COLUMN_PLAYER.name())) {
                 while(i_Board.getSquareInPos(randomMove, i_GameInfo.getMarkerCol()).getSquareSymbol().equals("") ||
                         i_Board.getSquareInPos(randomMove, i_GameInfo.getMarkerCol()).getSquareSymbol().equals("@")){
                     randomMove = r.nextInt(i_Board.getBoardSize());

@@ -1,13 +1,14 @@
 package logic;
-import logic.Player.ePlayerColor;
+
+import sharedStructures.eColor;
 
 public class Square {
     private final int m_Row;
     private final int m_Column;
     private String m_SquareSymbol;
-    private ePlayerColor m_Color;
+    private eColor m_Color;
 
-    public Square(int i_Row, int i_Column, String i_SquareSymbol,ePlayerColor i_Color ){
+    public Square(int i_Row, int i_Column, String i_SquareSymbol, eColor i_Color ){
         m_Row = i_Row;
         m_Column = i_Column;
         m_SquareSymbol = i_SquareSymbol;
@@ -18,7 +19,7 @@ public class Square {
         m_Column = 0;
         m_Row = 0;
         m_SquareSymbol = "";
-        m_Color = ePlayerColor.BLACK;
+        m_Color = eColor.DEFAULT;
     }
 
     //GET METHODS
@@ -51,7 +52,7 @@ public class Square {
         this.setSquareSymbol(symbolTemp);
     }
 
-    public ePlayerColor getColor() {
+    public eColor getColor() {
         return m_Color;
     }
 }

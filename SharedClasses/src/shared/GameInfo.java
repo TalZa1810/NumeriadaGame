@@ -1,7 +1,10 @@
 package shared;
 
 
+import sharedStructures.PlayerData;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 
 @XmlRootElement
 public class GameInfo {
@@ -22,13 +25,17 @@ public class GameInfo {
     private String m_GameType;
     private String m_BoardStructure;
     private int m_GameMode;
-    private  int m_NumOfPlayers = 2;
-    private int m_Move;
+    private ArrayList<PlayerData> m_Players = new ArrayList<PlayerData>();
+    private  int m_NumOfPlayers;
     private int m_ChosenRow;
     private int m_ChosenCol;
 
     public String getPath() {
         return m_Path;
+    }
+
+    public PlayerData getPlayer(int i_Index){
+        return m_Players.get(i_Index);
     }
 
     public void setPath(String i_Path) {
@@ -160,13 +167,9 @@ public class GameInfo {
         }
     }
 
-    public void setMove(int i_Move) {
-        this.m_Move = i_Move;
-    }
-
-    public int getMove() {
-        return m_Move;
-    }
+    //public void setMove(int i_Move) {
+    //    this.m_Move = i_Move;
+    //}
 
     public void initBoard(){
         m_Board = new String[m_BoardSize][m_BoardSize];
