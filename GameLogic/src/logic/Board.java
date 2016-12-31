@@ -75,32 +75,6 @@ public class Board {
         m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@", eColor.DEFAULT);
     }
 
-    public boolean checkIfGameDone(String i_PlayerType) {
-        boolean gameDone = true;
-
-        if(i_PlayerType.equals("ROW_PLAYER")){
-            for(int i = 0; i < m_BoardSize; i++) {
-                //check if row is empty of numbers
-                if (!getSquareInPos(m_Mark.getRow(), i).getSquareSymbol().equals(m_Mark.getSquareSymbol()) &&
-                        !getSquareInPos(m_Mark.getRow(), i).getSquareSymbol().equals("")) {
-                    gameDone = false;
-                    break;
-                }
-            }
-        }
-        else{
-            for(int i = 0; i < getBoardSize(); i++){
-                //check if column is empty of numbers
-                if(!getSquareInPos(i,m_Mark.getColumn()).getSquareSymbol().equals(m_Mark.getSquareSymbol()) &&
-                        !getSquareInPos(i, m_Mark.getColumn()).getSquareSymbol().equals("")){
-                    gameDone = false;
-                    break;
-                }
-            }
-        }
-        return gameDone;
-    }
-
     public int getToRange(){
         return m_Range.m_To;
     }

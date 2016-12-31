@@ -6,6 +6,9 @@ import logic.BasicGame;
 import logic.Game;
 import shared.GameInfo;
 import shared.Validator;
+import sharedStructures.PlayerData;
+import sharedStructures.eColor;
+import sharedStructures.ePlayerType;
 import ui.GameUI;
 
 import java.util.List;
@@ -82,7 +85,7 @@ public class GameManager {
                             getBoard();
                             isGameSet = true;
                             m_GameLogic.start();
-                            boolean gameDone = m_GameLogic.checkIfGameDone(m_GameLogic.getBoard().getMark());
+                            boolean gameDone = m_GameLogic.checkIfGameDone();
                             if(gameDone){
                                 gameDoneProcedure();
                             }
@@ -167,16 +170,16 @@ public class GameManager {
         m_GameLogic.loadCurrPlayerToGameInfo();
         if(m_GameInfo.getCurrPlayer().equals("row") || (!m_GameInfo.getCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
             m_GameInfo.setMove(m_GameUI.getMoveFromUser());
-            //validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
+            validInput = m_GameLogic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
 
-            /*while(!validInput){
+            while(!validInput){
                 m_GameUI.notifyInvalidSquareChoice();
                 m_GameInfo.setMove(m_GameUI.getMoveFromUser());
-                validInput = m_GameLogic.checkIfLegalMove(m_GameInfo.getMove() - 1);
-            }*/
+                validInput = m_GameLogic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
+            }
         }
         boolean gameDone = m_GameLogic.makeMove();
-        getBoard();
+        //getBoard();
         if(gameDone){
             gameDoneProcedure();
         }
@@ -194,7 +197,7 @@ public class GameManager {
     }
 
     private void getBoard() {
-        m_GameLogic.getBoardToPrint(); //copy board to char[][] in game info object or do something so the ui knows the board and implement to string for square and to string for board
+        //m_GameLogic.getBoardToPrint(); //copy board to char[][] in game info object or do something so the ui knows the board and implement to string for square and to string for board
         m_GameUI.showBoard(); //will use the game info object (a game ui data member) in the game ui
     }
 
@@ -211,8 +214,30 @@ public class GameManager {
             m_GameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
         }
 
+        getPlayersFromXML();
         m_GameInfo.initBoard();
         setBoardValuesFromXML();
+    }
+
+    private void getPlayersFromXML() throws Exception {
+        PlayerData player = new PlayerData();
+        List<GameDescriptor.Players.Player> players = m_GameDescriptor.getPlayers().getPlayer();
+        m_Validator.checkValidPlayersID(players);
+
+        for(GameDescriptor.Players.Player p: players){
+            player.setName(p.getName());
+            player.setID(p.getId().intValue());
+            player.setColor(eColor.values()[p.getColor() - 1]);
+
+            if(p.getType().equals(ePlayerType.Human.name())){
+                player.setType(ePlayerType.Human);
+            }
+            else{
+                player.setType(ePlayerType.Computer);
+            }
+
+            m_GameInfo.addPlayerData(player);
+        }
     }
 
     private void setBoardValuesFromXML() throws Exception {
@@ -237,7 +262,7 @@ public class GameManager {
             m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@");
         }
         else {
-            m_Validator.checkRangeForRandomBoard();
+            m_Validator.checkRangeForRandomBoard(m_GameInfo.getGameType());
         }
     }
 }

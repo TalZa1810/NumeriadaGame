@@ -6,6 +6,15 @@ public class PlayerData {
     private eColor m_Color;
     private ePlayerType m_PlayerType;
 
+    public PlayerData(String i_Name, int i_ID, eColor i_Color, ePlayerType i_PlayerType){
+        m_Name = i_Name;
+        m_ID = i_ID;
+        m_Color = i_Color;
+        m_PlayerType = i_PlayerType;
+    }
+
+    public PlayerData() {}
+
     public ePlayerType getType() {
         return m_PlayerType;
     }

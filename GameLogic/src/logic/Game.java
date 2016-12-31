@@ -10,10 +10,10 @@ import java.util.TimerTask;
 
 
 public abstract class Game {
-    private ArrayList<Player> m_Players;
+    ArrayList<Player> m_Players;
     Board m_Board;
     GameInfo m_GameInfo;
-    private Player m_CurrentPlayer;
+    Player m_CurrentPlayer;
     private int m_NumOfMoves = 0;
 
     private eBoardStructure m_BoardStructure;
@@ -37,6 +37,11 @@ public abstract class Game {
         m_Timer.scheduleAtFixedRate(m_Task, 1000, 1000);
     }
 
+    public boolean checkMove(int chosenRow, int chosenCol) {
+        Square chosenSquare = m_Board.getSquareInPos(chosenRow, chosenCol);
+        return checkIfLegalMove(m_CurrentPlayer, chosenSquare);
+    }
+
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
     }
@@ -51,14 +56,11 @@ public abstract class Game {
 
     public Game(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
+        setGameType();
         setPlayers();
         setBoard();
-        setGameType();
         m_GameMode = eGameMode.values()[m_GameInfo.getGameMode() - 1]; //two human players or human against computer
         initBoard();
-
-        //String m_GameType;
-
         m_CurrentPlayer = m_Players.get(0);
     }
 
@@ -74,26 +76,14 @@ public abstract class Game {
     }
 
     public void setPlayers( ) {
-        ArrayList<Player> players = getPlayers();
+        m_Players = new ArrayList<Player>();
         for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++) {
             PlayerData currPlayerData = m_GameInfo.getPlayer(i);
-            players.add(Player.CreatePlayer(currPlayerData.getID(), currPlayerData.getName(), currPlayerData.getColor(), currPlayerData.getType()));
+            m_Players.add(Player.CreatePlayer(currPlayerData.getID(), currPlayerData.getName(), currPlayerData.getColor(), currPlayerData.getType()));
         }
+
+        m_CurrentPlayer = m_Players.get(0);
     }
-
-
-    //abstract void setPlayers();
-
-    //TODO: SETTING PLAYERS ACCORDING TO GAME TYPE- ADVANCED OR BASIC
-
-    //private void setPlayers(){
-
-        //m_Players = new Player[m_GameInfo.getNumOfPlayers()];
-
-        //TODO: function add player everytime a new player is added
-
-        //m_CurrentPlayer = m_Players[0];
-    //
 
     private void setGameType(){
 
@@ -153,7 +143,7 @@ public abstract class Game {
                     randomRow = generateRandomPositionForRandomSquare(boardSize);
                 }
 
-                m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol(Integer.toString(i));
+                initRandomBoardSquare(randomRow, randomCol, j, i);
             }
         }
 
@@ -169,6 +159,8 @@ public abstract class Game {
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol("@");
         m_Board.setMark(m_Board.getSquareInPos(randomRow,randomCol));
     }
+
+    abstract void initRandomBoardSquare(int randomRow, int randomCol, int colorIndex, int data);
 
     private int generateRandomPositionForRandomSquare(int i_BoardSize){
 
@@ -193,45 +185,22 @@ public abstract class Game {
     }
 
     public void loadCurrPlayerToGameInfo() {
-       // m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
+        PlayerData player = new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType());
+        m_GameInfo.setCurrPlayer(player);
     }
 
-   /* public boolean checkIfLegalMove(Player i_Player, int i_Move) {
-        //TODO: change function to check row and col according to the color
-        //TODO: change move to be square instead of int
-        if(m_CurrentPlayer.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            if (m_Board.getSquareInPos(i_Move, m_Board.getMark().getColumn()).getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
-                    || m_Board.getSquareInPos(i_Move, m_Board.getMark().getColumn()).getSquareSymbol().equals("")) {
-                return false;
-            }
-        }
-        else{
-            if (m_Board.getSquareInPos(m_Board.getMark().getRow(), i_Move).getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
-                    || m_Board.getSquareInPos(m_Board.getMark().getRow(), i_Move).getSquareSymbol().equals("")) {
-                return false;
-            }
-        }
-        return true;
-    }*/
+    abstract boolean checkIfLegalMove(Player i_Player, Square i_Move);
 
     public boolean makeMove() {
-
-        //TODO:
-
         playTurn();
         m_NumOfMoves++;
         m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
 
-        boolean gameDone = checkIfGameDone(m_Board.getMark());
+        boolean gameDone = checkIfGameDone();
         return gameDone;
     }
 
-    public boolean checkIfGameDone(Square i_Mark) {
-        boolean gameDone;
-
-        gameDone = m_Board.checkIfGameDone(m_CurrentPlayer.getPlayerType().name());
-        return gameDone;
-    }
+    public abstract boolean checkIfGameDone();
 
     //public abstract void getBoardToPrint();
 

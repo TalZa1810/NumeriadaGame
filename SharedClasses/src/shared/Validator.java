@@ -3,7 +3,9 @@ package shared;
 
 import Generated.GameDescriptor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Validator {
     private GameInfo m_GameInfo;
@@ -47,13 +49,20 @@ public class Validator {
         }
     }
 
-    public void checkRangeForRandomBoard() throws Exception {
+    public void checkRangeForRandomBoard(String i_GameType) throws Exception {
         if(m_GameInfo.getRangeFrom() > m_GameInfo.getRangeTo()){
             throw(new Exception("Invalid file. Illegal range of numbers: FROM is bigger than TO\n"));
         }
 
         if(m_GameInfo.getRangeTo() - m_GameInfo.getRangeFrom() + 1 > (m_GameInfo.getBoardSize() * m_GameInfo.getBoardSize()) - 1){
             throw(new Exception("Invalid file. Range of numbers is bigger than size of board\n"));
+        }
+
+        if(!i_GameType.equals("Basic")) {
+            int amountOfNumbersOfEachNumber = (m_GameInfo.getBoardSize() * m_GameInfo.getBoardSize() - 1) / (m_GameInfo.getRangeTo() - m_GameInfo.getRangeFrom() + 1);
+            if (amountOfNumbersOfEachNumber % m_GameInfo.getNumOfPlayers() != 0) {
+                throw (new Exception("Invalid file. Range of numbers doesn't match number of players(unfair game for some players)\n"));
+            }
         }
     }
 
@@ -75,5 +84,14 @@ public class Validator {
         }
     }
 
-    //TODO: making sure that
+    public void checkValidPlayersID(List<GameDescriptor.Players.Player> players) throws Exception {
+        boolean validIds;
+        Set<Integer> ids = new HashSet<Integer>();
+        for(GameDescriptor.Players.Player p: players){
+            validIds = ids.add(p.getId().intValue());
+            if(!validIds){
+                throw(new Exception("Invalid file. Two players with same ID\n"));
+            }
+        }
+    }
 }

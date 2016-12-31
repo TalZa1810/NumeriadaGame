@@ -44,15 +44,22 @@ public class Square {
 
     public void swapSquare(Square i_markToChange) {
         String symbolTemp;
+        eColor colorTemp;
 
         symbolTemp = i_markToChange.getSquareSymbol();
+        colorTemp = i_markToChange.getColor();
 
         i_markToChange.setSquareSymbol(this.getSquareSymbol());
 
         this.setSquareSymbol(symbolTemp);
+        this.setColor(colorTemp);
     }
 
     public eColor getColor() {
         return m_Color;
+    }
+
+    public void setColor(eColor i_Color) {
+        this.m_Color = i_Color;
     }
 }

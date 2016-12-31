@@ -14,7 +14,6 @@ public class ComputerPlayer extends Player {
 
     @Override
     public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
-        //TODO: make polymorphism work
 
         Random r = new Random();
         boolean hasNumberInColor = false;

@@ -21,6 +21,22 @@ abstract class Player {
         m_PlayerType = i_Type;
     }
 
+    public void setID(int i_ID) {
+        this.m_ID = i_ID;
+    }
+
+    public int getID() {
+        return m_ID;
+    }
+
+    public String getName() {
+        return m_Name;
+    }
+
+    public void setName(String i_Name) {
+        this.m_Name = i_Name;
+    }
+
     public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
 
         if ( i_ChosenSquare != null ){
@@ -59,10 +75,9 @@ abstract class Player {
         return m_PlayerColor;
     }
 
-
     public static Player CreatePlayer(int i_ID, String i_Name, eColor i_Color, ePlayerType i_Type) {
         Player res;
-        if(i_Type.name().equals(ePlayerType.HUMAN.name())){
+        if(i_Type.name().equals(ePlayerType.Human.name())){
             res = new HumanPlayer(i_ID, i_Name, i_Type, i_Color);
         }
         else{

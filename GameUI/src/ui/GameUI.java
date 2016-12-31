@@ -3,6 +3,8 @@ package ui;
 
 import Generated.GameDescriptor;
 import shared.GameInfo;
+import sharedStructures.PlayerData;
+import sharedStructures.SquareData;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -58,8 +60,8 @@ public class GameUI {
         System.out.println("Game was not set. Therefore, there are no statistics.");
     }
 
-    public void announceWinner(int i_Max, String i_Winner) {
-        System.out.println("The winner is the " + i_Winner + " player with " + i_Max + " points!");
+    public void announceWinner(int i_Max, PlayerData i_Winner) {
+        System.out.println("The winner is the " + i_Winner.getName() + " player with " + i_Max + " points!");
     }
 
     public void notifyInvalidSquareChoice() {
@@ -207,17 +209,20 @@ public class GameUI {
         System.out.println("Column player score: " + m_GameInfo.getColPlayerScore());
     }
 
-    public int getMoveFromUser() {
+    public SquareData getMoveFromUser() {
         Scanner s = new Scanner(System.in);
         int choice;
+        SquareData chosenSquare = new SquareData();
 
         System.out.print("Please enter your choice in ");
 
         if (m_GameInfo.getCurrPlayer().equals("row")) {
             System.out.println("row " + (m_GameInfo.getMarkerRow() + 1));
+            chosenSquare.setRow(m_GameInfo.getMarkerRow());
         }
         else {
             System.out.println("column " + (m_GameInfo.getMarkerCol() + 1));
+            chosenSquare.setCol(m_GameInfo.getMarkerCol());
         }
 
         choice = s.nextInt();
@@ -227,8 +232,14 @@ public class GameUI {
             choice = s.nextInt();
         }
 
+        if (m_GameInfo.getCurrPlayer().equals("row")) {
+            chosenSquare.setCol(choice);
+        }
+        else {
+            chosenSquare.setRow(choice);
+        }
 
-        return choice;
+        return chosenSquare;
     }
 
     public GameDescriptor fromXmlFileToObject() {

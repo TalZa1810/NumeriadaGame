@@ -2,6 +2,7 @@ package shared;
 
 
 import sharedStructures.PlayerData;
+import sharedStructures.SquareData;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class GameInfo {
     private int m_RangeTo;
     private int m_BoardSize;
     private String[][] m_Board;
-    private String m_CurrPlayer;
+    private PlayerData m_CurrPlayer;
     private int m_NumOfMoves;
     private String m_Path;
 
@@ -26,12 +27,33 @@ public class GameInfo {
     private String m_BoardStructure;
     private int m_GameMode;
     private ArrayList<PlayerData> m_Players = new ArrayList<PlayerData>();
-    private  int m_NumOfPlayers;
+    private  int m_NumOfPlayers = 0;
     private int m_ChosenRow;
     private int m_ChosenCol;
 
     public String getPath() {
         return m_Path;
+    }
+
+    public void addPlayerData(PlayerData i_Player){
+        m_Players.add(i_Player);
+        m_NumOfPlayers++;
+    }
+
+    public int getChosenCol() {
+        return m_ChosenCol;
+    }
+
+    public int getChosenRow() {
+        return m_ChosenRow;
+    }
+
+    public void setChosenCol(int i_ChosenCol) {
+        this.m_ChosenCol = i_ChosenCol;
+    }
+
+    public void setChosenRow(int i_ChosenRow) {
+        this.m_ChosenRow = i_ChosenRow;
     }
 
     public PlayerData getPlayer(int i_Index){
@@ -138,7 +160,7 @@ public class GameInfo {
         this.m_RangeTo = i_setRangeTo;
     }
 
-    public void setCurrPlayer(String i_CurrPlayer) {
+    public void setCurrPlayer(PlayerData i_CurrPlayer) {
         this.m_CurrPlayer = i_CurrPlayer;
     }
 
@@ -167,10 +189,6 @@ public class GameInfo {
         }
     }
 
-    //public void setMove(int i_Move) {
-    //    this.m_Move = i_Move;
-    //}
-
     public void initBoard(){
         m_Board = new String[m_BoardSize][m_BoardSize];
         for(String[] row : m_Board) {
@@ -184,7 +202,12 @@ public class GameInfo {
         }
     }
 
-    public String getCurrPlayer() {
+    public PlayerData getCurrPlayer() {
         return m_CurrPlayer;
+    }
+
+    public void setMove(SquareData i_Square) {
+        setChosenRow(i_Square.getRow());
+        setChosenCol(i_Square.getCol());
     }
 }
