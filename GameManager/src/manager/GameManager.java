@@ -168,7 +168,7 @@ public class GameManager {
 
         m_GameLogic.getCurrMarkerPosition();
         m_GameLogic.loadCurrPlayerToGameInfo();
-        if(m_GameInfo.getCurrPlayer().equals("row") || (!m_GameInfo.getCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
+        //if(m_GameInfo.getCurrPlayer().equals("row") || (!m_GameInfo.getCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
             m_GameInfo.setMove(m_GameUI.getMoveFromUser());
             validInput = m_GameLogic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
 
@@ -177,7 +177,7 @@ public class GameManager {
                 m_GameInfo.setMove(m_GameUI.getMoveFromUser());
                 validInput = m_GameLogic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
             }
-        }
+        //}
         boolean gameDone = m_GameLogic.makeMove();
         //getBoard();
         if(gameDone){
