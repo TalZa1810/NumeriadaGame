@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.TilePane?>
 
-<TilePane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="830.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1">
+<TilePane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="830.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx_ui.Controller">
    <children>
       <BorderPane prefHeight="358.0" prefWidth="830.0">
          <top>
@@ -22,13 +22,13 @@
                   <Region prefHeight="28.0" prefWidth="218.0" />
                   <HBox prefHeight="28.0" prefWidth="459.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Browse File" />
+                        <Button mnemonicParsing="false" onAction="#browseFileButtonClicked" prefHeight="25.0" prefWidth="94.0" text="Browse File" />
                         <Label prefHeight="17.0" prefWidth="67.0" text="File Path">
                            <HBox.margin>
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <Button disable="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Load File">
+                        <Button disable="true" mnemonicParsing="false" onAction="#fromXmlFileToObject" prefHeight="25.0" prefWidth="91.0" text="Load File">
                            <HBox.margin>
                               <Insets left="180.0" />
                            </HBox.margin>
