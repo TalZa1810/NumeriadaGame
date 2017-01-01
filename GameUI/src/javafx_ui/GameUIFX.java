@@ -5,11 +5,11 @@ import Generated.GameDescriptor;
 import javafx.stage.FileChooser;
 import shared.GameInfo;
 
-public class Controller {
+public class GameUIFX {
 
     private GameInfo m_GameInfo;
 
-    public Controller(GameInfo[] i_GameInfoWrapper){
+    public GameUIFX(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
     }
 

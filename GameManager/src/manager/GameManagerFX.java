@@ -1,6 +1,6 @@
 package manager;
 import Generated.GameDescriptor;
-import javafx_ui.Controller;
+import javafx_ui.GameUIFX;
 import logic.AdvancedGame;
 import logic.BasicGame;
 import logic.Game;
@@ -19,7 +19,7 @@ public class GameManagerFX {
 
     private GameDescriptor m_GameDescriptor = new GameDescriptor();
     private Validator m_Validator;
-    private Controller m_GameUI;
+    private GameUIFX m_GameUI;
     private Game m_GameLogic;
     private GameInfo m_GameInfo = new GameInfo();
     private GameInfo[] m_GameInfoWrapper = new GameInfo[1];
@@ -27,7 +27,7 @@ public class GameManagerFX {
 
     public GameManagerFX() {
         m_GameInfoWrapper[0] = m_GameInfo;
-        m_GameUI = new Controller(m_GameInfoWrapper);
+        m_GameUI = new GameUIFX(m_GameInfoWrapper);
     }
 
     public void run() {
