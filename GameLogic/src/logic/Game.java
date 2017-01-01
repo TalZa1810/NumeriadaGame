@@ -1,6 +1,7 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.MoveData;
 import sharedStructures.PlayerData;
 
 import java.util.ArrayList;
@@ -19,9 +20,10 @@ public abstract class Game {
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
     private eGameMode m_GameMode;
-
     private Square m_ChosenSquare= new Square();
 
+    private ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
+    private ArrayList<MoveData> m_MarkMoves = new ArrayList<MoveData>();
 
     //Timer
     int m_secondsPassed = 0;
@@ -225,10 +227,15 @@ public abstract class Game {
     }
 
     public void playTurn(){
+        m_MarkMoves.add(new MoveData(m_Board.getMark().getRow(), m_Board.getMark().getColumn()));
+        m_PlayersMoves.add(new MoveData(m_ChosenSquare.getRow(), m_ChosenSquare.getColumn()));
         m_CurrentPlayer.playTurn( m_Board, m_GameInfo , m_ChosenSquare);
-
-
     }
+
+    public abstract void playerQuit();
+
+    //TODO: show prev\next move (the question is previos to what, do we hold a member of current move.
+    //TODO: also todo is to block option to make move when only showing the previous moves
 
      /*
     private void playComputerTurn(Player i_Player) {

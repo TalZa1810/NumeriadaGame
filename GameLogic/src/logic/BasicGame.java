@@ -67,6 +67,11 @@ public class BasicGame extends Game {
         return gameDone;
     }
 
+    @Override
+    public void playerQuit() {
+        //nothing special to update here. Abstract method is for advanced game
+    }
+
     /*@Override
     //used only in ex1, can be erased for ex2 and 3
     public void getBoardToPrint() {

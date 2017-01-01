@@ -68,4 +68,19 @@ public class AdvancedGame extends Game {
 
         return gameDone;
     }
+
+    @Override
+    public void playerQuit() {
+        Square square = new Square();
+        eColor currPlayerColor = m_CurrentPlayer.getPlayerColor();
+        for(int row = 0; row < m_Board.getBoardSize(); row++){
+            for(int col = 0; col < m_Board.getBoardSize(); col++){
+                square = m_Board.getSquareInPos(row,col);
+                if(square.getColor() == currPlayerColor){
+                    square.setSquareSymbol("");
+                    square.setColor(eColor.DEFAULT);
+                }
+            }
+        }
+    }
 }
