@@ -12,7 +12,7 @@ public class GameInfo {
     private int m_RangeFrom;
     private int m_RangeTo;
     private int m_BoardSize;
-    private String[][] m_Board;
+    private SquareData[][] m_Board;
     private PlayerData m_CurrPlayer;
     private int m_NumOfMoves;
     private String m_Path;
@@ -76,7 +76,7 @@ public class GameInfo {
         return m_NumOfPlayers;
     }
 
-    public String getValueInPos(int i_Row, int i_Col) {
+    public SquareData getValueInPos(int i_Row, int i_Col) {
         return m_Board[i_Row][i_Col];
     }
 
@@ -96,7 +96,7 @@ public class GameInfo {
         return m_MarkerRow;
     }
 
-    public String[][] getBoard() {
+    public SquareData[][] getBoard() {
         return m_Board;
     }
 
@@ -144,7 +144,7 @@ public class GameInfo {
         this.m_RowPlayerScore = i_RowPlayerScore;
     }
 
-    public void setBoard(String[][] i_Board) {
+    public void setBoard(SquareData[][] i_Board) {
         this.m_Board = i_Board;
     }
 
@@ -181,7 +181,7 @@ public class GameInfo {
     }
 
     public void setSquare(int i_Row, int i_Col, String i_Str) {
-        m_Board[i_Row][i_Col] = i_Str;
+        m_Board[i_Row][i_Col].setValue(i_Str);
 
         if(i_Str.equals("@")) {
             m_MarkerRow = i_Row;
@@ -190,14 +190,14 @@ public class GameInfo {
     }
 
     public void initBoard(){
-        m_Board = new String[m_BoardSize][m_BoardSize];
-        for(String[] row : m_Board) {
-            row = new String[m_BoardSize];
+        m_Board = new SquareData[m_BoardSize][m_BoardSize];
+        for(SquareData[] row : m_Board) {
+            row = new SquareData[m_BoardSize];
         }
 
         for(int i = 0; i < m_BoardSize; i++){
             for(int j = 0; j < m_BoardSize; j++){
-                m_Board[i][j] = "";
+                m_Board[i][j].setValue("");
             }
         }
     }

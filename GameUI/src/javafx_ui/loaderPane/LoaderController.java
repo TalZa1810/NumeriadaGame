@@ -1,12 +1,27 @@
 package javafx_ui.loaderPane;
 
-/**
- * Created by Tal on 1/4/2017.
- */
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+
 public class LoaderController {
+    @FXML
+    private TextField fileNameTextBox;
 
+    @FXML
+    private Button browseFileButton;
 
-    private void browseButtonOnAction(){
+    @FXML
+    private Button loadFileButton;
+
+    @FXML
+    void browseButtonClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void loadFileClicked(ActionEvent event) {
 
     }
 }
