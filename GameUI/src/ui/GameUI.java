@@ -98,7 +98,7 @@ public class GameUI {
 
     public void showBoard() {
         int boardSize = m_GameInfo.getBoardSize();
-        String[][] board = m_GameInfo.getBoard();
+        SquareData[][] board = m_GameInfo.getBoard();
         final int numOfSpaces = 5;
         String strOfSpaces = "";
         int row = 0;
@@ -144,7 +144,7 @@ public class GameUI {
                     }
                     else {
                         if (!board[row][col].equals("")) {
-                            String strToPrint = getStrOfValue(board[row][col]);
+                            String strToPrint = getStrOfValue(board[row][col].getValue());
                             System.out.print(strToPrint + "|");
                         }
                         else {

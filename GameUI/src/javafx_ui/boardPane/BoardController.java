@@ -14,7 +14,6 @@ import javafx.scene.paint.Paint;
 import shared.GameInfo;
 import sharedStructures.SquareData;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -40,7 +39,7 @@ public class BoardController implements Initializable{
         setBoardData();
     }
 
-    private void setBoardData() {
+    public void setBoardData() {
         SquareData[][] board;
         board = m_GameInfo.getBoard();
         Button button = new Button();
@@ -56,8 +55,13 @@ public class BoardController implements Initializable{
         }
     }
 
-    private Button getButtonInPos(int row, int col) throws IOException{
-        return (Button)boardGrid.getChildren().get(row * m_GameInfo.getBoardSize() + col);
+    private Button getButtonInPos(int row, int col){
+        Button button = null;
+        try {
+            button = (Button) boardGrid.getChildren().get(row * m_GameInfo.getBoardSize() + col);
+        } catch(Exception e){}
+
+        return button;
     }
 
     public BoardController(BorderPane i_GamePane ){
@@ -65,9 +69,7 @@ public class BoardController implements Initializable{
         URL boardFXML = getClass().getResource(BOARD_FXML_RESOURCE);
         loader.setLocation(boardFXML);
 
-        i_GamePane.setCenter(new ScrollPane());
-
-
+        i_GamePane.setCenter(boardScrollPane);
     }
 
     private void initializeRows() {

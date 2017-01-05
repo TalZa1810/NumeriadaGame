@@ -3,6 +3,7 @@ package shared;
 
 import sharedStructures.PlayerData;
 import sharedStructures.SquareData;
+import sharedStructures.eColor;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -180,8 +181,9 @@ public class GameInfo {
         this.m_BoardStructure = i_BoardStructure;
     }
 
-    public void setSquare(int i_Row, int i_Col, String i_Str) {
+    public void setSquare(int i_Row, int i_Col, String i_Str, int i_Color) {
         m_Board[i_Row][i_Col].setValue(i_Str);
+        m_Board[i_Row][i_Col].setColor(eColor.values()[i_Color]);
 
         if(i_Str.equals("@")) {
             m_MarkerRow = i_Row;
@@ -191,13 +193,9 @@ public class GameInfo {
 
     public void initBoard(){
         m_Board = new SquareData[m_BoardSize][m_BoardSize];
-        for(SquareData[] row : m_Board) {
-            row = new SquareData[m_BoardSize];
-        }
-
         for(int i = 0; i < m_BoardSize; i++){
             for(int j = 0; j < m_BoardSize; j++){
-                m_Board[i][j].setValue("");
+                m_Board[i][j] = new SquareData(i, j, eColor.DEFAULT, "");
             }
         }
     }

@@ -5,24 +5,18 @@ package javafx_ui.program;
  */
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx_ui.gamePane.GameController;
 
-import java.io.IOException;
 import java.net.URL;
-
-import static java.lang.System.exit;
 
 public class Main extends Application {
     private static final String GAME_SCENE_FXML_PATH = "/javafx_ui/gamePane/MainWindow.fxml";
 
     public static void main(String args[]) throws Exception{
-
         launch(args);
-        exit(0);
     }
 
     @Override
@@ -37,7 +31,7 @@ public class Main extends Application {
         gameController.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("Numberiada");
-        Scene scene = new Scene(root, 500, 500);
+        Scene scene = new Scene(root, 603, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -1,5 +1,5 @@
 package sharedStructures;
 
 public enum eColor {
-    BLUE, RED, GREEN, WHITE, BLACK, PURPLE, DEFAULT
+    BLUE, RED, GREEN, PINK, ORANGE, PURPLE, DEFAULT
 }

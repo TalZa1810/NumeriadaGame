@@ -6,12 +6,7 @@ import logic.BasicGame;
 import logic.Game;
 import shared.GameInfo;
 import shared.Validator;
-import sharedStructures.PlayerData;
-import sharedStructures.eColor;
-import sharedStructures.ePlayerType;
 import ui.GameUI;
-
-import java.util.List;
 
 public class GameManager {
 
@@ -50,7 +45,7 @@ public class GameManager {
                             m_GameDescriptor = m_GameUI.fromXmlFileToObject();
                             if(m_GameDescriptor != null) {
                                 fileLoaded = true;
-                                getDataFromGeneratedXML();
+                                //getDataFromGeneratedXML();
                                 m_GameUI.fileWasLoadedSuccessfully();
                             }
                         }
@@ -76,10 +71,10 @@ public class GameManager {
 
                             //advanced or basic
                             if (m_GameInfo.getGameType().equals("Basic") ) {
-                                m_GameLogic = new BasicGame(m_GameInfoWrapper);
+                                m_GameLogic = new BasicGame(m_GameInfo);
                             }
                             else{
-                                m_GameLogic = new AdvancedGame(m_GameInfoWrapper);
+                                m_GameLogic = new AdvancedGame(m_GameInfo);
                             }
 
                             getBoard();
@@ -200,7 +195,7 @@ public class GameManager {
         //m_GameLogic.getBoardToPrint(); //copy board to char[][] in game info object or do something so the ui knows the board and implement to string for square and to string for board
         m_GameUI.showBoard(); //will use the game info object (a game ui data member) in the game ui
     }
-
+/*
     private void getDataFromGeneratedXML() throws Exception {
         m_Validator = new Validator(m_GameInfo);
 
@@ -264,5 +259,5 @@ public class GameManager {
         else {
             m_Validator.checkRangeForRandomBoard(m_GameInfo.getGameType());
         }
-    }
+    }*/
 }

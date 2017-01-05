@@ -10,6 +10,8 @@ import java.util.Set;
 public class Validator {
     private GameInfo m_GameInfo;
 
+    public Validator() {}
+
     public Validator(GameInfo i_GameInfo){
         m_GameInfo = i_GameInfo;
     }
@@ -93,5 +95,9 @@ public class Validator {
                 throw(new Exception("Invalid file. Two players with same ID\n"));
             }
         }
+    }
+
+    public boolean checkValidPath(String i_Path) {
+        return i_Path.endsWith(".xml");
     }
 }

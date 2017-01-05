@@ -8,9 +8,9 @@ public class BasicGame extends Game {
         COLUMN_PLAYER, ROW_PLAYER
     }
 
-    public BasicGame(GameInfo[] i_GameInfoWrapper) {
+    public BasicGame(GameInfo i_GameInfo) {
 
-        super(i_GameInfoWrapper);
+        super(i_GameInfo);
     }
 
     @Override

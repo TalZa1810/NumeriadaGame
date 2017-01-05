@@ -1,4 +1,4 @@
-package manager;
+/*package manager;
 import Generated.GameDescriptor;
 import logic.AdvancedGame;
 import logic.BasicGame;
@@ -266,3 +266,4 @@ public class GameManagerFX{
 
 
 }
+*/

@@ -20,7 +20,6 @@ public abstract class Game {
 
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
-    private eGameMode m_GameMode;
     private Square m_ChosenSquare= new Square();
 
     private ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
@@ -57,14 +56,18 @@ public abstract class Game {
         Explicit, Random
     }
 
-    public Game(GameInfo[] i_GameInfoWrapper){
-        m_GameInfo = i_GameInfoWrapper[0];
+    public Game(GameInfo i_GameInfo){
+        m_GameInfo = i_GameInfo;
         setGameType();
         setPlayers();
         setBoard();
-        m_GameMode = eGameMode.values()[m_GameInfo.getGameMode() - 1]; //two human players or human against computer
         initBoard();
         m_CurrentPlayer = m_Players.get(0);
+        m_GameInfo.setCurrPlayer(getCurrPlayerData());
+    }
+
+    private PlayerData getCurrPlayerData() {
+        return new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType());
     }
 
     private  void setBoard(){
@@ -182,6 +185,7 @@ public abstract class Game {
                 SquareData s = m_GameInfo.getValueInPos(i,j);
                 if(!m_GameInfo.getValueInPos(i,j).equals("")){
                     m_Board.getSquareInPos(i,j).setSquareSymbol(m_GameInfo.getValueInPos(i,j).getValue());
+                    m_Board.getSquareInPos(i,j).setColor(m_GameInfo.getValueInPos(i,j).getColor());
                 }
             }
         }
