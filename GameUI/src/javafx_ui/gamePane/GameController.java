@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
  */
 public class GameController implements Initializable{
     //TODO: add all panes to border pane
+
     @FXML
     private BorderPane m_MainWindow;
 

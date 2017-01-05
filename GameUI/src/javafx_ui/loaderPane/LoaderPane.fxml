@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx_ui.loaderPane.LoaderController">
+   <children>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label text="Numberiada">
+               <font>
+                  <Font name="Copperplate Gothic Bold" size="46.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="5.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="71.0" text="File name">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="fileNameTextBox" prefHeight="25.0" prefWidth="457.0">
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
+            </TextField>
+            <Button fx:id="browseFileButton" mnemonicParsing="false" onAction="#browseButtonClicked" text="Browse" />
+            <Button fx:id="loadFileButton" mnemonicParsing="false" onAction="#loadFileClicked" prefHeight="25.0" prefWidth="54.0" text="Load" />
+         </children>
+         <opaqueInsets>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>
