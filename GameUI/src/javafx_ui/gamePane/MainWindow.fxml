@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="m_MainWindow" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx_ui.gamePane.GameController">
    <top>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
@@ -32,12 +32,12 @@
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="pathTextBox" prefHeight="25.0" prefWidth="375.0" />
-                  <Button fx:id="browseButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Browse">
+                  <Button fx:id="browseButton" mnemonicParsing="false" onAction="#browseButtonClicked" prefHeight="25.0" prefWidth="71.0" text="Browse">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="loadButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Load">
+                  <Button fx:id="loadButton" disable="true" mnemonicParsing="false" onAction="#loadButtonClicked" prefHeight="25.0" prefWidth="68.0" text="Load">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -51,6 +51,6 @@
       </VBox>
    </top>
    <bottom>
-      <TextArea fx:id="statusBarText" prefHeight="63.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <TextArea fx:id="statusBarText" editable="false" prefHeight="63.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
