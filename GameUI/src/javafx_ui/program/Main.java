@@ -7,8 +7,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import manager.GameManagerFX;
+import javafx_ui.gamePane.GameController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,6 +17,7 @@ import java.net.URL;
 import static java.lang.System.exit;
 
 public class Main extends Application {
+    private static final String GAME_SCENE_FXML_PATH = "/javafx_ui/gamePane/MainWindow.fxml";
 
     public static void main(String args[]) throws Exception{
 
@@ -23,32 +25,21 @@ public class Main extends Application {
         exit(0);
     }
 
-    private static final String GAME_SCENE_FXML_PATH = "";
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-        GameManagerFX manager = new GameManagerFX();
 
-        FXMLLoader fxmlLoader = getGameFXMLLoader();
-        Parent gameRoot = getGameRoot(fxmlLoader);
-        PlayersController playersController = getPlayersController(fxmlLoader, primaryStage);
+        FXMLLoader loader = new FXMLLoader();
+        URL mainFXML = getClass().getResource(GAME_SCENE_FXML_PATH);
+        loader.setLocation(mainFXML);
+        BorderPane root = loader.load();
 
-        Scene scene = new Scene(gameRoot, 500, 400);
+        GameController gameController = loader.getController();
+        gameController.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("Numberiada");
+        Scene scene = new Scene(root, 500, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private FXMLLoader getGameFXMLLoader() {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        URL url = getClass().getResource(GAME_SCENE_FXML_PATH);
-        fxmlLoader.setLocation(url);
-        return fxmlLoader;
-    }
-
-    private Parent getGameRoot(FXMLLoader fxmlLoader) throws IOException {
-        return (Parent) fxmlLoader.load(fxmlLoader.getLocation().openStream());
     }
 }
 

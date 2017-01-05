@@ -2,9 +2,11 @@ package javafx_ui.boardPane;
 
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -12,6 +14,7 @@ import javafx.scene.paint.Paint;
 import shared.GameInfo;
 import sharedStructures.SquareData;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -19,6 +22,8 @@ public class BoardController implements Initializable{
     private GameInfo m_GameInfo;
     private final double k_CellSize = 20;
     private final double k_ButtonSize = 18.5;
+
+    private  static  final String BOARD_FXML_RESOURCE = "/boardPane/BoardPane.fxml";
 
     @FXML
     private ScrollPane boardScrollPane;
@@ -51,12 +56,18 @@ public class BoardController implements Initializable{
         }
     }
 
-    private Button getButtonInPos(int row, int col) {
+    private Button getButtonInPos(int row, int col) throws IOException{
         return (Button)boardGrid.getChildren().get(row * m_GameInfo.getBoardSize() + col);
     }
 
-    public BoardController(GameInfo i_GameInfo){
-        m_GameInfo = i_GameInfo;
+    public BoardController(BorderPane i_GamePane ){
+        FXMLLoader loader = new FXMLLoader();
+        URL boardFXML = getClass().getResource(BOARD_FXML_RESOURCE);
+        loader.setLocation(boardFXML);
+
+        i_GamePane.setCenter(new ScrollPane());
+
+
     }
 
     private void initializeRows() {
