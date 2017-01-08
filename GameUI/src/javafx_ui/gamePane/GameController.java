@@ -61,18 +61,16 @@ public class GameController implements Initializable{
     private SimpleIntegerProperty[] m_PlayersID;
     private SimpleStringProperty[] m_PlayersNames;
     private SimpleIntegerProperty[] m_PlayersScore;
-    private SimpleStringProperty m_FilePath = new SimpleStringProperty();
-    private SimpleStringProperty m_StatusBar = new SimpleStringProperty();
+    private SimpleStringProperty m_FilePath = new SimpleStringProperty("");
+    private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
     private SimpleBooleanProperty m_isFileSelected = new SimpleBooleanProperty();
 
-    public GameController(){
-        m_Board = new BoardController(m_MainWindow);
+    public void initializeGameController(BorderPane i_GameLayout){
+        m_MainWindow = i_GameLayout;
+        m_Board = new BoardController();
         m_Players = new PlayersController();
-        m_FilePath.setValue("");
-        m_StatusBar.setValue("");
         createBoardPane();
         createPlayersPane();
-
     }
 
     private void createGame() {
@@ -140,7 +138,6 @@ public class GameController implements Initializable{
             Node playersPane = loader.load();
 
             PlayersController playersController = loader.getController();
-            m_MainWindow.getChildren().add(playersPane);
             m_MainWindow.setRight(playersPane);
         } catch(IOException e){}
     }
@@ -152,8 +149,7 @@ public class GameController implements Initializable{
         try {
             Node boardPane = loader.load();
 
-            PlayersController boardController = loader.getController();
-            m_MainWindow.getChildren().add(boardPane);
+            BoardController boardController = loader.getController();
             m_MainWindow.setCenter(boardPane);
         } catch(IOException e){}
     }

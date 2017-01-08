@@ -1,9 +1,15 @@
 package javafx_ui.boardPane;
 
 
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.jmx.MXNodeAlgorithm;
+import com.sun.javafx.jmx.MXNodeAlgorithmContext;
+import com.sun.javafx.sg.prism.NGNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +23,7 @@ import sharedStructures.SquareData;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BoardController implements Initializable{
+public class BoardController extends Node implements Initializable{
     private GameInfo m_GameInfo;
     private final double k_CellSize = 20;
     private final double k_ButtonSize = 18.5;
@@ -64,14 +70,6 @@ public class BoardController implements Initializable{
         return button;
     }
 
-    public BoardController(BorderPane i_GamePane ){
-        FXMLLoader loader = new FXMLLoader();
-        URL boardFXML = getClass().getResource(BOARD_FXML_RESOURCE);
-        loader.setLocation(boardFXML);
-
-        i_GamePane.setCenter(boardScrollPane);
-    }
-
     private void initializeRows() {
         for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
             boardGrid.addRow(i);
@@ -102,5 +100,25 @@ public class BoardController implements Initializable{
                 boardGrid.add(button, col, row);
             }
         }
+    }
+
+    @Override
+    protected NGNode impl_createPeer() {
+        return null;
+    }
+
+    @Override
+    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
+        return null;
+    }
+
+    @Override
+    protected boolean impl_computeContains(double localX, double localY) {
+        return false;
+    }
+
+    @Override
+    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
+        return null;
     }
 }

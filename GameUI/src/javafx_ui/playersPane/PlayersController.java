@@ -1,12 +1,18 @@
 package javafx_ui.playersPane;
 
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.jmx.MXNodeAlgorithm;
+import com.sun.javafx.jmx.MXNodeAlgorithmContext;
+import com.sun.javafx.sg.prism.NGNode;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
-public class PlayersController {
+public class PlayersController extends Node {
 
     @FXML
     private ScrollPane playerPane;
@@ -77,4 +83,23 @@ public class PlayersController {
     @FXML
     private RadioButton player6IDRadioButton;
 
+    @Override
+    protected NGNode impl_createPeer() {
+        return null;
+    }
+
+    @Override
+    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
+        return null;
+    }
+
+    @Override
+    protected boolean impl_computeContains(double localX, double localY) {
+        return false;
+    }
+
+    @Override
+    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
+        return null;
+    }
 }

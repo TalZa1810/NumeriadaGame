@@ -25,13 +25,15 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader();
         URL mainFXML = getClass().getResource(GAME_SCENE_FXML_PATH);
         loader.setLocation(mainFXML);
-        BorderPane root = loader.load();
+        BorderPane gameLayout = loader.load();
 
-        GameController gameController = loader.getController();
+        GameController gameController = new GameController();
+        gameController.initializeGameController(gameLayout);
+        gameController = loader.getController();
         gameController.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("Numberiada");
-        Scene scene = new Scene(root, 603, 500);
+        Scene scene = new Scene(gameLayout, 603, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
