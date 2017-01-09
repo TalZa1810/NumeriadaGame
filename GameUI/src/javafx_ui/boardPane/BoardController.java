@@ -7,12 +7,9 @@ import com.sun.javafx.jmx.MXNodeAlgorithm;
 import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -20,10 +17,7 @@ import javafx.scene.paint.Paint;
 import shared.GameInfo;
 import sharedStructures.SquareData;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class BoardController extends Node implements Initializable{
+public class BoardController extends Node /*implements Initializable*/{
     private GameInfo m_GameInfo;
     private final double k_CellSize = 20;
     private final double k_ButtonSize = 18.5;
@@ -36,8 +30,13 @@ public class BoardController extends Node implements Initializable{
     @FXML
     private GridPane boardGrid;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public BoardController(GameInfo[] i_GameInfoWrapper){
+        m_GameInfo = i_GameInfoWrapper[0];
+        initialize();
+    }
+
+    /*@Override*/
+    public void initialize(/*URL location, ResourceBundle resources*/) {
         boardGrid = new GridPane();
         initializeRows();
         initializeCols();
@@ -52,10 +51,11 @@ public class BoardController extends Node implements Initializable{
 
         for(int row = 0; row < m_GameInfo.getBoardSize(); row++){
             for(int col = 0; col < m_GameInfo.getBoardSize(); col++){
-                if(!board[row][col].equals("")) {
+                if(!board[row][col].getValue().equals("")) {
                     button = getButtonInPos(row, col);
                     button.setText(board[row][col].getValue());
                     button.setTextFill(Paint.valueOf(board[row][col].getColor().name()));
+                    //TODO: there is a color that doesn't exist. need to find it
                 }
             }
         }
@@ -72,28 +72,25 @@ public class BoardController extends Node implements Initializable{
 
     private void initializeRows() {
         for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
-            boardGrid.addRow(i);
+            RowConstraints row = new RowConstraints();
+            row.setPercentHeight(k_CellSize);
+            boardGrid.getRowConstraints().add(row);
         }
-
-        RowConstraints row = new RowConstraints();
-        row.setPercentHeight(k_CellSize);
-        boardGrid.getRowConstraints().add(row);
     }
 
     private void initializeCols() {
         for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
-            boardGrid.addColumn(i);
+            ColumnConstraints col = new ColumnConstraints();
+            col.setPercentWidth(k_CellSize);
+            boardGrid.getColumnConstraints().add(col);
         }
-
-        ColumnConstraints col = new ColumnConstraints();
-        col.setPercentWidth(k_CellSize);
-        boardGrid.getColumnConstraints().add(col);
     }
 
     private void initializeButtons(){
         Button button;
         for(int row = 0; row < m_GameInfo.getBoardSize(); row++){
             for(int col = 0; col < m_GameInfo.getBoardSize(); col++){
+                //TODO: add onAction function for each button (boardCellPressed)
                 button = new Button();
                 button.setPrefSize(k_ButtonSize,k_ButtonSize);
                 button.setText("");

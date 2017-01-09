@@ -56,8 +56,8 @@ public abstract class Game {
         Explicit, Random
     }
 
-    public Game(GameInfo i_GameInfo){
-        m_GameInfo = i_GameInfo;
+    public Game(GameInfo[] i_GameInfoWrapper){
+        m_GameInfo = i_GameInfoWrapper[0];
         setGameType();
         setPlayers();
         setBoard();

@@ -45,6 +45,7 @@ public class GameController implements Initializable{
     private GameDescriptor m_GameDescriptor = new GameDescriptor();
     private Notifier m_Notifier = new Notifier();
     private GameInfo m_GameInfo = new GameInfo();
+    private GameInfo[] m_GameInfoWrapper = new GameInfo[1];
     private Game m_Logic;
 
     @FXML private BorderPane m_MainWindow;
@@ -65,20 +66,24 @@ public class GameController implements Initializable{
     private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
     private SimpleBooleanProperty m_isFileSelected = new SimpleBooleanProperty();
 
+    public GameController() {
+        m_GameInfoWrapper[0] = m_GameInfo;
+    }
+
     public void initializeGameController(BorderPane i_GameLayout){
         m_MainWindow = i_GameLayout;
-        m_Board = new BoardController();
-        m_Players = new PlayersController();
+        m_Board = new BoardController(m_GameInfoWrapper);
+        m_Players = new PlayersController(m_GameInfoWrapper);
         createBoardPane();
         createPlayersPane();
     }
 
     private void createGame() {
         if(m_GameInfo.getGameType().equals("Basic")){
-            m_Logic = new BasicGame(m_GameInfo);
+            m_Logic = new BasicGame(m_GameInfoWrapper);
         }
         else{
-            m_Logic = new AdvancedGame(m_GameInfo);
+            m_Logic = new AdvancedGame(m_GameInfoWrapper);
         }
     }
 
@@ -117,6 +122,7 @@ public class GameController implements Initializable{
             if(m_GameDescriptor != null) {
                 getDataFromGeneratedXML();
                 m_StatusBar.set(m_Notifier.fileWasLoadedSuccessfully());
+                initializeGameController(m_MainWindow);
                 createGame();
                 m_Board.setBoardData();
             }
@@ -142,7 +148,7 @@ public class GameController implements Initializable{
         } catch(IOException e){}
     }
 
-    private void createBoardPane(){} {
+    private void createBoardPane() {
         FXMLLoader loader = new FXMLLoader();
         URL mainFXML = getClass().getResource(BOARD_SCENE_FXML_PATH);
         loader.setLocation(mainFXML);
@@ -151,7 +157,8 @@ public class GameController implements Initializable{
 
             BoardController boardController = loader.getController();
             m_MainWindow.setCenter(boardPane);
-        } catch(IOException e){}
+        } catch(IOException e){
+        }
     }
 
     public GameDescriptor fromXmlFileToObject() {

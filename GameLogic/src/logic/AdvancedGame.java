@@ -7,9 +7,9 @@ public class AdvancedGame extends Game {
 
 
 
-    public AdvancedGame(GameInfo i_GameInfo) {
+    public AdvancedGame(GameInfo[] i_GameInfoWrapper) {
 
-        super(i_GameInfo);
+        super(i_GameInfoWrapper);
     }
 
     @Override

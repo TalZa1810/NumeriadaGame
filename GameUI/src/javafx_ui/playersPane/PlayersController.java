@@ -11,8 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import shared.GameInfo;
 
 public class PlayersController extends Node {
+
+    private GameInfo m_GameInfo;
 
     @FXML
     private ScrollPane playerPane;
@@ -101,5 +104,9 @@ public class PlayersController extends Node {
     @Override
     public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
         return null;
+    }
+
+    public PlayersController(GameInfo[] i_GameInfoWrapper){
+        m_GameInfo = i_GameInfoWrapper[0];
     }
 }

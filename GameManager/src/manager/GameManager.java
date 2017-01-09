@@ -71,10 +71,10 @@ public class GameManager {
 
                             //advanced or basic
                             if (m_GameInfo.getGameType().equals("Basic") ) {
-                                m_GameLogic = new BasicGame(m_GameInfo);
+                                m_GameLogic = new BasicGame(m_GameInfoWrapper);
                             }
                             else{
-                                m_GameLogic = new AdvancedGame(m_GameInfo);
+                                m_GameLogic = new AdvancedGame(m_GameInfoWrapper);
                             }
 
                             getBoard();

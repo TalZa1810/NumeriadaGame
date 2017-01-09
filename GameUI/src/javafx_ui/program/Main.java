@@ -28,7 +28,6 @@ public class Main extends Application {
         BorderPane gameLayout = loader.load();
 
         GameController gameController = new GameController();
-        gameController.initializeGameController(gameLayout);
         gameController = loader.getController();
         gameController.setPrimaryStage(primaryStage);
 
