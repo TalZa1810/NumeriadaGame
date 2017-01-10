@@ -5,8 +5,6 @@ import sharedStructures.eColor;
 
 public class AdvancedGame extends Game {
 
-
-
     public AdvancedGame(GameInfo[] i_GameInfoWrapper) {
 
         super(i_GameInfoWrapper);
@@ -78,7 +76,8 @@ public class AdvancedGame extends Game {
                 square = m_Board.getSquareInPos(row,col);
                 if(square.getColor() == currPlayerColor){
                     square.setSquareSymbol("");
-                    square.setColor(eColor.DEFAULT);
+                    //square.setColor(eColor.DEFAULT);
+                    square.setColor(eColor.BLACK);
                 }
             }
         }

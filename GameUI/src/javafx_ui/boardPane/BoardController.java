@@ -55,7 +55,6 @@ public class BoardController extends Node /*implements Initializable*/{
                     button = getButtonInPos(row, col);
                     button.setText(board[row][col].getValue());
                     button.setTextFill(Paint.valueOf(board[row][col].getColor().name()));
-                    //TODO: there is a color that doesn't exist. need to find it
                 }
             }
         }

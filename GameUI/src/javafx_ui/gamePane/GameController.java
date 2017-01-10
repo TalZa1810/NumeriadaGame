@@ -95,6 +95,7 @@ public class GameController implements Initializable{
 
     }
 
+
     @FXML
     public void browseButtonClicked(){
         FileChooser fileChooser = new FileChooser();
@@ -153,13 +154,17 @@ public class GameController implements Initializable{
         URL mainFXML = getClass().getResource(BOARD_SCENE_FXML_PATH);
         loader.setLocation(mainFXML);
         try {
+            //TODO: SHOULD CHECK FXML FILE
             Node boardPane = loader.load();
 
             BoardController boardController = loader.getController();
             m_MainWindow.setCenter(boardPane);
         } catch(IOException e){
+            e.printStackTrace();
         }
+
     }
+
 
     public GameDescriptor fromXmlFileToObject() {
         return unmarshalFile(m_FilePath.getValue());
@@ -189,6 +194,7 @@ public class GameController implements Initializable{
         m_Validator = new Validator(m_GameInfo);
 
         m_GameInfo.setGameType(m_GameDescriptor.getGameType());
+        //TODO: RESULT IS UNDEFINED
         m_Validator.checkBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
@@ -204,6 +210,7 @@ public class GameController implements Initializable{
     }
 
     private void getPlayersFromXML() throws Exception {
+        //TODO: RETURNS NULL
         List<GameDescriptor.Players.Player> players = m_GameDescriptor.getPlayers().getPlayer();
         m_Validator.checkValidPlayersID(players);
 
@@ -243,7 +250,8 @@ public class GameController implements Initializable{
 
             m_Validator.checkValidMarkerLocation(m_GameDescriptor.getBoard().getStructure().getSquares().getMarker());
             GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
-            m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@", eColor.DEFAULT.ordinal());
+            //m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@", eColor.DEFAULT.ordinal());
+            m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@", eColor.BLACK.ordinal());
         }
         else {
             m_Validator.checkRangeForRandomBoard(m_GameInfo.getGameType());

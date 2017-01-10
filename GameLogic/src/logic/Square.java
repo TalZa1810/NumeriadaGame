@@ -19,7 +19,8 @@ public class Square {
         m_Column = 0;
         m_Row = 0;
         m_SquareSymbol = "";
-        m_Color = eColor.DEFAULT;
+        //m_Color = eColor.DEFAULT;
+        m_Color = eColor.BLACK;
     }
 
     //GET METHODS

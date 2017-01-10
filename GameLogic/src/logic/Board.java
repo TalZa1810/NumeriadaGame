@@ -50,7 +50,8 @@ public class Board {
         int i = 0;
         for (ArrayList<Square> row : m_Board) {
             for(int j = 0; j < m_BoardSize; j++) {
-                row.add(new Square(i, j, "", eColor.DEFAULT));
+                //row.add(new Square(i, j, "", eColor.DEFAULT));
+                row.add(new Square(i, j, "", eColor.BLACK));
             }
             i++;
         }
@@ -72,7 +73,8 @@ public class Board {
     }
 
     public void createMarker(int i_MarkerRow, int i_MarkerCol) {
-        m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@", eColor.DEFAULT);
+        //m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@", eColor.DEFAULT);
+        m_Mark = new Square(i_MarkerRow, i_MarkerCol, "@", eColor.BLACK);
     }
 
     public int getToRange(){
