@@ -162,7 +162,6 @@ public class GameController implements Initializable{
         } catch(IOException e){
             e.printStackTrace();
         }
-
     }
 
 
