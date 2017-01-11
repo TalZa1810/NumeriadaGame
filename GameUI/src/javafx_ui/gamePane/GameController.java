@@ -39,7 +39,7 @@ public class GameController implements Initializable{
     //TODO: add all panes to border pane
 
     private static final String PLAYERS_SCENE_FXML_PATH = "/javafx_ui/playersPane/PlayersPane.fxml";
-    private static final String BOARD_SCENE_FXML_PATH = "/javafx_ui/boardPane/BoardPane.fxml";
+    private static final String BOARD_SCENE_FXML_PATH = "/javafx_ui/boardPane/BoardPane3.fxml";
     private static final int MAX_PLAYERS = 6;
     private Validator m_Validator = new Validator();
     private GameDescriptor m_GameDescriptor = new GameDescriptor();
@@ -72,8 +72,10 @@ public class GameController implements Initializable{
 
     public void initializeGameController(BorderPane i_GameLayout){
         m_MainWindow = i_GameLayout;
-        m_Board = new BoardController(m_GameInfoWrapper);
-        m_Players = new PlayersController(m_GameInfoWrapper);
+        m_Board = new BoardController();
+        m_Players = new PlayersController();
+        m_Players.initializeController(m_GameInfoWrapper);
+        m_Board.initializeController(m_GameInfoWrapper);
         createBoardPane();
         createPlayersPane();
     }
@@ -123,9 +125,8 @@ public class GameController implements Initializable{
             if(m_GameDescriptor != null) {
                 getDataFromGeneratedXML();
                 m_StatusBar.set(m_Notifier.fileWasLoadedSuccessfully());
-                initializeGameController(m_MainWindow);
                 createGame();
-                m_Board.setBoardData();
+                initializeGameController(m_MainWindow);
             }
         }
         catch(Exception e){
@@ -146,7 +147,9 @@ public class GameController implements Initializable{
 
             PlayersController playersController = loader.getController();
             m_MainWindow.setRight(playersPane);
-        } catch(IOException e){}
+        } catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void createBoardPane() {
@@ -158,6 +161,7 @@ public class GameController implements Initializable{
             Node boardPane = loader.load();
 
             BoardController boardController = loader.getController();
+            m_Board.initializeBoard();
             m_MainWindow.setCenter(boardPane);
         } catch(IOException e){
             e.printStackTrace();

@@ -10,44 +10,56 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import shared.GameInfo;
 import sharedStructures.SquareData;
 
 public class BoardController extends Node /*implements Initializable*/{
     private GameInfo m_GameInfo;
-    private final double k_CellSize = 20;
-    private final double k_ButtonSize = 18.5;
-
-    private  static  final String BOARD_FXML_RESOURCE = "/boardPane/BoardPane.fxml";
+    private final double k_CellSize = 30;
+    private HBox[] m_GridRows;
 
     @FXML
     private ScrollPane boardScrollPane;
 
     @FXML
+    private BorderPane boardSection;
+
+    @FXML
     private GridPane boardGrid;
 
-    public BoardController(GameInfo[] i_GameInfoWrapper){
-        m_GameInfo = i_GameInfoWrapper[0];
-        initialize();
+    @FXML
+    private VBox boardActionButtons;
+
+    @FXML
+    private Button previousButton;
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Button makeMoveButton;
+
+    public BoardController() {
     }
 
-    /*@Override*/
-    public void initialize(/*URL location, ResourceBundle resources*/) {
-        boardGrid = new GridPane();
-        initializeRows();
+    public void initializeController(GameInfo[] i_GameInfoWrapper){
+        m_GameInfo = i_GameInfoWrapper[0];
+    }
+
+    public void initializeBoard() {
         initializeCols();
+        initializeRows();
         initializeButtons();
         setBoardData();
+        boardSection.setCenter(boardGrid);
     }
 
     public void setBoardData() {
         SquareData[][] board;
         board = m_GameInfo.getBoard();
-        Button button = new Button();
+        Button button;
 
         for(int row = 0; row < m_GameInfo.getBoardSize(); row++){
             for(int col = 0; col < m_GameInfo.getBoardSize(); col++){
@@ -62,27 +74,32 @@ public class BoardController extends Node /*implements Initializable*/{
 
     private Button getButtonInPos(int row, int col){
         Button button = null;
+        HBox wantedRow;
         try {
-            button = (Button) boardGrid.getChildren().get(row * m_GameInfo.getBoardSize() + col);
+            wantedRow = m_GridRows[row];
+            button = (Button)wantedRow.getChildren().get(col);
         } catch(Exception e){}
 
         return button;
     }
 
     private void initializeRows() {
+        m_GridRows = new HBox[m_GameInfo.getBoardSize()];
+        for(int i = 0; i < m_GameInfo.getBoardSize(); i++){
+            m_GridRows[i] = new HBox();
+        }
+
         for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
-            RowConstraints row = new RowConstraints();
-            row.setPercentHeight(k_CellSize);
-            boardGrid.getRowConstraints().add(row);
+            RowConstraints rowContainer = new RowConstraints();
+            rowContainer.setPercentHeight(k_CellSize);
+            boardGrid.getRowConstraints().add(rowContainer);
         }
     }
 
     private void initializeCols() {
-        for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
-            ColumnConstraints col = new ColumnConstraints();
-            col.setPercentWidth(k_CellSize);
-            boardGrid.getColumnConstraints().add(col);
-        }
+        ColumnConstraints col = new ColumnConstraints();
+        col.setPercentWidth(k_CellSize*m_GameInfo.getBoardSize());
+        boardGrid.getColumnConstraints().add(col);
     }
 
     private void initializeButtons(){
@@ -91,10 +108,14 @@ public class BoardController extends Node /*implements Initializable*/{
             for(int col = 0; col < m_GameInfo.getBoardSize(); col++){
                 //TODO: add onAction function for each button (boardCellPressed)
                 button = new Button();
-                button.setPrefSize(k_ButtonSize,k_ButtonSize);
+                button.setPrefSize(k_CellSize,k_CellSize);
                 button.setText("");
-                boardGrid.add(button, col, row);
+                m_GridRows[row].getChildren().add(col, button);
             }
+        }
+
+        for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
+            boardGrid.add(m_GridRows[i], 0, i);
         }
     }
 

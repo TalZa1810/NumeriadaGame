@@ -13,7 +13,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import shared.GameInfo;
 
-public class PlayersController extends Node {
+public class PlayersController extends Node{
 
     private GameInfo m_GameInfo;
 
@@ -106,7 +106,9 @@ public class PlayersController extends Node {
         return null;
     }
 
-    public PlayersController(GameInfo[] i_GameInfoWrapper){
+    public PlayersController() {}
+
+    public void initializeController(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
     }
 }
