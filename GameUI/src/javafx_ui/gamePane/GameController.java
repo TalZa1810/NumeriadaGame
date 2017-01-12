@@ -6,13 +6,15 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx_ui.boardPane.BoardController;
@@ -22,21 +24,17 @@ import logic.BasicGame;
 import logic.Game;
 import shared.GameInfo;
 import shared.Validator;
-import sharedStructures.PlayerData;
-import sharedStructures.eColor;
-import sharedStructures.ePlayerType;
+import sharedStructures.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable{
-    //TODO: add all panes to border pane
 
     private static final String PLAYERS_SCENE_FXML_PATH = "/javafx_ui/playersPane/PlayersPane.fxml";
     private static final String BOARD_SCENE_FXML_PATH = "/javafx_ui/boardPane/BoardPane3.fxml";
@@ -47,17 +45,49 @@ public class GameController implements Initializable{
     private GameInfo m_GameInfo = new GameInfo();
     private GameInfo[] m_GameInfoWrapper = new GameInfo[1];
     private Game m_Logic;
-
-    @FXML private BorderPane m_MainWindow;
-    @FXML private TextField pathTextBox;
-    @FXML private Button browseButton;
-    @FXML private Button loadButton;
-    @FXML private TextArea statusBarText;
-
     private BoardController m_Board;
     private PlayersController m_Players;
     private Stage m_PrimaryStage;
 
+    @FXML    private BorderPane m_MainWindow;
+    @FXML    private TextField pathTextBox;
+    @FXML    private javafx.scene.control.Button browseButton;
+    @FXML    private javafx.scene.control.Button loadButton;
+    @FXML    private TextArea statusBarText;
+    @FXML    private javafx.scene.control.Button makeMoveButton;
+    @FXML    private javafx.scene.control.Button prevMoveButton;
+    @FXML    private javafx.scene.control.Button nextMoveButton;
+    @FXML    private GridPane boardGrid;
+    @FXML    private HBox player1;
+    @FXML    private Label playerColor1;
+    @FXML    private Label playerID1;
+    @FXML    private Label playerName1;
+    @FXML    private Label playerScore1;
+    @FXML    private HBox player2;
+    @FXML    private Label playerColor2;
+    @FXML    private Label playerID2;
+    @FXML    private Label playerName2;
+    @FXML    private Label playerScore2;
+    @FXML    private HBox player3;
+    @FXML    private Label playerColor3;
+    @FXML    private Label playerID3;
+    @FXML    private Label playerName3;
+    @FXML    private Label playerScore3;
+    @FXML    private HBox player4;
+    @FXML    private Label playerColor4;
+    @FXML    private Label playerID4;
+    @FXML    private Label playerName4;
+    @FXML    private Label playerScore4;
+    @FXML    private HBox player5;
+    @FXML    private Label playerColor5;
+    @FXML    private Label playerID5;
+    @FXML    private Label playerName5;
+    @FXML    private Label playerScore5;
+    @FXML    private HBox player6;
+    @FXML    private Label playerColor6;
+    @FXML    private Label playerID6;
+    @FXML    private Label playerName6;
+    @FXML    private Label playerScore6;
 
     private SimpleIntegerProperty[] m_PlayersID;
     private SimpleStringProperty[] m_PlayersNames;
@@ -71,13 +101,8 @@ public class GameController implements Initializable{
     }
 
     public void initializeGameController(BorderPane i_GameLayout){
-        m_MainWindow = i_GameLayout;
-        m_Board = new BoardController();
-        m_Players = new PlayersController();
-        m_Players.initializeController(m_GameInfoWrapper);
-        m_Board.initializeController(m_GameInfoWrapper);
-        createBoardPane();
-        createPlayersPane();
+        m_Board = new BoardController(m_GameInfoWrapper, boardGrid);
+        m_Players = new PlayersController(m_GameInfoWrapper);
     }
 
     private void createGame() {
@@ -138,6 +163,7 @@ public class GameController implements Initializable{
         m_PrimaryStage = i_PrimaryStage;
     }
 
+    /*
     private void createPlayersPane(){
         FXMLLoader loader = new FXMLLoader();
         URL mainFXML = getClass().getResource(PLAYERS_SCENE_FXML_PATH);
@@ -166,7 +192,7 @@ public class GameController implements Initializable{
         } catch(IOException e){
             e.printStackTrace();
         }
-    }
+    }*/
 
 
     public GameDescriptor fromXmlFileToObject() {
@@ -258,6 +284,50 @@ public class GameController implements Initializable{
         }
         else {
             m_Validator.checkRangeForRandomBoard(m_GameInfo.getGameType());
+        }
+    }
+
+    private void makeMove() {
+        boolean validInput;
+
+        m_Logic.getCurrMarkerPosition();
+        //m_Logic.loadCurrPlayerToGameInfo();
+        m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton(), m_Board.getChosenButtonPos()));
+        validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
+
+        while(!validInput){
+            m_Notifier.notifyInvalidSquareChoice();
+            m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton(), m_Board.getChosenButtonPos()));
+            validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
+        }
+
+        boolean gameDone = m_Logic.makeMove();
+        //getBoard();
+        if(gameDone){
+            gameDoneProcedure();
+        }
+    }
+
+    private SquareData getDataFromChoseButton(Button chosenButton, MoveData chosenButtonPos) {
+        int row = chosenButtonPos.getRow();
+        int col = chosenButtonPos.getCol();
+        eColor color = toEColor(chosenButton.getTextFill());
+        String value =  chosenButton.getText();
+
+        return new SquareData(row, col, color, value);
+    }
+
+    private eColor toEColor(Paint textFill) {
+        return eColor.valueOf(textFill.toString());
+    }
+
+    private void gameDoneProcedure(){
+        m_Notifier.notifyGameDone();
+        if(m_GameInfo.getRowPlayerScore() != m_GameInfo.getColPlayerScore()) {
+            m_Notifier.announceWinner(Math.max(m_GameInfo.getRowPlayerScore(), m_GameInfo.getColPlayerScore()), m_GameInfo.getCurrPlayer());
+        }
+        else{
+            m_Notifier.announceTie(m_GameInfo.getRowPlayerScore());
         }
     }
 }

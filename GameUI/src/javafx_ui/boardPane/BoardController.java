@@ -1,59 +1,47 @@
 package javafx_ui.boardPane;
 
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import shared.GameInfo;
+import sharedStructures.MoveData;
 import sharedStructures.SquareData;
 
-public class BoardController extends Node /*implements Initializable*/{
+//import sharedStructures.Button;
+
+public class BoardController{
     private GameInfo m_GameInfo;
-    private final double k_CellSize = 30;
+    private final double k_CellSize = 35;
     private HBox[] m_GridRows;
+    private GridPane m_BoardGrid;
+    private Button m_ChosenButton;
+    private MoveData m_ChosenButtonPos;
 
-    @FXML
-    private ScrollPane boardScrollPane;
-
-    @FXML
-    private BorderPane boardSection;
-
-    @FXML
-    private GridPane boardGrid;
-
-    @FXML
-    private VBox boardActionButtons;
-
-    @FXML
-    private Button previousButton;
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
-    private Button makeMoveButton;
-
-    public BoardController() {
+    public MoveData getChosenButtonPos() {
+        return m_ChosenButtonPos;
     }
 
-    public void initializeController(GameInfo[] i_GameInfoWrapper){
+    public void setChosenButtonPos(MoveData i_ChosenButtonPos) {
+        this.m_ChosenButtonPos = i_ChosenButtonPos;
+    }
+
+    public Button getChosenButton() {
+        return m_ChosenButton;
+    }
+
+    public BoardController(GameInfo[] i_GameInfoWrapper, GridPane i_BoardGrid){
         m_GameInfo = i_GameInfoWrapper[0];
+        m_BoardGrid = i_BoardGrid;
+        initializeBoard();
     }
 
     public void initializeBoard() {
-        initializeCols();
         initializeRows();
         initializeButtons();
         setBoardData();
-        boardSection.setCenter(boardGrid);
     }
 
     public void setBoardData() {
@@ -92,50 +80,33 @@ public class BoardController extends Node /*implements Initializable*/{
         for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
             RowConstraints rowContainer = new RowConstraints();
             rowContainer.setPercentHeight(k_CellSize);
-            boardGrid.getRowConstraints().add(rowContainer);
+            m_BoardGrid.getRowConstraints().add(rowContainer);
         }
     }
 
-    private void initializeCols() {
-        ColumnConstraints col = new ColumnConstraints();
-        col.setPercentWidth(k_CellSize*m_GameInfo.getBoardSize());
-        boardGrid.getColumnConstraints().add(col);
-    }
-
     private void initializeButtons(){
-        Button button;
         for(int row = 0; row < m_GameInfo.getBoardSize(); row++){
             for(int col = 0; col < m_GameInfo.getBoardSize(); col++){
-                //TODO: add onAction function for each button (boardCellPressed)
-                button = new Button();
+                final Button button = new Button();
                 button.setPrefSize(k_CellSize,k_CellSize);
+                button.setMinSize(k_CellSize,k_CellSize);
+                button.setMaxSize(k_CellSize,k_CellSize);
+                final Integer fRow = new Integer(row);
+                final Integer fCol = new Integer(col);
+                button.setOnAction((event) -> buttonClicked(button, fRow, fCol));
                 button.setText("");
                 m_GridRows[row].getChildren().add(col, button);
             }
         }
 
         for(int i = 0; i < m_GameInfo.getBoardSize(); i++) {
-            boardGrid.add(m_GridRows[i], 0, i);
+            m_BoardGrid.add(m_GridRows[i], 0, i);
         }
     }
 
-    @Override
-    protected NGNode impl_createPeer() {
-        return null;
-    }
-
-    @Override
-    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
-        return null;
-    }
-
-    @Override
-    protected boolean impl_computeContains(double localX, double localY) {
-        return false;
-    }
-
-    @Override
-    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
-        return null;
+    private void buttonClicked(Button button, int row, int col) {
+        m_ChosenButton = button;
+        m_ChosenButtonPos.setCol(col);
+        m_ChosenButtonPos.setRow(row);
     }
 }

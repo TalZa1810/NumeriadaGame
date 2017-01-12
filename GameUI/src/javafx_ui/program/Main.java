@@ -13,7 +13,7 @@ import javafx_ui.gamePane.GameController;
 import java.net.URL;
 
 public class Main extends Application {
-    private static final String GAME_SCENE_FXML_PATH = "/javafx_ui/gamePane/MainWindow.fxml";
+    private static final String GAME_SCENE_FXML_PATH = "/javafx_ui/gamePane/MainWindow2.fxml";
 
     public static void main(String args[]) throws Exception{
         launch(args);

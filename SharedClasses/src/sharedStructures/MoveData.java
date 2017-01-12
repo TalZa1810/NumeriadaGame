@@ -24,7 +24,7 @@ public class MoveData {
         this.m_Col = i_Col;
     }
 
-    public void setM_Row(int i_Row) {
+    public void setRow(int i_Row) {
         this.m_Row = i_Row;
     }
 }

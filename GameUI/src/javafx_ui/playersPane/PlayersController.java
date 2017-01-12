@@ -106,9 +106,8 @@ public class PlayersController extends Node{
         return null;
     }
 
-    public PlayersController() {}
 
-    public void initializeController(GameInfo[] i_GameInfoWrapper){
+    public PlayersController(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
     }
 }
