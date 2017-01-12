@@ -41,6 +41,10 @@ public class GameInfo {
         m_NumOfPlayers++;
     }
 
+    public ArrayList<PlayerData> getPlayers() {
+        return m_Players;
+    }
+
     public int getChosenCol() {
         return m_ChosenCol;
     }

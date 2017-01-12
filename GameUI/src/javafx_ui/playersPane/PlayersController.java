@@ -11,103 +11,75 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx_ui.gamePane.GameController;
 import shared.GameInfo;
+import sharedStructures.PlayerData;
 
-public class PlayersController extends Node{
+
+import java.util.ArrayList;
+
+public class PlayersController {
 
     private GameInfo m_GameInfo;
+    private GameController m_GameController;
 
-    @FXML
-    private ScrollPane playerPane;
+    private ArrayList<PlayerData> m_Players;
 
-    @FXML
-    private GridPane playrersGrid;
+    private Label[] m_PlayersNamesLabels = new Label[6];
+    private Label[] m_PlayersIDsLabels = new Label[6];
+    private Label[] m_PlayersScoreLables = new Label[6];
 
-    @FXML
-    private Label idLabel;
-
-    @FXML
-    private Label nameLabel;
-
-    @FXML
-    private Label scoreLabel;
-
-    @FXML
-    private Label player1NameLabel;
-
-    @FXML
-    private Label player2NameLabel;
-
-    @FXML
-    private Label player3NameLabel;
-
-    @FXML
-    private Label player4NameLabel;
-
-    @FXML
-    private Label player5NameLabel;
-
-    @FXML
-    private Label player6NameLabel;
-
-    @FXML
-    private Label player1ScoreLabel;
-
-    @FXML
-    private Label player2ScoreLabel;
-
-    @FXML
-    private Label player3ScoreLabel;
-
-    @FXML
-    private Label player4ScoreLabel;
-
-    @FXML
-    private Label player5ScoreLabel;
-
-    @FXML
-    private Label player6ScoreLabel;
-
-    @FXML
-    private RadioButton player1IDRadioButton;
-
-    @FXML
-    private RadioButton player2IDRadioButton;
-
-    @FXML
-    private RadioButton player3IDRadioButton;
-
-    @FXML
-    private RadioButton player4IDRadioButton;
-
-    @FXML
-    private RadioButton player5IDRadioButton;
-
-    @FXML
-    private RadioButton player6IDRadioButton;
-
-    @Override
-    protected NGNode impl_createPeer() {
-        return null;
-    }
-
-    @Override
-    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
-        return null;
-    }
-
-    @Override
-    protected boolean impl_computeContains(double localX, double localY) {
-        return false;
-    }
-
-    @Override
-    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
-        return null;
-    }
-
-
-    public PlayersController(GameInfo[] i_GameInfoWrapper){
+    public PlayersController(GameInfo[] i_GameInfoWrapper, GameController i_GameController){
         m_GameInfo = i_GameInfoWrapper[0];
+        m_Players = m_GameInfo.getPlayers();
+        m_GameController = i_GameController;
+    }
+
+    public void setPlayers(){
+
+        int i = 0;
+
+        for (PlayerData player : m_Players) {
+
+            setPlayerName(m_PlayersNamesLabels[i] , player);
+            setPlayerScore(m_PlayersIDsLabels[i] , player);
+            setPlayerID(m_PlayersScoreLables[i], player);
+            i++;
+        }
+    }
+
+    //TODO: SHOULD CREATE SIMILAR METHOD FOR IDS, SCORE AND COLOR
+
+    private void collectingPlayersNamesLabels(){
+        m_PlayersNamesLabels[1]= m_GameController.getPlayerName1();
+        m_PlayersNamesLabels[2]= m_GameController.getPlayerName2();
+        m_PlayersNamesLabels[3]= m_GameController.getPlayerName3();
+        m_PlayersNamesLabels[4]= m_GameController.getPlayerName4();
+        m_PlayersNamesLabels[5]= m_GameController.getPlayerName5();
+        m_PlayersNamesLabels[6]= m_GameController.getPlayerName6();
+    }
+
+
+
+    public void setPlayerName(Label i_PlayerNameLabel , PlayerData i_PlayerData ){
+        i_PlayerNameLabel.setText(i_PlayerData.getName());
+    }
+
+    //TODO: BINDING
+    public void setPlayerScore(Label i_PlayerScoreLabel , PlayerData i_PlayerData){
+        i_PlayerScoreLabel.setText();
+    }
+
+    public  void setPlayerID(Label i_PlayerIDLabel , PlayerData i_PlayerData){
+        Integer id = i_PlayerData.getID();
+        i_PlayerIDLabel.setText(id.toString());
+    }
+
+    public void setPlayerColor(){
+
+    }
+
+    public void setPlayerType(){
+
     }
 }

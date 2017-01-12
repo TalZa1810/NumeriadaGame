@@ -49,6 +49,7 @@ public class GameController implements Initializable{
     private PlayersController m_Players;
     private Stage m_PrimaryStage;
 
+
     @FXML    private BorderPane m_MainWindow;
     @FXML    private TextField pathTextBox;
     @FXML    private javafx.scene.control.Button browseButton;
@@ -92,9 +93,13 @@ public class GameController implements Initializable{
     private SimpleIntegerProperty[] m_PlayersID;
     private SimpleStringProperty[] m_PlayersNames;
     private SimpleIntegerProperty[] m_PlayersScore;
+
     private SimpleStringProperty m_FilePath = new SimpleStringProperty("");
     private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
     private SimpleBooleanProperty m_isFileSelected = new SimpleBooleanProperty();
+
+
+
 
     public GameController() {
         m_GameInfoWrapper[0] = m_GameInfo;
@@ -162,6 +167,9 @@ public class GameController implements Initializable{
     public void setPrimaryStage(Stage i_PrimaryStage) {
         m_PrimaryStage = i_PrimaryStage;
     }
+
+
+
 
     /*
     private void createPlayersPane(){
@@ -329,5 +337,53 @@ public class GameController implements Initializable{
         else{
             m_Notifier.announceTie(m_GameInfo.getRowPlayerScore());
         }
+    }
+
+
+    public Label getPlayerName1() {
+        return playerName1;
+    }
+
+    public Label getPlayerName2() {
+        return playerName2;
+    }
+    public Label getPlayerName3() {
+        return playerName3;
+    }
+
+    public Label getPlayerName4() {
+        return playerName4;
+    }
+
+    public Label getPlayerName5() {
+        return playerName5;
+    }
+
+    public Label getPlayerName6() {
+        return playerName6;
+    }
+
+    public void setPlayerName1(Label playerName1) {
+        this.playerName1 = playerName1;
+    }
+
+    public void setPlayerName2(Label playerName2) {
+        this.playerName2 = playerName2;
+    }
+
+    public void setPlayerName3(Label playerName3) {
+        this.playerName3 = playerName3;
+    }
+
+    public void setPlayerName4(Label playerName4) {
+        this.playerName4 = playerName4;
+    }
+
+    public void setPlayerName5(Label playerName5) {
+        this.playerName5 = playerName5;
+    }
+
+    public void setPlayerName6(Label playerName6) {
+        this.playerName6 = playerName6;
     }
 }
