@@ -90,9 +90,8 @@ public class GameController implements Initializable{
     @FXML    private Label playerName6;
     @FXML    private Label playerScore6;
 
-    private SimpleIntegerProperty[] m_PlayersID;
-    private SimpleStringProperty[] m_PlayersNames;
-    private SimpleIntegerProperty[] m_PlayersScore;
+
+    private SimpleIntegerProperty[] m_PlayersScore = new SimpleIntegerProperty[6];
 
     private SimpleStringProperty m_FilePath = new SimpleStringProperty("");
     private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
@@ -253,6 +252,8 @@ public class GameController implements Initializable{
             player.setName(p.getName());
             player.setID(p.getId().intValue());
             player.setColor(eColor.values()[p.getColor() - 1]);
+            //INITIALIZING PLAYERS SCORE TO ZEO
+            player.setScore(0);
 
             if(p.getType().equals(ePlayerType.Human.name())){
                 player.setType(ePlayerType.Human);
@@ -336,7 +337,7 @@ public class GameController implements Initializable{
         }
     }
 
-
+    //Names Labels Geters
     public Label getPlayerName1() {
         return playerName1;
     }
@@ -360,27 +361,57 @@ public class GameController implements Initializable{
         return playerName6;
     }
 
-    public void setPlayerName1(Label playerName1) {
-        this.playerName1 = playerName1;
+    //IDs Labels Geters
+    public Label getPlayerID1() {
+        return playerID1;
     }
 
-    public void setPlayerName2(Label playerName2) {
-        this.playerName2 = playerName2;
+    public Label getPlayerID2() {
+        return playerID2;
     }
 
-    public void setPlayerName3(Label playerName3) {
-        this.playerName3 = playerName3;
+    public Label getPlayerID3() {
+        return playerID3;
     }
 
-    public void setPlayerName4(Label playerName4) {
-        this.playerName4 = playerName4;
+    public Label getPlayerID4() {
+        return playerID4;
     }
 
-    public void setPlayerName5(Label playerName5) {
-        this.playerName5 = playerName5;
+    public Label getPlayerID5() {
+        return playerID5;
     }
 
-    public void setPlayerName6(Label playerName6) {
-        this.playerName6 = playerName6;
+    public Label getPlayerID6() {
+        return playerID6;
+    }
+
+    //Score Labels Geters
+    public Label getPlayerScore1() {
+        return playerScore1;
+    }
+
+    public Label getPlayerScore2() {
+        return playerScore2;
+    }
+
+    public Label getPlayerScore3() {
+        return playerScore3;
+    }
+
+    public Label getPlayerScore4() {
+        return playerScore4;
+    }
+
+    public Label getPlayerScore5() {
+        return playerScore5;
+    }
+
+    public Label getPlayerScore6() {
+        return playerScore6;
+    }
+
+    public SimpleIntegerProperty[] getPlayersScore() {
+        return m_PlayersScore;
     }
 }

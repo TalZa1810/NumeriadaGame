@@ -67,7 +67,7 @@ public abstract class Game {
     }
 
     private PlayerData getCurrPlayerData() {
-        return new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType());
+        return new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType(), m_CurrentPlayer.getPlayerScore());
     }
 
     private  void setBoard(){
@@ -192,7 +192,7 @@ public abstract class Game {
     }
 
     public void loadCurrPlayerToGameInfo() {
-        PlayerData player = new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType());
+        PlayerData player = new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType(), m_CurrentPlayer.getPlayerScore());
         m_GameInfo.setCurrPlayer(player);
     }
 
