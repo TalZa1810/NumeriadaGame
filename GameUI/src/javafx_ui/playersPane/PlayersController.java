@@ -15,7 +15,6 @@ import javafx_ui.gamePane.GameController;
 import shared.GameInfo;
 import sharedStructures.PlayerData;
 
-
 import java.util.ArrayList;
 
 public class PlayersController {
@@ -33,6 +32,10 @@ public class PlayersController {
         m_GameInfo = i_GameInfoWrapper[0];
         m_Players = m_GameInfo.getPlayers();
         m_GameController = i_GameController;
+
+        collectingPlayersNamesLabels();
+        setPlayers();
+
     }
 
     public void setPlayers(){
@@ -42,7 +45,7 @@ public class PlayersController {
         for (PlayerData player : m_Players) {
 
             setPlayerName(m_PlayersNamesLabels[i] , player);
-            setPlayerScore(m_PlayersIDsLabels[i] , player);
+            //setPlayerScore(m_PlayersIDsLabels[i] , player);
             setPlayerID(m_PlayersScoreLables[i], player);
             i++;
         }
@@ -51,12 +54,12 @@ public class PlayersController {
     //TODO: SHOULD CREATE SIMILAR METHOD FOR IDS, SCORE AND COLOR
 
     private void collectingPlayersNamesLabels(){
-        m_PlayersNamesLabels[1]= m_GameController.getPlayerName1();
-        m_PlayersNamesLabels[2]= m_GameController.getPlayerName2();
-        m_PlayersNamesLabels[3]= m_GameController.getPlayerName3();
-        m_PlayersNamesLabels[4]= m_GameController.getPlayerName4();
-        m_PlayersNamesLabels[5]= m_GameController.getPlayerName5();
-        m_PlayersNamesLabels[6]= m_GameController.getPlayerName6();
+        m_PlayersNamesLabels[0]= m_GameController.getPlayerName1();
+        m_PlayersNamesLabels[1]= m_GameController.getPlayerName2();
+        m_PlayersNamesLabels[2]= m_GameController.getPlayerName3();
+        m_PlayersNamesLabels[3]= m_GameController.getPlayerName4();
+        m_PlayersNamesLabels[4]= m_GameController.getPlayerName5();
+        m_PlayersNamesLabels[5]= m_GameController.getPlayerName6();
     }
 
 
@@ -67,7 +70,7 @@ public class PlayersController {
 
     //TODO: BINDING
     public void setPlayerScore(Label i_PlayerScoreLabel , PlayerData i_PlayerData){
-        i_PlayerScoreLabel.setText();
+        //i_PlayerScoreLabel.setText();
     }
 
     public  void setPlayerID(Label i_PlayerIDLabel , PlayerData i_PlayerData){

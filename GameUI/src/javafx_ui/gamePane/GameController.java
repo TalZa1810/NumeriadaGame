@@ -99,15 +99,13 @@ public class GameController implements Initializable{
     private SimpleBooleanProperty m_isFileSelected = new SimpleBooleanProperty();
 
 
-
-
     public GameController() {
         m_GameInfoWrapper[0] = m_GameInfo;
     }
 
     public void initializeGameController(BorderPane i_GameLayout){
         m_Board = new BoardController(m_GameInfoWrapper, boardGrid);
-        m_Players = new PlayersController(m_GameInfoWrapper);
+        m_Players = new PlayersController(m_GameInfoWrapper, this);
     }
 
     private void createGame() {
@@ -124,7 +122,6 @@ public class GameController implements Initializable{
         pathTextBox.textProperty().bind(Bindings.format("%s", m_FilePath ));
         loadButton.disableProperty().bind(m_isFileSelected.not());
         statusBarText.textProperty().bind(Bindings.format("%s", m_StatusBar));
-
     }
 
 
