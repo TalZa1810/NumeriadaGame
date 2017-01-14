@@ -1,8 +1,5 @@
 package sharedStructures;
 
-/**
- * Created by Tal on 1/1/2017.
- */
 public class MoveData {
     private int m_Row;
     private int m_Col;
