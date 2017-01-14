@@ -1,6 +1,7 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.PlayerData;
 import sharedStructures.eColor;
 import sharedStructures.ePlayerType;
 
@@ -38,22 +39,12 @@ abstract class Player {
     }
 
     public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
-
+        //TODO: i chosen square doesn't get the values
         if ( i_ChosenSquare != null ){
             addToPlayerScore(Integer.parseInt(i_ChosenSquare.getSquareSymbol()));
             i_Board.changeMarker(i_Board.getMark(), i_ChosenSquare);
         }
     }
-
-
-
-   /* String getEPlayerTypeAsString(){
-        if (m_PlayerType == BasicGame.ePlayerType.COLUMN_PLAYER){
-            return ("column");
-        }
-
-        return ("row");
-    }*/
 
     ePlayerType getPlayerType() {
         return m_PlayerType;
@@ -75,15 +66,19 @@ abstract class Player {
         return m_PlayerColor;
     }
 
-    public static Player CreatePlayer(int i_ID, String i_Name, eColor i_Color, ePlayerType i_Type) {
+    public static Player CreatePlayer(PlayerData i_Player) {
         Player res;
-        if(i_Type.name().equals(ePlayerType.Human.name())){
-            res = new HumanPlayer(i_ID, i_Name, i_Type, i_Color);
+        if(i_Player.getType().name().equals(ePlayerType.Human.name())){
+            res = new HumanPlayer(i_Player.getID(), i_Player.getName(), i_Player.getType(), i_Player.getColor());
         }
         else{
-            res = new ComputerPlayer(i_ID, i_Name, i_Type, i_Color);
+            res = new ComputerPlayer(i_Player.getID(), i_Player.getName(), i_Player.getType(), i_Player.getColor());
         }
 
         return res;
+    }
+
+    public eColor getColor() {
+        return m_PlayerColor;
     }
 }

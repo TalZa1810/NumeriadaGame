@@ -91,9 +91,7 @@ public class BoardController{
                 button.setPrefSize(k_CellSize,k_CellSize);
                 button.setMinSize(k_CellSize,k_CellSize);
                 button.setMaxSize(k_CellSize,k_CellSize);
-                final Integer fRow = new Integer(row);
-                final Integer fCol = new Integer(col);
-                button.setOnAction((event) -> buttonClicked(button, fRow, fCol));
+                button.setOnAction((event) -> buttonClicked(button));
                 button.setText("");
                 m_GridRows[row].getChildren().add(col, button);
             }
@@ -104,9 +102,30 @@ public class BoardController{
         }
     }
 
-    private void buttonClicked(Button button, int row, int col) {
-        m_ChosenButton = button;
-        m_ChosenButtonPos.setCol(col);
-        m_ChosenButtonPos.setRow(row);
+    private void buttonClicked(Button button) {
+        setChosenButton(button);
+    }
+
+    public int getButtonRowIndexInGrid(HBox wantedRow) {
+        for(int i = 0; i < m_GameInfo.getBoardSize(); i++){
+            if(m_GridRows[i] == wantedRow){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    public int getButtonIndexInHBox(int row, Button button) {
+        for(int i = 0; i < m_GameInfo.getBoardSize(); i++){
+            if(m_GridRows[row].getChildren().get(i) == button){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void setChosenButton(Button chosenButton) {
+        this.m_ChosenButton = chosenButton;
     }
 }

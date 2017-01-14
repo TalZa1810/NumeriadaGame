@@ -1,18 +1,9 @@
 package javafx_ui.playersPane;
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import javafx_ui.gamePane.GameController;
 import shared.GameInfo;
 import sharedStructures.PlayerData;
@@ -28,7 +19,8 @@ public class PlayersController {
 
     private Label[] m_PlayersNamesLabels = new Label[6];
     private Label[] m_PlayersIDsLabels = new Label[6];
-    private Label[] m_PlayersScoreLables = new Label[6];
+    private Label[] m_PlayersScoreLabels = new Label[6];
+    private Label[] m_PlayersColorLabels = new Label[6];
 
     public PlayersController(GameInfo[] i_GameInfoWrapper, GameController i_GameController){
         m_GameInfo = i_GameInfoWrapper[0];
@@ -38,6 +30,7 @@ public class PlayersController {
         collectingPlayersNamesLabels();
         collectingPlayersIDsLabels();
         collectingPlayersScoreLabels();
+        collectingPlayersColorLabels();
         setPlayers();
     }
 
@@ -50,11 +43,19 @@ public class PlayersController {
             setPlayerName(m_PlayersNamesLabels[i] , player);
             setPlayerID(m_PlayersIDsLabels[i], player);
             setPlayersScoresData();
+            setPlayerColor(m_PlayersColorLabels[i], player);
             i++;
         }
     }
 
-    //TODO: SHOULD CREATE SIMILAR METHOD FOR COLOR
+    private void collectingPlayersColorLabels() {
+        m_PlayersColorLabels[0]= m_GameController.getPlayerColor1();
+        m_PlayersColorLabels[1]= m_GameController.getPlayerColor2();
+        m_PlayersColorLabels[2]= m_GameController.getPlayerColor3();
+        m_PlayersColorLabels[3]= m_GameController.getPlayerColor4();
+        m_PlayersColorLabels[4]= m_GameController.getPlayerColor5();
+        m_PlayersColorLabels[5]= m_GameController.getPlayerColor6();
+    }
 
     private void collectingPlayersNamesLabels(){
         m_PlayersNamesLabels[0]= m_GameController.getPlayerName1();
@@ -75,12 +76,12 @@ public class PlayersController {
     }
 
     private void collectingPlayersScoreLabels(){
-        m_PlayersScoreLables[0]= m_GameController.getPlayerScore1();
-        m_PlayersScoreLables[1]= m_GameController.getPlayerScore2();
-        m_PlayersScoreLables[2]= m_GameController.getPlayerScore3();
-        m_PlayersScoreLables[3]= m_GameController.getPlayerScore4();
-        m_PlayersScoreLables[4]= m_GameController.getPlayerScore5();
-        m_PlayersScoreLables[5]= m_GameController.getPlayerScore6();
+        m_PlayersScoreLabels[0]= m_GameController.getPlayerScore1();
+        m_PlayersScoreLabels[1]= m_GameController.getPlayerScore2();
+        m_PlayersScoreLabels[2]= m_GameController.getPlayerScore3();
+        m_PlayersScoreLabels[3]= m_GameController.getPlayerScore4();
+        m_PlayersScoreLabels[4]= m_GameController.getPlayerScore5();
+        m_PlayersScoreLabels[5]= m_GameController.getPlayerScore6();
     }
 
     //SCORE BINDING
@@ -92,7 +93,7 @@ public class PlayersController {
         for (PlayerData player : m_Players) {
 
             playerScore[i] = new SimpleIntegerProperty(player.getScore());
-            m_PlayersScoreLables[i].textProperty().bind(Bindings.format( "%s", playerScore[i] ));
+            m_PlayersScoreLabels[i].textProperty().bind(Bindings.format( "%s", playerScore[i] ));
             i++;
         }
     }
@@ -106,7 +107,8 @@ public class PlayersController {
         i_PlayerIDLabel.setText(id.toString());
     }
 
-    public void setPlayerColor(){
-
+    public void setPlayerColor(Label i_PlayerColorLabel , PlayerData i_PlayerData){
+        i_PlayerColorLabel.setText("###");
+        i_PlayerColorLabel.setTextFill(Paint.valueOf(i_PlayerData.getColor().name()));
     }
 }

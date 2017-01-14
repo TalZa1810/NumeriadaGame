@@ -50,7 +50,6 @@ public class Board {
         int i = 0;
         for (ArrayList<Square> row : m_Board) {
             for(int j = 0; j < m_BoardSize; j++) {
-                //row.add(new Square(i, j, "", eColor.DEFAULT));
                 row.add(new Square(i, j, "", eColor.BLACK));
             }
             i++;

@@ -33,7 +33,7 @@ public class Notifier {
     }
 
     public String notifyInvalidSquareChoice() {
-       return "Square can't be chosen because it's value is not a number";
+       return "Square can't be chosen because it's color is not as the current player's color or it's value is not a number";
     }
 
     public String announceTie(int i_Points) {

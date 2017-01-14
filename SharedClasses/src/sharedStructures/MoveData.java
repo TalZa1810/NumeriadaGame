@@ -12,6 +12,10 @@ public class MoveData {
         m_Col = i_Col;
     }
 
+    public MoveData() {
+
+    }
+
     public int getRow() {
         return m_Row;
     }

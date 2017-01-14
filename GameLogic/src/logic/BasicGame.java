@@ -1,6 +1,11 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.PlayerData;
+import sharedStructures.eColor;
+import sharedStructures.ePlayerType;
+
+import java.util.ArrayList;
 
 public class BasicGame extends Game {
 
@@ -8,9 +13,31 @@ public class BasicGame extends Game {
         COLUMN_PLAYER, ROW_PLAYER
     }
 
-    public BasicGame(GameInfo[] i_GameInfoWrapper) {
+    @Override
+    public boolean checkIfPossibleMove() {
+        return true;
+    }
 
+    public BasicGame(GameInfo[] i_GameInfoWrapper) {
         super(i_GameInfoWrapper);
+    }
+
+    @Override
+    void setPlayers() {
+        m_Players = new ArrayList<Player>();
+        String name = "Row player";
+        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
+            m_Players.add(new HumanPlayer(i, name, ePlayerType.Human, eColor.BLACK));
+            name = "Column player";
+        }
+
+        loadPlayersToGameInfo();
+    }
+
+    private void loadPlayersToGameInfo() {
+        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
+            m_GameInfo.getPlayers().add(new PlayerData(m_Players.get(i).getName(), m_Players.get(i).getID(), m_Players.get(i).getColor(),m_Players.get(i).getPlayerType(), m_Players.get(i).getPlayerScore()));
+        }
     }
 
     @Override
@@ -72,17 +99,4 @@ public class BasicGame extends Game {
         //nothing special to update here. Abstract method is for advanced game
     }
 
-    /*@Override
-    //used only in ex1, can be erased for ex2 and 3
-    public void getBoardToPrint() {
-        String board[][] = new String[m_Board.getBoardSize()][m_Board.getBoardSize()];
-
-        for (int i=0; i< m_Board.getBoardSize(); i++) {
-            for (int j = 0; j< m_Board.getBoardSize(); j++) {
-                board[i][j] = m_Board.getSquareInPos(i,j).getSquareSymbol();
-            }
-        }
-
-        m_GameInfo.setBoard(board);
-    }*/
 }

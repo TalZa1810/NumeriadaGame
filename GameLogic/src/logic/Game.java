@@ -4,6 +4,7 @@ import shared.GameInfo;
 import sharedStructures.MoveData;
 import sharedStructures.PlayerData;
 import sharedStructures.SquareData;
+import sharedStructures.eColor;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,6 +18,7 @@ public abstract class Game {
     GameInfo m_GameInfo;
     Player m_CurrentPlayer;
     private int m_NumOfMoves = 0;
+    private int m_NumOfPlayers;
 
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
@@ -35,6 +37,10 @@ public abstract class Game {
         }
     };
 
+    public Player getCurrentPlayer() {
+        return m_CurrentPlayer;
+    }
+
     public void start(){
         m_Timer.scheduleAtFixedRate(m_Task, 1000, 1000);
     }
@@ -42,6 +48,20 @@ public abstract class Game {
     public boolean checkMove(int chosenRow, int chosenCol) {
         Square chosenSquare = m_Board.getSquareInPos(chosenRow, chosenCol);
         return checkIfLegalMove(m_CurrentPlayer, chosenSquare);
+    }
+
+    public eColor getCurrentPlayerColor() {
+        return getCurrentPlayer().getColor();
+    }
+
+    public abstract boolean checkIfPossibleMove();
+
+    public void setNumOfPlayers(int i) {
+        m_NumOfPlayers = i;
+    }
+
+    public int getNumOfPlayers() {
+        return m_NumOfPlayers;
     }
 
     public enum eGameMode {
@@ -81,15 +101,7 @@ public abstract class Game {
         return m_Players;
     }
 
-    public void setPlayers( ) {
-        m_Players = new ArrayList<Player>();
-        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++) {
-            PlayerData currPlayerData = m_GameInfo.getPlayer(i);
-            m_Players.add(Player.CreatePlayer(currPlayerData.getID(), currPlayerData.getName(), currPlayerData.getColor(), currPlayerData.getType()));
-        }
-
-        m_CurrentPlayer = m_Players.get(0);
-    }
+    abstract void setPlayers( );
 
     private void setGameType(){
 
@@ -164,6 +176,20 @@ public abstract class Game {
         //setting marker symbol and position
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol("@");
         m_Board.setMark(m_Board.getSquareInPos(randomRow,randomCol));
+        loadBoardToGameInfo();
+
+    }
+
+    public void loadBoardToGameInfo() {
+        SquareData board[][] = new SquareData[m_Board.getBoardSize()][m_Board.getBoardSize()];
+        Square square;
+        for (int i=0; i< m_Board.getBoardSize(); i++) {
+            for (int j = 0; j< m_Board.getBoardSize(); j++) {
+                square = m_Board.getSquareInPos(i,j);
+                board[i][j] = new SquareData(square.getRow(), square.getColumn(), square.getColor(), square.getSquareSymbol());
+            }
+        }
+        m_GameInfo.setBoard(board);
     }
 
     abstract void initRandomBoardSquare(int randomRow, int randomCol, int colorIndex, int data);
@@ -209,8 +235,6 @@ public abstract class Game {
 
     public abstract boolean checkIfGameDone();
 
-    //public abstract void getBoardToPrint();
-
     public void getGameStatus() {
         //getBoardToPrint();
         //m_GameInfo.setCurrPlayer(m_CurrentPlayer.getEPlayerTypeAsString());
@@ -241,50 +265,4 @@ public abstract class Game {
 
     //TODO: show prev\next move (the question is previos to what, do we hold a member of current move.
     //TODO: also todo is to block option to make move when only showing the previous moves
-
-     /*
-    private void playComputerTurn(Player i_Player) {
-
-        int randomMove = r.nextInt(m_Board.getBoardSize());
-
-        if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            while(m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol()).getSquareSymbol().equals("") ||
-                    m_Board.getSquareInPos(randomMove, m_GameInfo.getMarkerCol()).getSquareSymbol().equals("@")){
-                randomMove = r.nextInt(m_Board.getBoardSize());
-            }
-        }
-        else {
-            while(m_Board.getSquareInPos(m_GameInfo.getMarkerRow(), randomMove).getSquareSymbol().equals("") ||
-                    m_Board.getSquareInPos(m_GameInfo.getMarkerRow(), randomMove).getSquareSymbol().equals("@")){
-                randomMove = r.nextInt(m_Board.getBoardSize());
-            }
-        }
-
-        makePlayerMove(i_Player, randomMove);
-
-    }
-
-
-        private void playHumanTurn(Player i_Player, int i_Move) {
-        makePlayerMove(i_Player,i_Move);
-    }
-    *
-
-    private void makePlayerMove(Player i_Player, int i_Move){
-        Square squareToChange;
-        Square markerToChange;
-
-        if(i_Player.getPlayerType() == Player.ePlayerType.COLUMN_PLAYER) {
-            squareToChange = m_Board.getSquareInPos( m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
-            markerToChange = m_Board.getSquareInPos(i_Move, m_GameInfo.getMarkerCol());
-        }
-        else {
-            squareToChange = m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),m_GameInfo.getMarkerCol());
-            markerToChange = m_Board.getSquareInPos( m_GameInfo.getMarkerRow(),i_Move);
-        }
-
-        m_CurrentPlayer.addToPlayerScore(Integer.parseInt(markerToChange.getSquareSymbol()));
-
-        m_Board.changeMarker(squareToChange, markerToChange);
-    }*/
 }

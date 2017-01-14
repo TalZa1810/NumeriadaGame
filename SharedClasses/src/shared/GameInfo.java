@@ -81,6 +81,10 @@ public class GameInfo {
         return m_NumOfPlayers;
     }
 
+    public void setNumOfPlayers(int i_NumOfPlayers) {
+        m_NumOfPlayers = i_NumOfPlayers;
+    }
+
     public SquareData getValueInPos(int i_Row, int i_Col) {
         return m_Board[i_Row][i_Col];
     }

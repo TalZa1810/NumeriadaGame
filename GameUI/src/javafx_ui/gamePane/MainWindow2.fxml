@@ -79,7 +79,7 @@
          <bottom>
             <VBox alignment="CENTER" spacing="3.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="makeMoveButton" contentDisplay="CENTER" disable="true" mnemonicParsing="false" text="make move" textAlignment="CENTER" />
+                  <Button fx:id="makeMoveButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#makeMoveClicked" text="make move" textAlignment="CENTER" />
                   <HBox alignment="CENTER" spacing="3.0">
                      <children>
                         <Button fx:id="prevMoveButton" disable="true" mnemonicParsing="false" text="&lt; Prev " textAlignment="CENTER" />

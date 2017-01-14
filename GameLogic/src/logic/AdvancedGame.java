@@ -3,7 +3,39 @@ package logic;
 import shared.GameInfo;
 import sharedStructures.eColor;
 
+import java.util.ArrayList;
+
 public class AdvancedGame extends Game {
+
+    @Override
+    public boolean checkIfPossibleMove() {
+        boolean turnDone = true;
+        Square squareToCheck;
+
+        for(int i = 0; i < m_Board.getBoardSize(); i++) {
+            //check if row is empty of numbers
+            squareToCheck = m_Board.getSquareInPos(m_Board.getMark().getRow(), i);
+            if (!squareToCheck.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol()) &&
+                    !m_Board.getSquareInPos(m_Board.getMark().getRow(), i).getSquareSymbol().equals("") &&
+                    squareToCheck.getColor().name().equals(m_CurrentPlayer.getColor().name())) {
+                turnDone = false;
+                break;
+            }
+        }
+
+        for(int i = 0; i < m_Board.getBoardSize(); i++){
+            //check if column is empty of numbers
+            squareToCheck = m_Board.getSquareInPos(i,m_Board.getMark().getColumn());
+            if(!squareToCheck.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol()) &&
+                    !m_Board.getSquareInPos(i, m_Board.getMark().getColumn()).getSquareSymbol().equals("") &&
+                    squareToCheck.getColor().name().equals(m_CurrentPlayer.getColor().name())){
+                turnDone = false;
+                break;
+            }
+        }
+
+        return turnDone;
+    }
 
     public AdvancedGame(GameInfo[] i_GameInfoWrapper) {
 
@@ -11,15 +43,28 @@ public class AdvancedGame extends Game {
     }
 
     @Override
+    void setPlayers() {
+        m_Players = new ArrayList<Player>();
+        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++) {
+            m_Players.add(Player.CreatePlayer(m_GameInfo.getPlayer(i)));
+        }
+        m_CurrentPlayer = m_Players.get(0);
+    }
+
+    @Override
     protected void initRandomBoardSquare(int randomRow, int randomCol, int colorIndex, int data) {
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol(Integer.toString(data));
-        m_Board.getSquareInPos(randomRow,randomCol).setColor(eColor.values()[(colorIndex + 1) % m_GameInfo.getNumOfPlayers()]);
+        m_Board.getSquareInPos(randomRow,randomCol).setColor(eColor.values()[(colorIndex % m_GameInfo.getNumOfPlayers()) + 1]);
     }
 
     @Override
     boolean checkIfLegalMove(Player i_Player, Square i_Move) {
         boolean res = true;
-        if(i_Move.getColumn() == m_Board.getMark().getColumn()) {
+
+        if(i_Player.getPlayerColor() != i_Move.getColor()){
+            res = false;
+        }
+        else if(i_Move.getColumn() == m_Board.getMark().getColumn()) {
             if (i_Move.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
                     || i_Move.getSquareSymbol().equals("")
                     || i_Move.getColor() != i_Player.getPlayerColor()) {

@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx_ui.boardPane.BoardController;
@@ -160,44 +159,14 @@ public class GameController implements Initializable{
         }
     }
 
+    @FXML
+    public void makeMoveClicked(){
+        makeMove();
+    }
+
     public void setPrimaryStage(Stage i_PrimaryStage) {
         m_PrimaryStage = i_PrimaryStage;
     }
-
-
-
-
-    /*
-    private void createPlayersPane(){
-        FXMLLoader loader = new FXMLLoader();
-        URL mainFXML = getClass().getResource(PLAYERS_SCENE_FXML_PATH);
-        loader.setLocation(mainFXML);
-        try{
-            Node playersPane = loader.load();
-
-            PlayersController playersController = loader.getController();
-            m_MainWindow.setRight(playersPane);
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private void createBoardPane() {
-        FXMLLoader loader = new FXMLLoader();
-        URL mainFXML = getClass().getResource(BOARD_SCENE_FXML_PATH);
-        loader.setLocation(mainFXML);
-        try {
-            //TODO: SHOULD CHECK FXML FILE
-            Node boardPane = loader.load();
-
-            BoardController boardController = loader.getController();
-            m_Board.initializeBoard();
-            m_MainWindow.setCenter(boardPane);
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-    }*/
-
 
     public GameDescriptor fromXmlFileToObject() {
         return unmarshalFile(m_FilePath.getValue());
@@ -237,13 +206,17 @@ public class GameController implements Initializable{
             m_GameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
         }
 
-        getPlayersFromXML();
+        if(!m_GameInfo.getGameType().equals("Basic")) {
+            getPlayersFromXML();
+        }
+        else{
+            m_GameInfo.setNumOfPlayers(2);
+        }
         m_GameInfo.initBoard();
         setBoardValuesFromXML();
     }
 
     private void getPlayersFromXML() throws Exception {
-        //TODO: RETURNS NULL
         List<GameDescriptor.Players.Player> players = m_GameDescriptor.getPlayers().getPlayer();
         m_Validator.checkValidPlayersID(players);
 
@@ -251,8 +224,7 @@ public class GameController implements Initializable{
             PlayerData player = new PlayerData();
             player.setName(p.getName());
             player.setID(p.getId().intValue());
-            player.setColor(eColor.values()[p.getColor() - 1]);
-            //INITIALIZING PLAYERS SCORE TO ZEO
+            player.setColor(eColor.values()[p.getColor()]);
             player.setScore(0);
 
             if(p.getType().equals(ePlayerType.Human.name())){
@@ -293,38 +265,47 @@ public class GameController implements Initializable{
         }
     }
 
+
+
     private void makeMove() {
         boolean validInput;
 
         m_Logic.getCurrMarkerPosition();
         //m_Logic.loadCurrPlayerToGameInfo();
-        m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton(), m_Board.getChosenButtonPos()));
-        validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
-
-        while(!validInput){
-            m_Notifier.notifyInvalidSquareChoice();
-            m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton(), m_Board.getChosenButtonPos()));
+        if(checkIfPossibleMove()) {
+            m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton()));
             validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
-        }
 
-        boolean gameDone = m_Logic.makeMove();
-        //getBoard();
-        if(gameDone){
-            gameDoneProcedure();
+            while (!validInput) {
+                m_StatusBar.setValue(m_Notifier.notifyInvalidSquareChoice());
+                return;
+                //m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton()));
+                //validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
+            }
+
+            boolean gameDone = m_Logic.makeMove();
+            //getBoard();
+            if (gameDone) {
+                gameDoneProcedure();
+            }
+        }
+        else{
+            m_StatusBar.setValue("No possible move, try next round");
         }
     }
 
-    private SquareData getDataFromChoseButton(Button chosenButton, MoveData chosenButtonPos) {
-        int row = chosenButtonPos.getRow();
-        int col = chosenButtonPos.getCol();
-        eColor color = toEColor(chosenButton.getTextFill());
-        String value =  chosenButton.getText();
+    private boolean checkIfPossibleMove() {
+        return m_Logic.checkIfPossibleMove();
+    }
+
+    private SquareData getDataFromChoseButton(Button chosenButton) {
+        MoveData chosenButtonPos  = new MoveData();
+        int row = m_Board.getButtonRowIndexInGrid((HBox)chosenButton.getParent());
+        int col = m_Board.getButtonIndexInHBox(row, chosenButton);
+        eColor color = m_Logic.getCurrentPlayerColor();
+        String value = chosenButton.getText();
 
         return new SquareData(row, col, color, value);
-    }
-
-    private eColor toEColor(Paint textFill) {
-        return eColor.valueOf(textFill.toString());
     }
 
     private void gameDoneProcedure(){
@@ -337,7 +318,7 @@ public class GameController implements Initializable{
         }
     }
 
-    //Names Labels Geters
+    //Names Labels Getters
     public Label getPlayerName1() {
         return playerName1;
     }
@@ -361,7 +342,7 @@ public class GameController implements Initializable{
         return playerName6;
     }
 
-    //IDs Labels Geters
+    //IDs Labels Getters
     public Label getPlayerID1() {
         return playerID1;
     }
@@ -386,7 +367,7 @@ public class GameController implements Initializable{
         return playerID6;
     }
 
-    //Score Labels Geters
+    //Score Labels Getters
     public Label getPlayerScore1() {
         return playerScore1;
     }
@@ -409,6 +390,30 @@ public class GameController implements Initializable{
 
     public Label getPlayerScore6() {
         return playerScore6;
+    }
+
+    public Label getPlayerColor1() {
+        return playerColor1;
+    }
+
+    public Label getPlayerColor2() {
+        return playerColor2;
+    }
+
+    public Label getPlayerColor3() {
+        return playerColor3;
+    }
+
+    public Label getPlayerColor4() {
+        return playerColor4;
+    }
+
+    public Label getPlayerColor5() {
+        return playerColor5;
+    }
+
+    public Label getPlayerColor6() {
+        return playerColor6;
     }
 
     public SimpleIntegerProperty[] getPlayersScore() {
