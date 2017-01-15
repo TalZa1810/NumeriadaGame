@@ -104,7 +104,7 @@ public class GameController implements Initializable{
     }
 
     public void initializeGameController(BorderPane i_GameLayout){
-        m_Board = new BoardController(m_GameInfoWrapper, boardGrid);
+        m_Board = new BoardController(m_GameInfoWrapper, boardGrid, m_Validator);
         m_Players = new PlayersController(m_GameInfoWrapper, this);
         getScoresfromGameInfo(m_PlayersScore);
     }

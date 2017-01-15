@@ -2,6 +2,8 @@ package shared;
 
 
 import Generated.GameDescriptor;
+import sharedStructures.PlayerData;
+import sharedStructures.SquareData;
 
 import java.util.HashSet;
 import java.util.List;
@@ -99,5 +101,13 @@ public class Validator {
 
     public boolean checkValidPath(String i_Path) {
         return i_Path.endsWith(".xml");
+    }
+
+
+    public void checkValidColorForCurrentPlayer(PlayerData i_PlayerData, SquareData i_SquareData)throws Exception{
+
+        if (i_PlayerData.getColor() != i_SquareData.getColor()){
+            throw(new Exception("Wrong color choice\n"));
+        }
     }
 }

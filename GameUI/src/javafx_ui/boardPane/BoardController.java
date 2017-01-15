@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import shared.GameInfo;
+import shared.Validator;
 import sharedStructures.MoveData;
 import sharedStructures.SquareData;
 
@@ -19,6 +20,7 @@ public class BoardController{
     private GridPane m_BoardGrid;
     private Button m_ChosenButton;
     private MoveData m_ChosenButtonPos;
+    private Validator m_Validator;
 
     public MoveData getChosenButtonPos() {
         return m_ChosenButtonPos;
@@ -32,9 +34,10 @@ public class BoardController{
         return m_ChosenButton;
     }
 
-    public BoardController(GameInfo[] i_GameInfoWrapper, GridPane i_BoardGrid){
+    public BoardController(GameInfo[] i_GameInfoWrapper, GridPane i_BoardGrid, Validator i_Validator){
         m_GameInfo = i_GameInfoWrapper[0];
         m_BoardGrid = i_BoardGrid;
+        m_Validator = i_Validator;
         initializeBoard();
     }
 
@@ -91,6 +94,7 @@ public class BoardController{
                 button.setPrefSize(k_CellSize,k_CellSize);
                 button.setMinSize(k_CellSize,k_CellSize);
                 button.setMaxSize(k_CellSize,k_CellSize);
+                //TODO: update buttonClicked so that it updates players scrore (and checks whether the chosen button is with the right color)
                 button.setOnAction((event) -> buttonClicked(button));
                 button.setText("");
                 m_GridRows[row].getChildren().add(col, button);
@@ -103,7 +107,9 @@ public class BoardController{
     }
 
     private void buttonClicked(Button button) {
+        //TOTO: CHECK IF BUTTON COLOR IS THE SAME AS PLAYERS COLOR
         setChosenButton(button);
+        m_Validator.checkValidColorForCurrentPlayer( )
     }
 
     public int getButtonRowIndexInGrid(HBox wantedRow) {
@@ -126,6 +132,6 @@ public class BoardController{
     }
 
     public void setChosenButton(Button chosenButton) {
-        this.m_ChosenButton = chosenButton;
+           this.m_ChosenButton = chosenButton;
     }
 }
