@@ -38,6 +38,10 @@ public class PlayersController {
 
         int i = 0;
 
+        if (m_Players != null){
+            clearPreviousPlayersData();
+        }
+
         for (PlayerData player : m_Players) {
 
             setPlayerName(m_PlayersNamesLabels[i] , player);
@@ -110,5 +114,21 @@ public class PlayersController {
     public void setPlayerColor(Label i_PlayerColorLabel , PlayerData i_PlayerData){
         i_PlayerColorLabel.setText("###");
         i_PlayerColorLabel.setTextFill(Paint.valueOf(i_PlayerData.getColor().name()));
+    }
+
+    public void clearPreviousPlayersData() {
+
+        int i = 0;
+
+        for (PlayerData player : m_Players) {
+
+            m_PlayersNamesLabels[i].setText("");
+            m_PlayersIDsLabels[i].setText("");
+            m_PlayersIDsLabels[i].setText("");
+            m_PlayersColorLabels[i].setText("");
+            //TODO: SHOULD RESET SCORE
+            //m_PlayersScoreLabels[i].setText("");
+            i++;
+        }
     }
 }

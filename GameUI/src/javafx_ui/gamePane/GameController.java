@@ -49,6 +49,8 @@ public class GameController implements Initializable{
     private BoardController m_Board;
     private PlayersController m_Players;
     private Stage m_PrimaryStage;
+    private boolean m_IsFileLoaded= false;
+
 
 
     @FXML    private BorderPane m_MainWindow;
@@ -117,6 +119,7 @@ public class GameController implements Initializable{
     }
 
     private void createGame() {
+
         if(m_GameInfo.getGameType().equals("Basic")){
             m_Logic = new BasicGame(m_GameInfoWrapper);
         }
@@ -135,6 +138,7 @@ public class GameController implements Initializable{
 
     @FXML
     public void browseButtonClicked(){
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select XML File");
         fileChooser.setInitialDirectory(new File("C:\\"));
@@ -142,6 +146,10 @@ public class GameController implements Initializable{
         if (selectedFile ==  null){
             return;
         }
+        else{
+            m_IsFileLoaded = false;
+        }
+
         m_StatusBar.set("");
         String path = selectedFile.getAbsolutePath();
         if(m_Validator.checkValidPath(path)) {
@@ -155,21 +163,25 @@ public class GameController implements Initializable{
 
     @FXML
     public void loadButtonClicked(){
-        try {
-            m_GameDescriptor = fromXmlFileToObject();
-            if(m_GameDescriptor != null) {
-                getDataFromGeneratedXML();
-                m_StatusBar.set(m_Notifier.fileWasLoadedSuccessfully());
-                createGame();
-                initializeGameController(m_MainWindow);
-            }
-        }
-        catch(Exception e){
-            m_StatusBar.set(m_Notifier.showExceptionThrown(e.getMessage()));
-        }
 
-        if(m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)){
-            makeMove();
+        if (!m_IsFileLoaded){
+            try {
+                m_IsFileLoaded = true;
+                m_GameDescriptor = fromXmlFileToObject();
+                if(m_GameDescriptor != null) {
+                    getDataFromGeneratedXML();
+                    m_StatusBar.set(m_Notifier.fileWasLoadedSuccessfully());
+                    createGame();
+                    initializeGameController(m_MainWindow);
+                }
+            }
+            catch(Exception e){
+                m_StatusBar.set(m_Notifier.showExceptionThrown(e.getMessage()));
+            }
+
+            if(m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)){
+                makeMove();
+            }
         }
     }
 
@@ -209,14 +221,22 @@ public class GameController implements Initializable{
         return descriptor;
     }
 
+    private void resettingPreviousPlayersInfo(){
+        if (m_Players != null){
+            m_GameInfo.resetPlayersData();
+            m_Players.clearPreviousPlayersData();
+        }
+    }
+
     private void getDataFromGeneratedXML() throws Exception {
         m_Validator = new Validator(m_GameInfo);
-
         m_GameInfo.setGameType(m_GameDescriptor.getGameType());
         //TODO: RESULT IS UNDEFINED
         m_Validator.checkBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         m_GameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
+
+         resettingPreviousPlayersInfo();
 
         if(m_GameInfo.getBoardStructure().equals("Random")) {
             m_GameInfo.setRangeFrom(m_GameDescriptor.getBoard().getStructure().getRange().getFrom());
@@ -274,15 +294,12 @@ public class GameController implements Initializable{
 
             m_Validator.checkValidMarkerLocation(m_GameDescriptor.getBoard().getStructure().getSquares().getMarker());
             GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
-            //m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@", eColor.DEFAULT.ordinal());
             m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@", eColor.BLACK.ordinal());
         }
         else {
             m_Validator.checkRangeForRandomBoard(m_GameInfo.getGameType());
         }
     }
-
-
 
     private void makeMove() {
         boolean validInput;
@@ -438,6 +455,11 @@ public class GameController implements Initializable{
         return playerScore6;
     }
 
+    public SimpleIntegerProperty[] getPlayersScore() {
+        return m_PlayersScore;
+    }
+
+    //Color Labels Getters
     public Label getPlayerColor1() {
         return playerColor1;
     }
@@ -460,9 +482,5 @@ public class GameController implements Initializable{
 
     public Label getPlayerColor6() {
         return playerColor6;
-    }
-
-    public SimpleIntegerProperty[] getPlayersScore() {
-        return m_PlayersScore;
     }
 }

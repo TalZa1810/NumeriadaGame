@@ -109,7 +109,7 @@ public class BoardController{
     private void buttonClicked(Button button) {
         //TOTO: CHECK IF BUTTON COLOR IS THE SAME AS PLAYERS COLOR
         setChosenButton(button);
-        m_Validator.checkValidColorForCurrentPlayer( )
+        //m_Validator.checkValidColorForCurrentPlayer( )
     }
 
     public int getButtonRowIndexInGrid(HBox wantedRow) {

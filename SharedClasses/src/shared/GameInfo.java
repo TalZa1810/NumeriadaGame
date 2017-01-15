@@ -216,4 +216,17 @@ public class GameInfo {
         setChosenRow(i_Square.getRow());
         setChosenCol(i_Square.getCol());
     }
+
+    public void resetPlayersData(){
+
+        /*for (PlayerData player : m_Players) {
+            player.setScore(0);
+            player.setName("");
+            player.setID(1);
+            player.setColor(eColor.BLACK);
+        }*/
+
+        m_Players =  new ArrayList<PlayerData>();
+
+    }
 }
