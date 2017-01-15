@@ -103,7 +103,6 @@ public class Validator {
         return i_Path.endsWith(".xml");
     }
 
-
     public void checkValidColorForCurrentPlayer(PlayerData i_PlayerData, SquareData i_SquareData)throws Exception{
 
         if (i_PlayerData.getColor() != i_SquareData.getColor()){

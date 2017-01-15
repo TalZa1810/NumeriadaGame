@@ -52,7 +52,6 @@ public class GameController implements Initializable{
     private boolean m_IsFileLoaded= false;
 
 
-
     @FXML    private BorderPane m_MainWindow;
     @FXML    private TextField pathTextBox;
     @FXML    private javafx.scene.control.Button browseButton;
@@ -134,7 +133,6 @@ public class GameController implements Initializable{
         loadButton.disableProperty().bind(m_isFileSelected.not());
         statusBarText.textProperty().bind(Bindings.format("%s", m_StatusBar));
     }
-
 
     @FXML
     public void browseButtonClicked(){
