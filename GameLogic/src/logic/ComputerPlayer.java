@@ -69,9 +69,9 @@ public class ComputerPlayer extends Player {
                     }
                 }
                 //finding the relevant square in row
-                while( hasNumberInColor && (illegalSquareToChoose (i_Board, i_GameInfo.getMarkerRow(), randomMove ))) {
-                    randomMove = r.nextInt(i_Board.getBoardSize());
-                }
+                //while( hasNumberInColor && (illegalSquareToChoose (i_Board, i_GameInfo.getMarkerRow(), randomMove ))) {
+                //    randomMove = r.nextInt(i_Board.getBoardSize());
+                //}
 
                 //saving chosen square
                 if(hasNumberInColor){

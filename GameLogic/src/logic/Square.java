@@ -3,8 +3,8 @@ package logic;
 import sharedStructures.eColor;
 
 public class Square {
-    private final int m_Row;
-    private final int m_Column;
+    private int m_Row;
+    private int m_Column;
     private String m_SquareSymbol;
     private eColor m_Color;
 
@@ -19,7 +19,6 @@ public class Square {
         m_Column = 0;
         m_Row = 0;
         m_SquareSymbol = "";
-        //m_Color = eColor.DEFAULT;
         m_Color = eColor.BLACK;
     }
 
@@ -38,8 +37,16 @@ public class Square {
         return m_Column;
     }
 
+    public void setColumn(int i_Col) {
+        m_Column = i_Col;
+    }
+
     public int getRow() {
         return m_Row;
+    }
+
+    public void setRow(int i_Row){
+        m_Row = i_Row;
     }
 
 

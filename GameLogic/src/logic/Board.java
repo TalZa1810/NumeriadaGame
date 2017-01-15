@@ -100,7 +100,8 @@ public class Board {
         i_SquareToChange.swapSquare(i_MarkToChange);
         setMark(i_MarkToChange);
         i_SquareToChange.setSquareSymbol("");
-
+        i_SquareToChange.setColor(eColor.BLACK);
+        i_MarkToChange.setColor(eColor.BLACK);
     }
 
     public void setMark(Square i_Mark) {

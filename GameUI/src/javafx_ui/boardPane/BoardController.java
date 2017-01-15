@@ -60,7 +60,7 @@ public class BoardController{
         }
     }
 
-    private Button getButtonInPos(int row, int col){
+    public Button getButtonInPos(int row, int col){
         Button button = null;
         HBox wantedRow;
         try {

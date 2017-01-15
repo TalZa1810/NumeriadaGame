@@ -39,12 +39,21 @@ abstract class Player {
     }
 
     public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
-        //TODO: i chosen square doesn't get the values
         if ( i_ChosenSquare != null ){
             addToPlayerScore(Integer.parseInt(i_ChosenSquare.getSquareSymbol()));
+            updatePlayerScoreInGameInfo(this, i_GameInfo);
             i_Board.changeMarker(i_Board.getMark(), i_ChosenSquare);
         }
     }
+
+    private void updatePlayerScoreInGameInfo(Player i_Player, GameInfo i_gameInfo) {
+        for(PlayerData player: i_gameInfo.getPlayers()){
+            if(player.getID() == i_Player.getID()){
+                player.setScore(i_Player.getPlayerScore());
+            }
+        }
+    }
+
 
     ePlayerType getPlayerType() {
         return m_PlayerType;

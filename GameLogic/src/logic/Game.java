@@ -22,7 +22,7 @@ public abstract class Game {
 
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
-    private Square m_ChosenSquare= new Square();
+    private Square m_ChosenSquare = new Square();
 
     private ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
     private ArrayList<MoveData> m_MarkMoves = new ArrayList<MoveData>();
@@ -225,12 +225,17 @@ public abstract class Game {
     abstract boolean checkIfLegalMove(Player i_Player, Square i_Move);
 
     public boolean makeMove() {
+        loadChosenSquare();
         playTurn();
         m_NumOfMoves++;
         m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
-
+        loadCurrPlayerToGameInfo();
         boolean gameDone = checkIfGameDone();
         return gameDone;
+    }
+
+    private void loadChosenSquare() {
+        m_ChosenSquare = m_Board.getSquareInPos(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
     }
 
     public abstract boolean checkIfGameDone();

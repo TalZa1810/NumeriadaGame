@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx_ui.boardPane.BoardController;
@@ -30,13 +31,14 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static java.lang.Thread.sleep;
+
 public class GameController implements Initializable{
 
-    private static final String PLAYERS_SCENE_FXML_PATH = "/javafx_ui/playersPane/PlayersPane.fxml";
-    private static final String BOARD_SCENE_FXML_PATH = "/javafx_ui/boardPane/BoardPane3.fxml";
     private static final int MAX_PLAYERS = 6;
     private Validator m_Validator = new Validator();
     private GameDescriptor m_GameDescriptor = new GameDescriptor();
@@ -104,6 +106,14 @@ public class GameController implements Initializable{
     public void initializeGameController(BorderPane i_GameLayout){
         m_Board = new BoardController(m_GameInfoWrapper, boardGrid);
         m_Players = new PlayersController(m_GameInfoWrapper, this);
+        getScoresfromGameInfo(m_PlayersScore);
+    }
+
+    private void getScoresfromGameInfo(SimpleIntegerProperty[] i_PlayerScore) {
+        ArrayList<PlayerData> players = m_GameInfo.getPlayers();
+        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
+            i_PlayerScore[i].setValue(players.get(i).getScore());
+        }
     }
 
     private void createGame() {
@@ -157,11 +167,18 @@ public class GameController implements Initializable{
         catch(Exception e){
             m_StatusBar.set(m_Notifier.showExceptionThrown(e.getMessage()));
         }
+
+        if(m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)){
+            makeMove();
+        }
     }
 
     @FXML
     public void makeMoveClicked(){
         makeMove();
+        if(m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)){
+            doIfNextPlayerIsComputerType();
+        }
     }
 
     public void setPrimaryStage(Stage i_PrimaryStage) {
@@ -269,32 +286,61 @@ public class GameController implements Initializable{
 
     private void makeMove() {
         boolean validInput;
+        boolean gameDone;
 
         m_Logic.getCurrMarkerPosition();
-        //m_Logic.loadCurrPlayerToGameInfo();
-        if(checkIfPossibleMove()) {
+        if(!checkIfNoMorePossibleMoves()) {
             m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton()));
             validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
 
             while (!validInput) {
                 m_StatusBar.setValue(m_Notifier.notifyInvalidSquareChoice());
                 return;
-                //m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton()));
-                //validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
             }
 
-            boolean gameDone = m_Logic.makeMove();
-            //getBoard();
+            gameDone = m_Logic.makeMove();
+            updateBoardAfterMove();
             if (gameDone) {
                 gameDoneProcedure();
             }
         }
-        else{
-            m_StatusBar.setValue("No possible move, try next round");
+    }
+
+    private void doIfNextPlayerIsComputerType() {
+        if(!checkIfNoMorePossibleMoves()) {
+            try {
+                sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            boolean gameDone = m_Logic.makeMove();
+            updateBoardAfterMove();
+            if (gameDone) {
+                gameDoneProcedure();
+            }
         }
     }
 
-    private boolean checkIfPossibleMove() {
+    private void updateBoardAfterMove() {
+        Button marker = m_Board.getButtonInPos(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
+        Button square = m_Board.getButtonInPos(m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
+        m_GameInfo.setMarkerRow(m_GameInfo.getChosenRow());
+        m_GameInfo.setMarkerCol(m_GameInfo.getChosenCol());
+        marker.setText(square.getText());
+        square.setText("");
+        marker.setTextFill(Paint.valueOf(eColor.BLACK.name()));
+        square.setTextFill(Paint.valueOf(eColor.BLACK.name()));
+        updateScoresAfterMove();
+    }
+
+    private void updateScoresAfterMove() {
+        ArrayList<PlayerData> players = m_GameInfo.getPlayers();
+        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
+            m_PlayersScore[i].setValue(players.get(i).getScore());
+        }
+    }
+
+    private boolean checkIfNoMorePossibleMoves() {
         return m_Logic.checkIfPossibleMove();
     }
 
