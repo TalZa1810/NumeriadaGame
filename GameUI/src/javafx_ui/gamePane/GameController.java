@@ -47,8 +47,10 @@ public class GameController implements Initializable{
     private GameInfo[] m_GameInfoWrapper = new GameInfo[1];
     private Game m_Logic;
     private BoardController m_Board;
-    private PlayersController m_Players;
+    private PlayersController m_PlayersController;
+    private ArrayList<PlayerData> m_ListOfPlayers;
     private Stage m_PrimaryStage;
+    private boolean gameDone;
 
 
     @FXML    private BorderPane m_MainWindow;
@@ -92,7 +94,7 @@ public class GameController implements Initializable{
     @FXML    private Label playerScore6;
 
 
-    private SimpleIntegerProperty[] m_PlayersScore = new SimpleIntegerProperty[6];
+    private SimpleIntegerProperty[] m_PlayersScore = new SimpleIntegerProperty[MAX_PLAYERS];
 
     private SimpleStringProperty m_FilePath = new SimpleStringProperty("");
     private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
@@ -105,8 +107,9 @@ public class GameController implements Initializable{
 
     public void initializeGameController(BorderPane i_GameLayout){
         m_Board = new BoardController(m_GameInfoWrapper, boardGrid, m_Validator);
-        m_Players = new PlayersController(m_GameInfoWrapper, this);
+        m_PlayersController = new PlayersController(m_GameInfoWrapper, this);
         getScoresfromGameInfo(m_PlayersScore);
+        m_ListOfPlayers = m_GameInfo.getPlayers();
     }
 
     private void getScoresfromGameInfo(SimpleIntegerProperty[] i_PlayerScore) {
@@ -167,10 +170,44 @@ public class GameController implements Initializable{
         catch(Exception e){
             m_StatusBar.set(m_Notifier.showExceptionThrown(e.getMessage()));
         }
+    }
 
-        if(m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)){
-            makeMove();
+
+    private void startGameLoop() {
+        while(!gameDone) {
+            if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
+                makeMove();
+            } else {
+                m_StatusBar.set(m_GameInfo.getCurrPlayer().getName() + ", is your turn. Chose a cell and press make move");
+            }
         }
+    }
+
+    private Label getPlayerColorLabel(int i) {
+        Label res;
+        switch(i){
+            case 0:
+                res = playerColor1;
+                break;
+            case 1:
+                res = playerColor2;
+                break;
+            case 2:
+                res = playerColor3;
+                break;
+            case 3:
+                res = playerColor4;
+                break;
+            case 4:
+                res = playerColor5;
+                break;
+            case 5:
+                res = playerColor6;
+                break;
+            default:
+                res = null;
+        }
+        return res;
     }
 
     @FXML
@@ -274,7 +311,6 @@ public class GameController implements Initializable{
 
             m_Validator.checkValidMarkerLocation(m_GameDescriptor.getBoard().getStructure().getSquares().getMarker());
             GameDescriptor.Board.Structure.Squares.Marker marker = m_GameDescriptor.getBoard().getStructure().getSquares().getMarker();
-            //m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@", eColor.DEFAULT.ordinal());
             m_GameInfo.setSquare(marker.getRow().intValue() - 1, marker.getColumn().intValue() - 1, "@", eColor.BLACK.ordinal());
         }
         else {
@@ -286,7 +322,6 @@ public class GameController implements Initializable{
 
     private void makeMove() {
         boolean validInput;
-        boolean gameDone;
 
         m_Logic.getCurrMarkerPosition();
         if(!checkIfNoMorePossibleMoves()) {
@@ -337,6 +372,19 @@ public class GameController implements Initializable{
         ArrayList<PlayerData> players = m_GameInfo.getPlayers();
         for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
             m_PlayersScore[i].setValue(players.get(i).getScore());
+            if(players.get(i).getID() == m_GameInfo.getCurrPlayer().getID()){
+                Label color = getPlayerColorLabel(i);
+                Label prevColor;
+                if(i == 0) {
+                    prevColor = getPlayerColorLabel(m_GameInfo.getNumOfPlayers() - 1);
+                }
+                else{
+                    prevColor = getPlayerColorLabel(i - 1);
+                }
+
+                color.setText("==>");
+                prevColor.setText("###");
+            }
         }
     }
 

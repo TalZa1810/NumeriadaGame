@@ -94,10 +94,11 @@ public class BoardController{
                 button.setPrefSize(k_CellSize,k_CellSize);
                 button.setMinSize(k_CellSize,k_CellSize);
                 button.setMaxSize(k_CellSize,k_CellSize);
-                //TODO: update buttonClicked so that it updates players scrore (and checks whether the chosen button is with the right color)
                 button.setOnAction((event) -> buttonClicked(button));
                 button.setText("");
                 m_GridRows[row].getChildren().add(col, button);
+                //button.textProperty().bind(Bindings.format("%s", m_GameInfo.getValueInPos(row, col).getValue()));
+                //button.textFillProperty().bind(Paint.valueOf(m_GameInfo.getValueInPos(row, col).getColor().name()));
             }
         }
 
@@ -107,9 +108,7 @@ public class BoardController{
     }
 
     private void buttonClicked(Button button) {
-        //TOTO: CHECK IF BUTTON COLOR IS THE SAME AS PLAYERS COLOR
         setChosenButton(button);
-        m_Validator.checkValidColorForCurrentPlayer( )
     }
 
     public int getButtonRowIndexInGrid(HBox wantedRow) {
