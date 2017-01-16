@@ -2,9 +2,7 @@ package javafx_ui.gamePane;
 
 import sharedStructures.PlayerData;
 
-/**
- * Created by Tal on 1/5/2017.
- */
+
 public class Notifier {
 
 

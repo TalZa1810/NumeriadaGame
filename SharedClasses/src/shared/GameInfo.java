@@ -203,7 +203,7 @@ public class GameInfo {
         m_Board = new SquareData[m_BoardSize][m_BoardSize];
         for(int i = 0; i < m_BoardSize; i++){
             for(int j = 0; j < m_BoardSize; j++){
-                m_Board[i][j] = new SquareData(i, j, eColor.BLACK/* eColor.DEFAULT*/, "");
+                m_Board[i][j] = new SquareData(i, j, eColor.BLACK, "");
             }
         }
     }
@@ -215,5 +215,18 @@ public class GameInfo {
     public void setMove(SquareData i_Square) {
         setChosenRow(i_Square.getRow());
         setChosenCol(i_Square.getCol());
+    }
+
+    public void resetPlayersData(){
+
+        /*for (PlayerData player : m_Players) {
+            player.setScore(0);
+            player.setName("");
+            player.setID(1);
+            player.setColor(eColor.BLACK);
+        }*/
+
+        m_Players =  new ArrayList<PlayerData>();
+
     }
 }
