@@ -38,6 +38,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Numberiada");
         Scene scene = new Scene(gameLayout, 680, 500);
+
         primaryStage.setScene(scene);
         primaryStage.show();
 
