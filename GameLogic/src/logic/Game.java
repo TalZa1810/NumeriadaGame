@@ -64,8 +64,9 @@ public abstract class Game {
         return m_NumOfPlayers;
     }
 
-    public void nextPlayer() {
-        m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
+    public void nextPlayer(int i_IndexOfCurrentPlayer) {
+        m_CurrentPlayer = m_Players.get(i_IndexOfCurrentPlayer + 1 % m_Players.size());
+        loadCurrPlayerToGameInfo();
     }
 
     public enum eGameMode {
@@ -231,7 +232,7 @@ public abstract class Game {
         loadChosenSquare();
         playTurn();
         m_NumOfMoves++;
-        nextPlayer();
+        m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
         loadCurrPlayerToGameInfo();
         boolean gameDone = checkIfGameDone();
         return gameDone;

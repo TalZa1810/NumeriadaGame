@@ -198,7 +198,7 @@ public class GameController implements Initializable{
             colorLabel.setText("==>");
             prevColorLabel.setText("###");
 
-            m_Logic.nextPlayer();
+            m_Logic.nextPlayer(indexOfCurrPlayer);
             startGameIteration();
         } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
             makeMoveOperation();
