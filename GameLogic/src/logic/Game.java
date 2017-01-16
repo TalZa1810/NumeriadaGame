@@ -54,7 +54,7 @@ public abstract class Game {
         return getCurrentPlayer().getColor();
     }
 
-    public abstract boolean checkIfPossibleMove();
+    public abstract boolean checkIfNotPossibleMove();
 
     public void setNumOfPlayers(int i) {
         m_NumOfPlayers = i;
@@ -62,6 +62,10 @@ public abstract class Game {
 
     public int getNumOfPlayers() {
         return m_NumOfPlayers;
+    }
+
+    public void nextPlayer() {
+        m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
     }
 
     public enum eGameMode {
@@ -177,7 +181,6 @@ public abstract class Game {
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol("@");
         m_Board.setMark(m_Board.getSquareInPos(randomRow,randomCol));
         loadBoardToGameInfo();
-
     }
 
     public void loadBoardToGameInfo() {
@@ -228,7 +231,7 @@ public abstract class Game {
         loadChosenSquare();
         playTurn();
         m_NumOfMoves++;
-        m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
+        nextPlayer();
         loadCurrPlayerToGameInfo();
         boolean gameDone = checkIfGameDone();
         return gameDone;
@@ -264,6 +267,7 @@ public abstract class Game {
         m_MarkMoves.add(new MoveData(m_Board.getMark().getRow(), m_Board.getMark().getColumn()));
         m_PlayersMoves.add(new MoveData(m_ChosenSquare.getRow(), m_ChosenSquare.getColumn()));
         m_CurrentPlayer.playTurn( m_Board, m_GameInfo , m_ChosenSquare);
+        loadBoardToGameInfo();
     }
 
     public abstract void playerQuit();

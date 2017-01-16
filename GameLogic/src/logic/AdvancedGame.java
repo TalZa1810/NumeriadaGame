@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class AdvancedGame extends Game {
 
     @Override
-    public boolean checkIfPossibleMove() {
+    public boolean checkIfNotPossibleMove() {
         boolean turnDone = true;
         Square squareToCheck;
 

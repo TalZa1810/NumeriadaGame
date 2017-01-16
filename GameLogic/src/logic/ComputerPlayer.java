@@ -57,6 +57,8 @@ public class ComputerPlayer extends Player {
             //saving chosen square
             if(hasNumberInColor){
                 i_ChosenSquare = i_Board.getSquareInPos(randomMove, i_GameInfo.getMarkerCol());
+                i_GameInfo.setChosenCol(i_ChosenSquare.getColumn());
+                i_GameInfo.setChosenRow(i_ChosenSquare.getRow());
             }
 
             //couldn't find color in col
@@ -69,20 +71,21 @@ public class ComputerPlayer extends Player {
                     }
                 }
                 //finding the relevant square in row
-                //while( hasNumberInColor && (illegalSquareToChoose (i_Board, i_GameInfo.getMarkerRow(), randomMove ))) {
-                //    randomMove = r.nextInt(i_Board.getBoardSize());
-                //}
+                while( hasNumberInColor && (illegalSquareToChoose (i_Board, i_GameInfo.getMarkerRow(), randomMove ))) {
+                    randomMove = r.nextInt(i_Board.getBoardSize());
+                }
 
                 //saving chosen square
                 if(hasNumberInColor){
                     i_ChosenSquare = i_Board.getSquareInPos(i_GameInfo.getMarkerRow(), randomMove);
+                    i_GameInfo.setChosenCol(i_ChosenSquare.getColumn());
+                    i_GameInfo.setChosenRow(i_ChosenSquare.getRow());
                 }
             }
         }
 
         super.playTurn(i_Board, i_GameInfo , i_ChosenSquare);
     }
-
 
     private boolean illegalSquareToChoose( Board i_Board, int i_Row, int i_Col ){
 

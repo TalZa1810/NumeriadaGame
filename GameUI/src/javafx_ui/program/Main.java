@@ -3,6 +3,7 @@ package javafx_ui.program;
 /**
  * Created by Tal on 1/3/2017.
  */
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,10 @@ import java.net.URL;
 
 public class Main extends Application {
     private static final String GAME_SCENE_FXML_PATH = "/javafx_ui/gamePane/MainWindow2.fxml";
+    //public static boolean fileLoaded = false;
+    //public static Game m_Game;
+    //public static GameInfo m_GameInfo;
+    private static GameController gameController;
 
     public static void main(String args[]) throws Exception{
         launch(args);
@@ -27,14 +32,15 @@ public class Main extends Application {
         loader.setLocation(mainFXML);
         BorderPane gameLayout = loader.load();
 
-        GameController gameController = new GameController();
+        gameController = new GameController();
         gameController = loader.getController();
         gameController.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("Numberiada");
-        Scene scene = new Scene(gameLayout, 603, 500);
+        Scene scene = new Scene(gameLayout, 680, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 }
 

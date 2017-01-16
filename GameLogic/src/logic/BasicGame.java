@@ -14,7 +14,7 @@ public class BasicGame extends Game {
     }
 
     @Override
-    public boolean checkIfPossibleMove() {
+    public boolean checkIfNotPossibleMove() {
         return true;
     }
 
