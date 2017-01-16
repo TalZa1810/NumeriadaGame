@@ -229,4 +229,14 @@ public class GameInfo {
         m_Players =  new ArrayList<PlayerData>();
 
     }
+
+    public int getIndexOfPlayer(PlayerData currPlayer) {
+        int i;
+        for(i = 0; i < m_NumOfPlayers; i++){
+            if (currPlayer.getID() == m_Players.get(i).getID()) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

@@ -182,7 +182,22 @@ public class GameController implements Initializable{
 
     private void startGameIteration() {
         if (m_Logic.checkIfNotPossibleMove()) {
-            m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName());
+            //player doesn't have possible moves. notify and go to next player
+            //TODO: make the step over players work
+            Label prevColorLabel;
+            int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
+            Label colorLabel = getPlayerColorLabel(indexOfCurrPlayer);
+            m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
+            if(indexOfCurrPlayer == 0){
+                 prevColorLabel = getPlayerColorLabel(m_GameInfo.getNumOfPlayers() - 1);
+            }
+            else{
+                prevColorLabel = getPlayerColorLabel(indexOfCurrPlayer - 1);
+            }
+
+            colorLabel.setText("==>");
+            prevColorLabel.setText("###");
+
             m_Logic.nextPlayer();
             startGameIteration();
         } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
