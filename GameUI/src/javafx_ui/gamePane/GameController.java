@@ -250,43 +250,22 @@ public class GameController implements Initializable{
 
     @FXML
     public void quitButtonClicked(){
+        int nextPlayerIndex = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
         removeCurrentPlayerCellsFromBoard();
         removeCurrentPlayerFromList();
         removeCurrentPlayerFromPlayerView();
+        m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex));
+        m_Logic.updateCurrPlayer(nextPlayerIndex);
+        updateCurrPlayer();
     }
 
     private void removeCurrentPlayerCellsFromBoard() {
         m_Logic.removeCurrentPlayerCellsFromBoard();
-        updateBoardAfterMove();
+        m_Board.setBoardData();
     }
 
     private void removeCurrentPlayerFromPlayerView() {
-        /*String emptyStr = "";
-        playerColor1.setText(emptyStr);
-        playerID1.setText(emptyStr);
-        playerName1.setText(emptyStr);
-        playerScore1.setText(emptyStr);
-        playerColor2.setText(emptyStr);
-        playerID2.setText(emptyStr);
-        playerName2.setText(emptyStr);
-        playerScore2.setText(emptyStr);
-        playerColor3.setText(emptyStr);
-        playerID3.setText(emptyStr);
-        playerName3.setText(emptyStr);
-        playerScore3.setText(emptyStr);
-        playerColor4.setText(emptyStr);
-        playerID4.setText(emptyStr);
-        playerName4.setText(emptyStr);
-        playerScore4.setText(emptyStr);
-        playerColor5.setText(emptyStr);
-        playerID5.setText(emptyStr);
-        playerName5.setText(emptyStr);
-        playerScore5.setText(emptyStr);
-        playerColor6.setText(emptyStr);
-        playerID6.setText(emptyStr);
-        playerName6.setText(emptyStr);
-        playerScore6.setText(emptyStr);*/
-        m_PlayersController.clearPreviousPlayersData();
+        m_PlayersController.clearPreviousPlayersData(m_GameInfo.getNumOfPlayers() + 1);
         m_PlayersController.setPlayers();
     }
 

@@ -24,7 +24,7 @@ public abstract class Game {
     private eGameType m_GameType;
     private Square m_ChosenSquare = new Square();
 
-    private ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
+    protected ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
     private ArrayList<MoveData> m_MarkMoves = new ArrayList<MoveData>();
 
     //Timer
@@ -71,12 +71,16 @@ public abstract class Game {
 
     public void removePlayerFromList() {
         m_Players.remove(m_CurrentPlayer);
-        m_GameInfo.getPlayers().remove(m_CurrentPlayer);
+        m_GameInfo.removeCurrentPlayer();
         m_NumOfPlayers -= 1;
         m_GameInfo.setNumOfPlayers(m_NumOfPlayers);
     }
 
     public abstract void removeCurrentPlayerCellsFromBoard();
+
+    public void updateCurrPlayer(int nextPlayerIndex) {
+        m_CurrentPlayer = m_Players.get(nextPlayerIndex);
+    }
 
 
     public enum eGameMode {
@@ -98,6 +102,7 @@ public abstract class Game {
         setBoard();
         initBoard();
         m_CurrentPlayer = m_Players.get(0);
+        m_NumOfPlayers = m_Players.size();
         m_GameInfo.setCurrPlayer(getCurrPlayerData());
     }
 

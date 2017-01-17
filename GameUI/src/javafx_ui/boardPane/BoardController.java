@@ -54,11 +54,10 @@ public class BoardController{
 
         for(int row = 0; row < m_GameInfo.getBoardSize(); row++){
             for(int col = 0; col < m_GameInfo.getBoardSize(); col++){
-                if(!board[row][col].getValue().equals("")) {
                     button = getButtonInPos(row, col);
                     button.setText(board[row][col].getValue());
                     button.setTextFill(Paint.valueOf(board[row][col].getColor().name()));
-                }
+
             }
         }
     }

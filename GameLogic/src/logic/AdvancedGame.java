@@ -1,6 +1,7 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.MoveData;
 import sharedStructures.eColor;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class AdvancedGame extends Game {
         for(int i = 0; i < m_Board.getBoardSize(); i++){
             for(int j = 0; j < m_Board.getBoardSize(); j++){
                 if(m_Board.getSquareInPos(i,j).getColor() == m_CurrentPlayer.getColor()){
+                    m_PlayersMoves.add(new MoveData(i, j, m_Board.getSquareInPos(i,j).getColor(), m_Board.getSquareInPos(i,j).getSquareSymbol(), false));
                     m_Board.getSquareInPos(i,j).setSquareSymbol("");
                     m_Board.getSquareInPos(i,j).setColor(eColor.BLACK);
                 }

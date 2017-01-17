@@ -239,4 +239,13 @@ public class GameInfo {
         }
         return -1;
     }
+
+    public void removeCurrentPlayer() {
+        for(PlayerData player: m_Players){
+            if(player.getID() == m_CurrPlayer.getID()){
+                m_Players.remove(player);
+                break;
+            }
+        }
+    }
 }

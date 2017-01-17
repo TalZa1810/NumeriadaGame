@@ -37,14 +37,14 @@ public class PlayersController {
         int i = 0;
 
         if (m_Players != null){
-            clearPreviousPlayersData();
+            clearPreviousPlayersData(m_Players.size());
         }
 
         for (PlayerData player : m_Players) {
 
             setPlayerName(m_PlayersNamesLabels[i] , player);
             setPlayerID(m_PlayersIDsLabels[i], player);
-            //setPlayersScoresData();
+            setPlayerScoresData(m_PlayersIDsLabels[i], player);
             setPlayerColor(m_PlayersColorLabels[i], player);
             i++;
         }
@@ -86,20 +86,10 @@ public class PlayersController {
         m_PlayersScoreLabels[5]= m_GameController.getPlayerScore6();
     }
 
-    //SCORE BINDING
-    /*
-    private void setPlayersScoresData(){
+    private void setPlayerScoresData(Label i_playerScoreLabel, PlayerData i_PlayerData) {
+        i_playerScoreLabel.setText(i_PlayerData.getName());
+    }
 
-        SimpleIntegerProperty[] playerScore = m_GameController.getPlayersScore() ;
-
-        int i = 0;
-        for (PlayerData player : m_Players) {
-
-            playerScore[i] = new SimpleIntegerProperty(player.getScore());
-            m_PlayersScoreLabels[i].textProperty().bind(Bindings.format( "%s", playerScore[i] ));
-            i++;
-        }
-    }*/
 
     public void setPlayerName(Label i_PlayerNameLabel , PlayerData i_PlayerData ){
         i_PlayerNameLabel.setText(i_PlayerData.getName());
@@ -115,16 +105,12 @@ public class PlayersController {
         i_PlayerColorLabel.setTextFill(Paint.valueOf(i_PlayerData.getColor().name()));
     }
 
-    public void clearPreviousPlayersData() {
-
-        int i = 0;
-
-        for (PlayerData player : m_Players) {
-
+    public void clearPreviousPlayersData(int i_NumOfPlayers) {
+        for (int i = 0; i < i_NumOfPlayers; i++) {
             m_PlayersNamesLabels[i].setText("");
             m_PlayersIDsLabels[i].setText("");
             m_PlayersScoreLabels[i].setText("");
-            i++;
+            m_PlayersColorLabels[i].setText("");
         }
     }
 
