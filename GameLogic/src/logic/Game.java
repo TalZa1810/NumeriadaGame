@@ -65,7 +65,7 @@ public abstract class Game {
     }
 
     public void nextPlayer(int i_IndexOfCurrentPlayer) {
-        m_CurrentPlayer = m_Players.get(i_IndexOfCurrentPlayer + 1 % m_Players.size());
+        m_CurrentPlayer = m_Players.get((i_IndexOfCurrentPlayer + 1) % m_Players.size());
         loadCurrPlayerAndNumOfMovesToGameInfo();
     }
 
@@ -75,6 +75,9 @@ public abstract class Game {
         m_NumOfPlayers -= 1;
         m_GameInfo.setNumOfPlayers(m_NumOfPlayers);
     }
+
+    public abstract void removeCurrentPlayerCellsFromBoard();
+
 
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
@@ -99,7 +102,7 @@ public abstract class Game {
     }
 
     private PlayerData getCurrPlayerData() {
-        return new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType(), m_CurrentPlayer.getPlayerScore());
+        return new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getColor(), m_CurrentPlayer.getPlayerType(), m_CurrentPlayer.getPlayerScore());
     }
 
     private  void setBoard(){
@@ -229,7 +232,7 @@ public abstract class Game {
     }
 
     public void loadCurrPlayerAndNumOfMovesToGameInfo() {
-        PlayerData player = new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType(), m_CurrentPlayer.getPlayerScore());
+        PlayerData player = new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getColor(), m_CurrentPlayer.getPlayerType(), m_CurrentPlayer.getPlayerScore());
         m_GameInfo.setCurrPlayer(player);
         m_GameInfo.setNumOfMoves(m_NumOfMoves);
     }

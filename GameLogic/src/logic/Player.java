@@ -74,10 +74,6 @@ abstract class Player {
         m_Points += i_PointsToAdd;
     }
 
-    public eColor getPlayerColor() {
-        return m_PlayerColor;
-    }
-
     public static Player CreatePlayer(PlayerData i_Player) {
         Player res;
         if(i_Player.getType().name().equals(ePlayerType.Human.name())){

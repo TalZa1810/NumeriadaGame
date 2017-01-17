@@ -219,7 +219,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Quit" />
+                                    <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

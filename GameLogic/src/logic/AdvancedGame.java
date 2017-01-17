@@ -37,6 +37,19 @@ public class AdvancedGame extends Game {
         return turnDone;
     }
 
+    @Override
+    public void removeCurrentPlayerCellsFromBoard() {
+        for(int i = 0; i < m_Board.getBoardSize(); i++){
+            for(int j = 0; j < m_Board.getBoardSize(); j++){
+                if(m_Board.getSquareInPos(i,j).getColor() == m_CurrentPlayer.getColor()){
+                    m_Board.getSquareInPos(i,j).setSquareSymbol("");
+                    m_Board.getSquareInPos(i,j).setColor(eColor.BLACK);
+                }
+            }
+        }
+        loadBoardToGameInfo();
+    }
+
     public AdvancedGame(GameInfo[] i_GameInfoWrapper) {
 
         super(i_GameInfoWrapper);
@@ -61,13 +74,13 @@ public class AdvancedGame extends Game {
     boolean checkIfLegalMove(Player i_Player, Square i_Move) {
         boolean res = true;
 
-        if(i_Player.getPlayerColor() != i_Move.getColor()){
+        if(i_Player.getColor() != i_Move.getColor()){
             res = false;
         }
         else if(i_Move.getColumn() == m_Board.getMark().getColumn()) {
             if (i_Move.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
                     || i_Move.getSquareSymbol().equals("")
-                    || i_Move.getColor() != i_Player.getPlayerColor()) {
+                    || i_Move.getColor() != i_Player.getColor()) {
                 res = false;
             }
         }
@@ -115,13 +128,12 @@ public class AdvancedGame extends Game {
     @Override
     public void playerQuit() {
         Square square = new Square();
-        eColor currPlayerColor = m_CurrentPlayer.getPlayerColor();
+        eColor currPlayerColor = m_CurrentPlayer.getColor();
         for(int row = 0; row < m_Board.getBoardSize(); row++){
             for(int col = 0; col < m_Board.getBoardSize(); col++){
                 square = m_Board.getSquareInPos(row,col);
                 if(square.getColor() == currPlayerColor){
                     square.setSquareSymbol("");
-                    //square.setColor(eColor.DEFAULT);
                     square.setColor(eColor.BLACK);
                 }
             }

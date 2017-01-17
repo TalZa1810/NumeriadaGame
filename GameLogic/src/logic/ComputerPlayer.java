@@ -47,7 +47,7 @@ public class ComputerPlayer extends Player {
         else {
             //checking color in col
             for(int row = 0; row < i_Board.getBoardSize(); row++){
-                if(i_Board.getSquareInPos(row, i_GameInfo.getMarkerCol()).getColor().name().equals(getPlayerColor().name())){
+                if(i_Board.getSquareInPos(row, i_GameInfo.getMarkerCol()).getColor().name().equals(getColor().name())){
                     hasNumberInColor = true;
                     break;
                 }
@@ -67,7 +67,7 @@ public class ComputerPlayer extends Player {
             if (!hasNumberInColor){
                 //checking color in row
                 for(int col = 0; col < i_Board.getBoardSize(); col++){
-                    if(i_Board.getSquareInPos(i_GameInfo.getMarkerRow(), col).getColor().name().equals(getPlayerColor().name())){
+                    if(i_Board.getSquareInPos(i_GameInfo.getMarkerRow(), col).getColor().name().equals(getColor().name())){
                         hasNumberInColor = true;
                         break;
                     }
@@ -95,7 +95,7 @@ public class ComputerPlayer extends Player {
 
         return i_Board.getSquareInPos(i_Row, i_Col).getSquareSymbol().equals("") ||
                 i_Board.getSquareInPos(i_Row, i_Col).getSquareSymbol().equals("@") ||
-                !i_Board.getSquareInPos(i_Row, i_Col).getColor().name().equals(getPlayerColor().name());
+                !i_Board.getSquareInPos(i_Row, i_Col).getColor().name().equals(getColor().name());
 
     }
 }

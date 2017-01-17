@@ -18,6 +18,9 @@ public class BasicGame extends Game {
         return true;
     }
 
+    @Override
+    public void removeCurrentPlayerCellsFromBoard() {}
+
     public BasicGame(GameInfo[] i_GameInfoWrapper) {
         super(i_GameInfoWrapper);
     }

@@ -3,7 +3,6 @@ package javafx_ui.gamePane;
 import Generated.GameDescriptor;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -99,13 +98,11 @@ public class GameController implements Initializable{
     @FXML    private Label numOfMovesLabel;
     @FXML    private Button quitButton;
 
-
-    private SimpleIntegerProperty[] m_PlayersScore = new SimpleIntegerProperty[MAX_PLAYERS];
-
     private SimpleStringProperty m_FilePath = new SimpleStringProperty("");
     private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
     private SimpleBooleanProperty m_isFileSelected = new SimpleBooleanProperty();
     private boolean gameStarted = false;
+    private int m_NumOfPlayersWithoutPossibleMove = 0;
 
 
     public GameController() {
@@ -115,14 +112,14 @@ public class GameController implements Initializable{
     public void initializeGameController(BorderPane i_GameLayout){
         m_Board = new BoardController(m_GameInfoWrapper, boardGrid, m_Validator);
         m_PlayersController = new PlayersController(m_GameInfoWrapper, this);
-        getScoresfromGameInfo(m_PlayersScore);
         m_ListOfPlayers = m_GameInfo.getPlayers();
+        getScoresFromGameInfo();
     }
 
-    private void getScoresfromGameInfo(SimpleIntegerProperty[] i_PlayerScore) {
+    private void getScoresFromGameInfo() {
         ArrayList<PlayerData> players = m_GameInfo.getPlayers();
         for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
-            i_PlayerScore[i].setValue(players.get(i).getScore());
+            m_PlayersController.getScoreLabels()[i].setText(String.valueOf(players.get(i).getScore()));
         }
     }
 
@@ -198,11 +195,16 @@ public class GameController implements Initializable{
     }
 
     private void startGameIteration() {
-        if (m_Logic.checkIfNotPossibleMove()) {
+        if(m_NumOfPlayersWithoutPossibleMove == m_GameInfo.getNumOfPlayers()) {
+            gameDone = true;
+            //TODO: finish game proc
+        }
+        else if (m_Logic.checkIfNotPossibleMove()) {
             //player doesn't have possible moves. notify and go to next player
             //TODO: make the step over players work
             int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
             m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
+            m_NumOfPlayersWithoutPossibleMove++;
             m_Logic.nextPlayer(indexOfCurrPlayer);
             updateCurrPlayer();
             startGameIteration();
@@ -253,15 +255,45 @@ public class GameController implements Initializable{
         removeCurrentPlayerFromPlayerView();
     }
 
+    private void removeCurrentPlayerCellsFromBoard() {
+        m_Logic.removeCurrentPlayerCellsFromBoard();
+        updateBoardAfterMove();
+    }
+
     private void removeCurrentPlayerFromPlayerView() {
-        //erase all labels and print from scratch
+        /*String emptyStr = "";
+        playerColor1.setText(emptyStr);
+        playerID1.setText(emptyStr);
+        playerName1.setText(emptyStr);
+        playerScore1.setText(emptyStr);
+        playerColor2.setText(emptyStr);
+        playerID2.setText(emptyStr);
+        playerName2.setText(emptyStr);
+        playerScore2.setText(emptyStr);
+        playerColor3.setText(emptyStr);
+        playerID3.setText(emptyStr);
+        playerName3.setText(emptyStr);
+        playerScore3.setText(emptyStr);
+        playerColor4.setText(emptyStr);
+        playerID4.setText(emptyStr);
+        playerName4.setText(emptyStr);
+        playerScore4.setText(emptyStr);
+        playerColor5.setText(emptyStr);
+        playerID5.setText(emptyStr);
+        playerName5.setText(emptyStr);
+        playerScore5.setText(emptyStr);
+        playerColor6.setText(emptyStr);
+        playerID6.setText(emptyStr);
+        playerName6.setText(emptyStr);
+        playerScore6.setText(emptyStr);*/
+        m_PlayersController.clearPreviousPlayersData();
+        m_PlayersController.setPlayers();
     }
 
     private void removeCurrentPlayerFromList() {
+        //updates list and numOfPlayers variable in game and in game info
         m_Logic.removePlayerFromList();
     }
-
-
 
     public void setPrimaryStage(Stage i_PrimaryStage) {
         m_PrimaryStage = i_PrimaryStage;
@@ -380,6 +412,9 @@ public class GameController implements Initializable{
     public void makeMoveOperation(){
         gameDone = m_Logic.makeMove();
         updateBoardAfterMove();
+        updateScoresAfterMove();
+        updateCurrPlayer();
+        m_NumOfPlayersWithoutPossibleMove = 0;
         if (gameDone) {
             gameDoneProcedure();
         }
@@ -394,19 +429,14 @@ public class GameController implements Initializable{
         square.setText("");
         marker.setTextFill(Paint.valueOf(eColor.BLACK.name()));
         square.setTextFill(Paint.valueOf(eColor.BLACK.name()));
-        updateScoresAfterMove();
     }
 
     private void updateScoresAfterMove() {
         ArrayList<PlayerData> players = m_GameInfo.getPlayers();
         for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
-            m_PlayersScore[i].setValue(players.get(i).getScore());
+            m_PlayersController.getScoreLabels()[i].setText(String.valueOf(players.get(i).getScore()));
             updateCurrPlayer();
         }
-    }
-
-    private boolean checkIfNoMorePossibleMoves() {
-        return m_Logic.checkIfNotPossibleMove();
     }
 
     private SquareData getDataFromChoseButton(Button chosenButton) {
@@ -525,10 +555,6 @@ public class GameController implements Initializable{
 
     public Label getPlayerColor6() {
         return playerColor6;
-    }
-
-    public SimpleIntegerProperty[] getPlayersScore() {
-        return m_PlayersScore;
     }
 
     public void setStatusBar(String s) {

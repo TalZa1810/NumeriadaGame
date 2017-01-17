@@ -1,7 +1,5 @@
 package javafx_ui.playersPane;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
 import javafx_ui.gamePane.GameController;
@@ -46,7 +44,7 @@ public class PlayersController {
 
             setPlayerName(m_PlayersNamesLabels[i] , player);
             setPlayerID(m_PlayersIDsLabels[i], player);
-            setPlayersScoresData();
+            //setPlayersScoresData();
             setPlayerColor(m_PlayersColorLabels[i], player);
             i++;
         }
@@ -89,6 +87,7 @@ public class PlayersController {
     }
 
     //SCORE BINDING
+    /*
     private void setPlayersScoresData(){
 
         SimpleIntegerProperty[] playerScore = m_GameController.getPlayersScore() ;
@@ -100,7 +99,7 @@ public class PlayersController {
             m_PlayersScoreLabels[i].textProperty().bind(Bindings.format( "%s", playerScore[i] ));
             i++;
         }
-    }
+    }*/
 
     public void setPlayerName(Label i_PlayerNameLabel , PlayerData i_PlayerData ){
         i_PlayerNameLabel.setText(i_PlayerData.getName());
@@ -124,11 +123,12 @@ public class PlayersController {
 
             m_PlayersNamesLabels[i].setText("");
             m_PlayersIDsLabels[i].setText("");
-            m_PlayersIDsLabels[i].setText("");
-            m_PlayersColorLabels[i].setText("");
-            //TODO: SHOULD RESET SCORE
-            //m_PlayersScoreLabels[i].setText("");
+            m_PlayersScoreLabels[i].setText("");
             i++;
         }
+    }
+
+    public Label[] getScoreLabels() {
+        return m_PlayersScoreLabels;
     }
 }
