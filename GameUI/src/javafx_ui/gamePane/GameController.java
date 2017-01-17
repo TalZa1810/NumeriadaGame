@@ -91,6 +91,13 @@ public class GameController implements Initializable{
     @FXML    private Label playerID6;
     @FXML    private Label playerName6;
     @FXML    private Label playerScore6;
+    @FXML    private Label currPlayerIDLabel;
+    @FXML    private Label currPlayerNameLabel;
+    @FXML    private Label currPlayerColorLabel;
+    @FXML    private Label currPlayerTypeLabel;
+    @FXML    private Label currPlayerScoreLabel;
+    @FXML    private Label numOfMovesLabel;
+    @FXML    private Button quitButton;
 
 
     private SimpleIntegerProperty[] m_PlayersScore = new SimpleIntegerProperty[MAX_PLAYERS];
@@ -178,27 +185,26 @@ public class GameController implements Initializable{
         gameStarted = true;
         makeMoveButton.setDisable(false);
         startGameIteration();
+        updateCurrPlayer();
+    }
+
+    private void updateCurrPlayer() {
+        numOfMovesLabel.setText((String.valueOf(m_GameInfo.getNumOfMoves())));
+        currPlayerIDLabel.setText(String.valueOf(m_GameInfo.getCurrPlayer().getID()));
+        currPlayerNameLabel.setText(m_GameInfo.getCurrPlayer().getName());
+        currPlayerColorLabel.setText(m_GameInfo.getCurrPlayer().getColor().name());
+        currPlayerTypeLabel.setText(m_GameInfo.getCurrPlayer().getType().name());
+        currPlayerScoreLabel.setText(String.valueOf(m_GameInfo.getCurrPlayer().getScore()));
     }
 
     private void startGameIteration() {
         if (m_Logic.checkIfNotPossibleMove()) {
             //player doesn't have possible moves. notify and go to next player
             //TODO: make the step over players work
-            Label prevColorLabel;
             int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
-            Label colorLabel = getPlayerColorLabel(indexOfCurrPlayer);
             m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
-            if(indexOfCurrPlayer == 0){
-                 prevColorLabel = getPlayerColorLabel(m_GameInfo.getNumOfPlayers() - 1);
-            }
-            else{
-                prevColorLabel = getPlayerColorLabel(indexOfCurrPlayer - 1);
-            }
-
-            colorLabel.setText("==>");
-            prevColorLabel.setText("###");
-
             m_Logic.nextPlayer(indexOfCurrPlayer);
+            updateCurrPlayer();
             startGameIteration();
         } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
             makeMoveOperation();
@@ -239,6 +245,23 @@ public class GameController implements Initializable{
         makeMove();
         startGameIteration();
     }
+
+    @FXML
+    public void quitButtonClicked(){
+        removeCurrentPlayerCellsFromBoard();
+        removeCurrentPlayerFromList();
+        removeCurrentPlayerFromPlayerView();
+    }
+
+    private void removeCurrentPlayerFromPlayerView() {
+        //erase all labels and print from scratch
+    }
+
+    private void removeCurrentPlayerFromList() {
+        m_Logic.removePlayerFromList();
+    }
+
+
 
     public void setPrimaryStage(Stage i_PrimaryStage) {
         m_PrimaryStage = i_PrimaryStage;
@@ -378,19 +401,7 @@ public class GameController implements Initializable{
         ArrayList<PlayerData> players = m_GameInfo.getPlayers();
         for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
             m_PlayersScore[i].setValue(players.get(i).getScore());
-            if(players.get(i).getID() == m_GameInfo.getCurrPlayer().getID()){
-                Label color = getPlayerColorLabel(i);
-                Label prevColor;
-                if(i == 0) {
-                    prevColor = getPlayerColorLabel(m_GameInfo.getNumOfPlayers() - 1);
-                }
-                else{
-                    prevColor = getPlayerColorLabel(i - 1);
-                }
-
-                color.setText("==>");
-                prevColor.setText("###");
-            }
+            updateCurrPlayer();
         }
     }
 

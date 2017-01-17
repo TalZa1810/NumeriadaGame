@@ -66,7 +66,14 @@ public abstract class Game {
 
     public void nextPlayer(int i_IndexOfCurrentPlayer) {
         m_CurrentPlayer = m_Players.get(i_IndexOfCurrentPlayer + 1 % m_Players.size());
-        loadCurrPlayerToGameInfo();
+        loadCurrPlayerAndNumOfMovesToGameInfo();
+    }
+
+    public void removePlayerFromList() {
+        m_Players.remove(m_CurrentPlayer);
+        m_GameInfo.getPlayers().remove(m_CurrentPlayer);
+        m_NumOfPlayers -= 1;
+        m_GameInfo.setNumOfPlayers(m_NumOfPlayers);
     }
 
     public enum eGameMode {
@@ -221,9 +228,10 @@ public abstract class Game {
         }
     }
 
-    public void loadCurrPlayerToGameInfo() {
+    public void loadCurrPlayerAndNumOfMovesToGameInfo() {
         PlayerData player = new PlayerData(m_CurrentPlayer.getName(), m_CurrentPlayer.getID(), m_CurrentPlayer.getPlayerColor(), m_CurrentPlayer.getPlayerType(), m_CurrentPlayer.getPlayerScore());
         m_GameInfo.setCurrPlayer(player);
+        m_GameInfo.setNumOfMoves(m_NumOfMoves);
     }
 
     abstract boolean checkIfLegalMove(Player i_Player, Square i_Move);
@@ -233,7 +241,7 @@ public abstract class Game {
         playTurn();
         m_NumOfMoves++;
         m_CurrentPlayer = m_Players.get(m_NumOfMoves % m_Players.size());
-        loadCurrPlayerToGameInfo();
+        loadCurrPlayerAndNumOfMovesToGameInfo();
         boolean gameDone = checkIfGameDone();
         return gameDone;
     }
@@ -256,7 +264,7 @@ public abstract class Game {
 
         m_GameInfo.setRowPlayerScore(m_Players.get(0).getPlayerScore());
         m_GameInfo.setColPlayerScore(m_Players.get(1).getPlayerScore());
-        loadCurrPlayerToGameInfo();
+        loadCurrPlayerAndNumOfMovesToGameInfo();
     }
 
     public void getCurrMarkerPosition() {
@@ -265,9 +273,7 @@ public abstract class Game {
     }
 
     public void playTurn(){
-        m_MarkMoves.add(new MoveData(m_Board.getMark().getRow(), m_Board.getMark().getColumn()));
-        m_PlayersMoves.add(new MoveData(m_ChosenSquare.getRow(), m_ChosenSquare.getColumn()));
-        m_CurrentPlayer.playTurn( m_Board, m_GameInfo , m_ChosenSquare);
+        m_CurrentPlayer.playTurn(m_Board, m_GameInfo , m_ChosenSquare, m_MarkMoves, m_PlayersMoves);
         loadBoardToGameInfo();
     }
 

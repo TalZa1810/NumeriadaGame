@@ -162,7 +162,7 @@ public class GameManager {
         boolean validInput;
 
         m_GameLogic.getCurrMarkerPosition();
-        m_GameLogic.loadCurrPlayerToGameInfo();
+        m_GameLogic.loadCurrPlayerAndNumOfMovesToGameInfo();
         //if(m_GameInfo.getCurrPlayer().equals("row") || (!m_GameInfo.getCurrPlayer().equals("row") && m_GameInfo.getGameMode() == 1)) {
             m_GameInfo.setMove(m_GameUI.getMoveFromUser());
             validInput = m_GameLogic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());

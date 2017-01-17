@@ -1,9 +1,12 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.MoveData;
 import sharedStructures.PlayerData;
 import sharedStructures.eColor;
 import sharedStructures.ePlayerType;
+
+import java.util.List;
 
 abstract class Player {
 
@@ -38,7 +41,7 @@ abstract class Player {
         this.m_Name = i_Name;
     }
 
-    public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
+    public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare, List<MoveData> i_MarkMoves, List<MoveData> i_PlayersMoves) {
         if ( i_ChosenSquare != null ){
             addToPlayerScore(Integer.parseInt(i_ChosenSquare.getSquareSymbol()));
             updatePlayerScoreInGameInfo(this, i_GameInfo);

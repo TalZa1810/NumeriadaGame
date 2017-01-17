@@ -1,8 +1,11 @@
 package logic;
 
 import shared.GameInfo;
+import sharedStructures.MoveData;
 import sharedStructures.eColor;
 import sharedStructures.ePlayerType;
+
+import java.util.List;
 
 
 public class HumanPlayer extends  Player {
@@ -12,7 +15,9 @@ public class HumanPlayer extends  Player {
     }
 
     @Override
-    public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare) {
-        super.playTurn(i_Board, i_GameInfo , i_ChosenSquare);
+    public void playTurn(Board i_Board, GameInfo i_GameInfo , Square i_ChosenSquare, List<MoveData> i_MarkMoves, List<MoveData> i_PlayersMoves) {
+        i_MarkMoves.add(new MoveData(i_Board.getMark().getRow(), i_Board.getMark().getColumn(), eColor.BLACK, i_Board.getMark().getSquareSymbol(), true));
+        i_PlayersMoves.add(new MoveData(i_ChosenSquare.getRow(), i_ChosenSquare.getColumn(), i_ChosenSquare.getColor(), i_ChosenSquare.getSquareSymbol(), true));
+        super.playTurn(i_Board, i_GameInfo , i_ChosenSquare, i_MarkMoves, i_PlayersMoves);
     }
 }

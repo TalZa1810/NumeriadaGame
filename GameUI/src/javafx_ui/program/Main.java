@@ -37,7 +37,7 @@ public class Main extends Application {
         gameController.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("Numberiada");
-        Scene scene = new Scene(gameLayout, 680, 500);
+        Scene scene = new Scene(gameLayout, 750, 550);
 
         primaryStage.setScene(scene);
         primaryStage.show();

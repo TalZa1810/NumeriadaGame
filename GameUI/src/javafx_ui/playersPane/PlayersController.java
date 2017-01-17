@@ -112,12 +112,7 @@ public class PlayersController {
     }
 
     public void setPlayerColor(Label i_PlayerColorLabel , PlayerData i_PlayerData){
-        if(i_PlayerColorLabel.getId().equals("playerColor1")){
-            i_PlayerColorLabel.setText("==>");
-        }
-        else {
-            i_PlayerColorLabel.setText("###");
-        }
+        i_PlayerColorLabel.setText("###");
         i_PlayerColorLabel.setTextFill(Paint.valueOf(i_PlayerData.getColor().name()));
     }
 
