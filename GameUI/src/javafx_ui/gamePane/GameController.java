@@ -269,11 +269,46 @@ public class GameController implements Initializable{
 
     @FXML
     public void nextButtonClicked(){
-        //TODO: implement method
-        //nextMoveButton.setDisable(false);
-        //makeMoveButton.setDisable(true);
-        //showPrevMove();
+        if (m_PlayerMovesInd == m_GameInfo.getPlayersMoves().size()-1){
+            nextMoveButton.setDisable(true);
+        }
+
+        prevMoveButton.setDisable(false);
+
+        showNextMove();
     }
+
+
+     private void showNextMove(){
+
+         //TODO: UPDATE PLAYERS SCORE
+         //TODO: prev button doesn't work after next button
+         MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd + 1);
+         while(!square.isAlive()){
+             eraseSquare(square);
+             m_PlayerMovesInd++;
+             square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
+         }
+
+         MoveData marker = m_GameInfo.getMarkMoves().get(m_MarkerMovesInd + 1);
+         eraseSquare(square);
+         eraseSquare(marker);
+         marker.setCol(square.getCol());
+         marker.setRow(square.getRow());
+         showSquare(marker);
+         m_PlayerMovesInd++;
+         m_MarkerMovesInd++;
+         if(m_PlayerMovesInd == m_GameInfo.getPlayersMoves().size()){
+             nextMoveButton.setDisable(true);
+         }
+     }
+
+    private void eraseSquare(MoveData square) {
+        Button button = m_Board.getButtonInPos(square.getRow(), square.getCol());
+        button.setText("");
+        button.setTextFill(Paint.valueOf((eColor.BLACK.name())));
+    }
+
 
     private void showPrevMove() {
         MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
@@ -286,6 +321,11 @@ public class GameController implements Initializable{
         MoveData marker = m_GameInfo.getMarkMoves().get(m_MarkerMovesInd);
         showSquare(square);
         showSquare(marker);
+        if(m_MarkerMovesInd == 0){
+            prevMoveButton.setDisable(true);
+        }
+        m_PlayerMovesInd--;
+        m_MarkerMovesInd--;
     }
 
     private void showSquare(MoveData square) {
@@ -301,8 +341,8 @@ public class GameController implements Initializable{
         removeCurrentPlayerCellsFromBoard();
         removeCurrentPlayerFromList();
         removeCurrentPlayerFromPlayerView();
-        m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex));
-        m_Logic.updateCurrPlayer(nextPlayerIndex);
+        m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
+        m_Logic.updateCurrPlayer(nextPlayerIndex % m_GameInfo.getNumOfPlayers());
         updateCurrPlayer();
     }
 
