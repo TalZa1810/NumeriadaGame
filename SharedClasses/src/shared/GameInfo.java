@@ -1,6 +1,7 @@
 package shared;
 
 
+import sharedStructures.MoveData;
 import sharedStructures.PlayerData;
 import sharedStructures.SquareData;
 import sharedStructures.eColor;
@@ -31,6 +32,24 @@ public class GameInfo {
     private  int m_NumOfPlayers = 0;
     private int m_ChosenRow;
     private int m_ChosenCol;
+    protected ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
+    private ArrayList<MoveData> m_MarkMoves = new ArrayList<MoveData>();
+
+    public ArrayList<MoveData> getMarkMoves() {
+        return m_MarkMoves;
+    }
+
+    public void setMarkMoves(ArrayList<MoveData> i_MarkMoves) {
+        this.m_MarkMoves = i_MarkMoves;
+    }
+
+    public ArrayList<MoveData> getPlayersMoves() {
+        return m_PlayersMoves;
+    }
+
+    public void setPlayersMoves(ArrayList<MoveData> i_PlayersMoves) {
+        this.m_PlayersMoves = i_PlayersMoves;
+    }
 
     public String getPath() {
         return m_Path;

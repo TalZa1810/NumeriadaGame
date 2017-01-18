@@ -44,7 +44,7 @@ public class PlayersController {
 
             setPlayerName(m_PlayersNamesLabels[i] , player);
             setPlayerID(m_PlayersIDsLabels[i], player);
-            setPlayerScoresData(m_PlayersIDsLabels[i], player);
+            setPlayerScoresData(m_PlayersScoreLabels[i], player);
             setPlayerColor(m_PlayersColorLabels[i], player);
             i++;
         }
@@ -87,7 +87,7 @@ public class PlayersController {
     }
 
     private void setPlayerScoresData(Label i_playerScoreLabel, PlayerData i_PlayerData) {
-        i_playerScoreLabel.setText(i_PlayerData.getName());
+        i_playerScoreLabel.setText(String.valueOf(i_PlayerData.getScore()));
     }
 
 
@@ -96,8 +96,7 @@ public class PlayersController {
     }
 
     public  void setPlayerID(Label i_PlayerIDLabel , PlayerData i_PlayerData){
-        Integer id = i_PlayerData.getID();
-        i_PlayerIDLabel.setText(id.toString());
+        i_PlayerIDLabel.setText(String.valueOf(i_PlayerData.getID()));
     }
 
     public void setPlayerColor(Label i_PlayerColorLabel , PlayerData i_PlayerData){

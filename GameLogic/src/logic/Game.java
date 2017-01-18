@@ -82,6 +82,11 @@ public abstract class Game {
         m_CurrentPlayer = m_Players.get(nextPlayerIndex);
     }
 
+    public void loadPastMovesToGameInfo() {
+        m_GameInfo.setPlayersMoves(m_PlayersMoves);
+        m_GameInfo.setMarkMoves(m_MarkMoves);
+    }
+
 
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer

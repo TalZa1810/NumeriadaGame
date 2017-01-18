@@ -48,6 +48,8 @@ public class GameController implements Initializable{
     private ArrayList<PlayerData> m_ListOfPlayers;
     private Stage m_PrimaryStage;
     private boolean gameDone;
+    private int m_MarkerMovesInd;
+    private int m_PlayerMovesInd;
 
 
     @FXML    private BorderPane m_MainWindow;
@@ -181,6 +183,7 @@ public class GameController implements Initializable{
     public void startGameClicked() {
         gameStarted = true;
         makeMoveButton.setDisable(false);
+        quitButton.setDisable(false);
         startGameIteration();
         updateCurrPlayer();
     }
@@ -245,8 +248,52 @@ public class GameController implements Initializable{
     @FXML
     public void makeMoveClicked(){
         makeMove();
+        m_Logic.loadPastMovesToGameInfo();
+        m_MarkerMovesInd = m_GameInfo.getMarkMoves().size() - 1;
+        m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size() - 1;
+        if(m_GameInfo.getNumOfMoves() > 0){
+            prevMoveButton.setDisable(false);
+        }
+        else {
+            prevMoveButton.setDisable(true);
+        }
         startGameIteration();
     }
+
+    @FXML
+    public void prevButtonClicked(){
+        nextMoveButton.setDisable(false);
+        makeMoveButton.setDisable(true);
+        showPrevMove();
+    }
+
+    @FXML
+    public void nextButtonClicked(){
+        //TODO: implement method
+        //nextMoveButton.setDisable(false);
+        //makeMoveButton.setDisable(true);
+        //showPrevMove();
+    }
+
+    private void showPrevMove() {
+        MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
+        while(!square.isAlive()){
+            showSquare(square);
+            m_PlayerMovesInd--;
+            square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
+        }
+
+        MoveData marker = m_GameInfo.getMarkMoves().get(m_MarkerMovesInd);
+        showSquare(square);
+        showSquare(marker);
+    }
+
+    private void showSquare(MoveData square) {
+        Button button = m_Board.getButtonInPos(square.getRow(), square.getCol());
+        button.setText(square.getValue());
+        button.setTextFill(Paint.valueOf(square.getColor().name()));
+    }
+
 
     @FXML
     public void quitButtonClicked(){

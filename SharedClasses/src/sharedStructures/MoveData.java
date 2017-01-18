@@ -48,4 +48,8 @@ public class MoveData {
     public void setType(String i_Value) {
         this.m_Value = i_Value;
     }
+
+    public boolean isAlive() {
+        return m_IsAlive;
+    }
 }
