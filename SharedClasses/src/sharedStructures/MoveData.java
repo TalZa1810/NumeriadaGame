@@ -17,6 +17,14 @@ public class MoveData {
 
     public MoveData(){}
 
+    public MoveData(MoveData moveData) {
+        m_Row = moveData.getRow();
+        m_Col = moveData.getCol();
+        m_Color = moveData.getColor();
+        m_Value = moveData.getValue();
+        m_IsAlive = moveData.isAlive();
+    }
+
     public int getRow() {
         return m_Row;
     }

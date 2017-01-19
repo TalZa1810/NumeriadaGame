@@ -188,6 +188,31 @@ public class GameController implements Initializable{
         updateCurrPlayer();
     }
 
+    private String getPlayersResults() {
+        ArrayList<PlayerData> players = m_GameInfo.getPlayers();
+        String winnerAnnounce = "";
+        PlayerData winner = players.get(0);
+        int maxScore = players.get(0).getScore();
+        for(int i = 1; i < m_GameInfo.getNumOfPlayers(); i++){
+            if(players.get(i).getScore() > maxScore){
+                maxScore = players.get(i).getScore();
+                winner = players.get(i);
+                winnerAnnounce = "Game finished!\nThe winner is " + players.get(i).getName() + " with " + players.get(i).getScore() + " points";
+            }
+            else if(maxScore == players.get(i).getScore()){
+                if(winner.getID() != players.get(i).getID()){
+                    winnerAnnounce = "Game finished!\nIs a tie between " + players.get(i).getName() + " and " + winner.getName() + " with " + players.get(i).getScore() + " points";
+                }
+            }
+        }
+
+        makeMoveButton.setDisable(true);
+        prevMoveButton.setDisable(true);
+        quitButton.setDisable(true);
+
+        return winnerAnnounce;
+    }
+
     private void updateCurrPlayer() {
         numOfMovesLabel.setText((String.valueOf(m_GameInfo.getNumOfMoves())));
         currPlayerIDLabel.setText(String.valueOf(m_GameInfo.getCurrPlayer().getID()));
@@ -198,27 +223,30 @@ public class GameController implements Initializable{
     }
 
     private void startGameIteration() {
-        if(m_NumOfPlayersWithoutPossibleMove == m_GameInfo.getNumOfPlayers()) {
-            gameDone = true;
-            //TODO: finish game proc
+        if(gameStarted) {
+            if (m_NumOfPlayersWithoutPossibleMove == m_GameInfo.getNumOfPlayers()) {
+                gameStarted = false;
+                startGameIteration();
+            } else if (m_Logic.checkIfNotPossibleMove()) {
+                //player doesn't have possible moves. notify and go to next player
+                int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
+                m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
+                m_NumOfPlayersWithoutPossibleMove++;
+                m_Logic.nextPlayer(indexOfCurrPlayer);
+                updateCurrPlayer();
+                startGameIteration();
+            } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
+                makeMoveOperation();
+                startGameIteration();
+            }
         }
-        else if (m_Logic.checkIfNotPossibleMove()) {
-            //player doesn't have possible moves. notify and go to next player
-            //TODO: make the step over players work
-            int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
-            m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
-            m_NumOfPlayersWithoutPossibleMove++;
-            m_Logic.nextPlayer(indexOfCurrPlayer);
-            updateCurrPlayer();
-            startGameIteration();
-        } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
-            makeMoveOperation();
-            startGameIteration();
+        else{
+            m_StatusBar.set(getPlayersResults());
         }
     }
 
 
-    private Label getPlayerColorLabel(int i) {
+   /* private Label getPlayerColorLabel(int i) {
         Label res;
         switch(i){
             case 0:
@@ -243,14 +271,14 @@ public class GameController implements Initializable{
                 res = null;
         }
         return res;
-    }
+    }*/
 
     @FXML
     public void makeMoveClicked(){
         makeMove();
         m_Logic.loadPastMovesToGameInfo();
-        m_MarkerMovesInd = m_GameInfo.getMarkMoves().size() - 1;
-        m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size() - 1;
+        m_MarkerMovesInd = m_GameInfo.getMarkMoves().size();
+        m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size();
         if(m_GameInfo.getNumOfMoves() > 0){
             prevMoveButton.setDisable(false);
         }
@@ -269,28 +297,23 @@ public class GameController implements Initializable{
 
     @FXML
     public void nextButtonClicked(){
-        if (m_PlayerMovesInd == m_GameInfo.getPlayersMoves().size()-1){
-            nextMoveButton.setDisable(true);
-        }
-
         prevMoveButton.setDisable(false);
-
         showNextMove();
     }
 
 
      private void showNextMove(){
-
-         //TODO: UPDATE PLAYERS SCORE
          //TODO: prev button doesn't work after next button
-         MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd + 1);
+         MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
          while(!square.isAlive()){
              eraseSquare(square);
              m_PlayerMovesInd++;
              square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
          }
 
-         MoveData marker = m_GameInfo.getMarkMoves().get(m_MarkerMovesInd + 1);
+         MoveData marker = new MoveData(m_GameInfo.getMarkMoves().get(m_MarkerMovesInd));
+         Label currPlayerScore = getPlayerScoreLabel(getPlayerIndexByColor(square.getColor()));
+         currPlayerScore.setText(String.valueOf(Integer.parseInt(currPlayerScore.getText()) + Integer.parseInt(square.getValue())));
          eraseSquare(square);
          eraseSquare(marker);
          marker.setCol(square.getCol());
@@ -300,8 +323,47 @@ public class GameController implements Initializable{
          m_MarkerMovesInd++;
          if(m_PlayerMovesInd == m_GameInfo.getPlayersMoves().size()){
              nextMoveButton.setDisable(true);
+             makeMoveButton.setDisable(false);
          }
      }
+
+    private int getPlayerIndexByColor(eColor color) {
+        ArrayList<PlayerData> players = m_GameInfo.getPlayers();
+        for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
+            if(players.get(i).getColor() == color){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private Label getPlayerScoreLabel(int indexOfPlayer) {
+        Label res;
+        switch(indexOfPlayer){
+            case 0:
+                res = playerScore1;
+                break;
+            case 1:
+                res = playerScore2;
+                break;
+            case 2:
+                res = playerScore3;
+                break;
+            case 3:
+                res = playerScore4;
+                break;
+            case 4:
+                res = playerScore5;
+                break;
+            case 5:
+                res = playerScore6;
+                break;
+            default:
+                res = null;
+        }
+        return res;
+
+    }
 
     private void eraseSquare(MoveData square) {
         Button button = m_Board.getButtonInPos(square.getRow(), square.getCol());
@@ -311,17 +373,19 @@ public class GameController implements Initializable{
 
 
     private void showPrevMove() {
-        MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
+        MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd - 1);
         while(!square.isAlive()){
             showSquare(square);
             m_PlayerMovesInd--;
-            square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
+            square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd - 1);
         }
 
-        MoveData marker = m_GameInfo.getMarkMoves().get(m_MarkerMovesInd);
+        MoveData marker = m_GameInfo.getMarkMoves().get(m_MarkerMovesInd - 1);
+        Label currPlayerScore = getPlayerScoreLabel(getPlayerIndexByColor(square.getColor()));
+        currPlayerScore.setText(String.valueOf(Integer.parseInt(currPlayerScore.getText()) - Integer.parseInt(square.getValue())));
         showSquare(square);
         showSquare(marker);
-        if(m_MarkerMovesInd == 0){
+        if(m_MarkerMovesInd == 1){
             prevMoveButton.setDisable(true);
         }
         m_PlayerMovesInd--;
@@ -337,13 +401,18 @@ public class GameController implements Initializable{
 
     @FXML
     public void quitButtonClicked(){
-        int nextPlayerIndex = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
-        removeCurrentPlayerCellsFromBoard();
-        removeCurrentPlayerFromList();
-        removeCurrentPlayerFromPlayerView();
-        m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
-        m_Logic.updateCurrPlayer(nextPlayerIndex % m_GameInfo.getNumOfPlayers());
-        updateCurrPlayer();
+        if(m_GameInfo.getNumOfPlayers() > 1) {
+            int nextPlayerIndex = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
+            removeCurrentPlayerCellsFromBoard();
+            removeCurrentPlayerFromList();
+            removeCurrentPlayerFromPlayerView();
+            m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
+            m_Logic.updateCurrPlayer(nextPlayerIndex % m_GameInfo.getNumOfPlayers());
+            updateCurrPlayer();
+            if(m_GameInfo.getNumOfPlayers() > 1){
+                quitButton.setDisable(true);
+            }
+        }
     }
 
     private void removeCurrentPlayerCellsFromBoard() {
@@ -482,7 +551,8 @@ public class GameController implements Initializable{
         updateCurrPlayer();
         m_NumOfPlayersWithoutPossibleMove = 0;
         if (gameDone) {
-            gameDoneProcedure();
+            gameStarted = false;
+            startGameIteration();
         }
     }
 
