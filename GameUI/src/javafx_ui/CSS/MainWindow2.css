@@ -1,24 +1,22 @@
 .root{
     -fx-font-size: 10pt;
-    -fx-background: rgb(236,143,211);
+    -fx-background: rgb(255,193,193);
     -fx-background-opacity: 50%;
 }
 
 .topBtn{
     -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-text-fill: mediumpurple;
-    -fx-font-family: "Rockwell";
+    -fx-text-fill:  rgb(202,10,10);
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-weight: bold;
-
-
 }
 
 .bottomBtn{
     -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-text-fill: purple;
-    -fx-font-family: "Rockwell";
+    -fx-text-fill: darkred;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-weight: bold;
 
 }
@@ -26,10 +24,13 @@
 #quitBtn{
     -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-text-fill: blue;
+    -fx-text-fill: indianred;
     -fx-font-weight: bold;
-    -fx-font-family: "Rockwell";
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-weight: bold;
 }
+
+
+
 
 

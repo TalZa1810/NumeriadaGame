@@ -1,0 +1,23 @@
+.topBtn{
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: blue;
+}
+
+.bottomBtn{
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: midnightblue;
+}
+
+#quitBtn{
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rebeccapurple;
+    -fx-font-weight: bold;
+}
+
+.background{
+    -fx-background-color: aquamarine;
+    -fx-border-color: aquamarine;
+}
