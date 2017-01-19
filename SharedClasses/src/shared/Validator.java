@@ -109,4 +109,21 @@ public class Validator {
             throw(new Exception("Wrong color choice\n"));
         }
     }
+
+    public void checkValidPlayersColors(List<GameDescriptor.Players.Player> players) throws Exception {
+        boolean validColors;
+        Set<Integer> colors = new HashSet<Integer>();
+        for(GameDescriptor.Players.Player p: players){
+            validColors = colors.add(p.getColor());
+            if(!validColors){
+                throw(new Exception("Invalid file. Two players with same color\n"));
+            }
+        }
+    }
+
+    public void checkValidNumberOfPlayers(List<GameDescriptor.Players.Player> players) throws Exception {
+        if(players.size() > 6 || players.size() < 3){
+            throw(new Exception("Invalid file. Number of players is not between 3-6\n"));
+        }
+    }
 }

@@ -69,7 +69,7 @@ public class AdvancedGame extends Game {
     @Override
     protected void initRandomBoardSquare(int randomRow, int randomCol, int colorIndex, int data) {
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol(Integer.toString(data));
-        m_Board.getSquareInPos(randomRow,randomCol).setColor(eColor.values()[(colorIndex % m_GameInfo.getNumOfPlayers()) + 1]);
+        m_Board.getSquareInPos(randomRow,randomCol).setColor(eColor.values()[colorIndex]);
     }
 
     @Override

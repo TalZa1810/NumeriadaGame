@@ -186,7 +186,7 @@ public abstract class Game {
                     randomRow = generateRandomPositionForRandomSquare(boardSize);
                 }
 
-                initRandomBoardSquare(randomRow, randomCol, j, i);
+                initRandomBoardSquare(randomRow, randomCol, m_Players.get(j % m_Players.size()).getColor().ordinal(), i);
             }
         }
 

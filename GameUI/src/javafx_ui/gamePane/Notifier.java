@@ -30,8 +30,13 @@ public class Notifier {
         return "The winner is the " + i_Winner.getName() + " player with " + i_Max + " points!";
     }
 
-    public String notifyInvalidSquareChoice() {
-       return "Square can't be chosen because it's color is not as the current player's color or it's value is not a number";
+    public String notifyInvalidSquareChoice(String gameType) {
+       if(gameType.equals("Basic")){
+           return "Square can't be chosen because it's not in the range of options of player";
+       }
+       else {
+           return "Square can't be chosen because it's color is not as the current player's color or it's value is not a number";
+       }
     }
 
     public String announceTie(int i_Points) {

@@ -10,12 +10,39 @@ import java.util.ArrayList;
 public class BasicGame extends Game {
 
     enum ePlayerOrientation{
-        COLUMN_PLAYER, ROW_PLAYER
+        ROW_PLAYER, COLUMN_PLAYER
     }
 
     @Override
     public boolean checkIfNotPossibleMove() {
-        return true;
+        boolean turnDone = true;
+        Square squareToCheck;
+
+        if(m_CurrentPlayer.getID() == 0) {
+            for (int i = 0; i < m_Board.getBoardSize(); i++) {
+                //check if row is empty of numbers
+                squareToCheck = m_Board.getSquareInPos(m_Board.getMark().getRow(), i);
+                if (!squareToCheck.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol()) &&
+                        !m_Board.getSquareInPos(m_Board.getMark().getRow(), i).getSquareSymbol().equals("")) {
+                    turnDone = false;
+                    break;
+                }
+            }
+        }
+
+        else {
+            for (int i = 0; i < m_Board.getBoardSize(); i++) {
+                //check if column is empty of numbers
+                squareToCheck = m_Board.getSquareInPos(i, m_Board.getMark().getColumn());
+                if (!squareToCheck.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol()) &&
+                        !m_Board.getSquareInPos(i, m_Board.getMark().getColumn()).getSquareSymbol().equals("")) {
+                    turnDone = false;
+                    break;
+                }
+            }
+        }
+
+        return turnDone;
     }
 
     @Override
@@ -50,23 +77,20 @@ public class BasicGame extends Game {
 
     @Override
     boolean checkIfLegalMove(Player i_Player, Square i_Move) {
-        boolean res = true;
-        if(i_Move.getColumn() == m_Board.getMark().getColumn()) {
-            if (i_Move.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
-                    || i_Move.getSquareSymbol().equals("")) {
-                res = false;
+        boolean res = false;
+        if(i_Player.getID() == ePlayerOrientation.COLUMN_PLAYER.ordinal() && i_Move.getColumn() == m_Board.getMark().getColumn()) {
+            if (!i_Move.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
+                    && !i_Move.getSquareSymbol().equals("")) {
+                res = true;
             }
-        }
-        else if((i_Move.getRow() == m_Board.getMark().getRow())){
-            if (i_Move.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
-                    || i_Move.getSquareSymbol().equals("")) {
-                res =  false;
-            }
-        }
-        else if(i_Move.getColumn() != m_Board.getMark().getColumn() && i_Move.getRow() != m_Board.getMark().getRow()){
-            res = false;
-        }
 
+        }
+        else if(i_Player.getID() == ePlayerOrientation.ROW_PLAYER.ordinal() && i_Move.getRow() == m_Board.getMark().getRow()){
+            if (!i_Move.getSquareSymbol().equals(m_Board.getMark().getSquareSymbol())
+                    && !i_Move.getSquareSymbol().equals("")) {
+                res = true;
+            }
+        }
         return res;
     }
 
