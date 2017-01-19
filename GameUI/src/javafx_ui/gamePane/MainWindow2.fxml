@@ -15,9 +15,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="m_MainWindow" prefHeight="504.0" prefWidth="791.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx_ui.gamePane.GameController">
+<BorderPane fx:id="m_MainWindow" prefHeight="504.0" prefWidth="791.0" styleClass="background" stylesheets="@../CSS/MainWindow.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx_ui.gamePane.GameController">
    <top>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Numberiada">
                <font>
@@ -35,17 +35,9 @@
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="pathTextBox" prefHeight="25.0" prefWidth="482.0" promptText=" " />
-                  <Button fx:id="browseButton" mnemonicParsing="false" onAction="#browseButtonClicked" prefHeight="25.0" prefWidth="71.0" styleClass="staticBtn" stylesheets="@../CSS/MainWindow.css" text="Browse">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="loadButton" disable="true" mnemonicParsing="false" onAction="#loadButtonClicked" prefHeight="25.0" prefWidth="68.0" styleClass="staticBtn" stylesheets="@../CSS/MainWindow.css" text="Load">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="startGameButton" disable="true" mnemonicParsing="false" onAction="#startGameClicked" prefHeight="25.0" prefWidth="76.0" styleClass="staticBtn" stylesheets="@../CSS/MainWindow.css" text="Start game" />
+                  <Button id="browesBtn" fx:id="browseButton" mnemonicParsing="false" onAction="#browseButtonClicked" prefHeight="25.0" prefWidth="71.0" styleClass="topBtn" stylesheets="@../CSS/MainWindow.css" text="Browse" />
+                  <Button id="loadBtn" fx:id="loadButton" disable="true" mnemonicParsing="false" onAction="#loadButtonClicked" prefHeight="25.0" prefWidth="68.0" styleClass="topBtn" stylesheets="@../CSS/MainWindow.css" text="Load" />
+                  <Button id="startGameBtn" fx:id="startGameButton" disable="true" mnemonicParsing="false" onAction="#startGameClicked" prefHeight="25.0" prefWidth="76.0" styleClass="topBtn" stylesheets="@../CSS/MainWindow.css" text="Start game" />
                </children>
                <VBox.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
@@ -55,15 +47,15 @@
       </VBox>
    </top>
    <bottom>
-      <TextArea fx:id="statusBarText" editable="false" prefHeight="57.0" prefWidth="714.0" wrapText="true" BorderPane.alignment="CENTER">
+      <TextArea fx:id="statusBarText" editable="false" prefHeight="57.0" prefWidth="714.0" styleClass="background" stylesheets="@../CSS/MainWindow.css" wrapText="true" BorderPane.alignment="CENTER">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></TextArea>
    </bottom>
    <center>
-      <BorderPane BorderPane.alignment="CENTER">
+      <BorderPane styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
          <center>
-            <ScrollPane BorderPane.alignment="CENTER">
+            <ScrollPane styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
               <content>
                 <AnchorPane>
                      <children>
@@ -78,13 +70,13 @@
             </ScrollPane>
          </center>
          <bottom>
-            <VBox alignment="CENTER" spacing="3.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" spacing="3.0" styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="makeMoveButton" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#makeMoveClicked" styleClass="staticBtn" stylesheets="@../CSS/MainWindow.css" text="make move" textAlignment="CENTER" />
-                  <HBox alignment="CENTER" spacing="3.0">
+                  <Button id="makeMoveBtn" fx:id="makeMoveButton" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#makeMoveClicked" styleClass="bottomBtn" stylesheets="@../CSS/MainWindow.css" text="make move" textAlignment="CENTER" />
+                  <HBox alignment="CENTER" spacing="3.0" styleClass="background" stylesheets="@../CSS/MainWindow.css">
                      <children>
-                        <Button fx:id="prevMoveButton" disable="true" mnemonicParsing="false" onAction="#prevButtonClicked" styleClass="staticBtn" stylesheets="@../CSS/MainWindow.css" text="&lt; Prev " textAlignment="CENTER" />
-                        <Button fx:id="nextMoveButton" disable="true" mnemonicParsing="false" onAction="#nextButtonClicked" styleClass="staticBtn" stylesheets="@../CSS/MainWindow.css" text="Next &gt;" textAlignment="CENTER" />
+                        <Button id="prevBtn" fx:id="prevMoveButton" disable="true" mnemonicParsing="false" onAction="#prevButtonClicked" styleClass="bottomBtn" stylesheets="@../CSS/MainWindow.css" text="&lt; Prev " textAlignment="CENTER" />
+                        <Button id="nextBtn" fx:id="nextMoveButton" disable="true" mnemonicParsing="false" onAction="#nextButtonClicked" styleClass="bottomBtn" stylesheets="@../CSS/MainWindow.css" text="Next &gt;" textAlignment="CENTER" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -102,11 +94,11 @@
       </BorderPane>
    </center>
    <right>
-      <ScrollPane BorderPane.alignment="CENTER">
+      <ScrollPane styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
         <content>
-          <AnchorPane>
+          <AnchorPane styleClass="background" stylesheets="@../CSS/MainWindow.css">
                <children>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="258.0">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="258.0" styleClass="background" stylesheets="@../CSS/MainWindow.css">
                      <children>
                         <HBox fx:id="player1" alignment="CENTER_LEFT" spacing="5.0">
                            <children>
@@ -217,9 +209,9 @@
                                     <Insets top="7.0" />
                                  </VBox.margin>
                               </HBox>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="background" stylesheets="@../CSS/MainWindow.css">
                                  <children>
-                                    <Button fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
+                                    <Button id="quitBtn" fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#quitButtonClicked" stylesheets="@../CSS/MainWindow.css" text="Quit" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

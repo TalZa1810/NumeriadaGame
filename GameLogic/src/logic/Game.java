@@ -292,6 +292,14 @@ public abstract class Game {
 
     public abstract void playerQuit();
 
+    public ArrayList<MoveData> getPlayersMoves() {
+        return m_PlayersMoves;
+    }
+
+    public ArrayList<MoveData> getMarkMoves() {
+        return m_MarkMoves;
+    }
+
     //TODO: show prev\next move (the question is previos to what, do we hold a member of current move.
     //TODO: also todo is to block option to make move when only showing the previous moves
 }
