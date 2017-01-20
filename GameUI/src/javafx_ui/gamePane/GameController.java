@@ -210,6 +210,8 @@ public class GameController implements Initializable{
         makeMoveButton.setDisable(true);
         prevMoveButton.setDisable(false);
         nextMoveButton.setDisable(false);
+        m_MarkerMovesInd = m_GameInfo.getMarkMoves().size();
+        m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size();
 
         return winnerAnnounce;
     }
@@ -224,53 +226,41 @@ public class GameController implements Initializable{
     }
 
     private void startGameIteration() {
-        if(gameStarted) {
-            if (m_NumOfPlayersWithoutPossibleMove == m_GameInfo.getNumOfPlayers()) {
-                gameStarted = false;
-                startGameIteration();
-            } else if (m_Logic.checkIfNotPossibleMove()) {
-                //player doesn't have possible moves. notify and go to next player
-                int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
-                m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
-                m_NumOfPlayersWithoutPossibleMove++;
-                m_Logic.nextPlayer(indexOfCurrPlayer);
-                updateCurrPlayer();
-                startGameIteration();
-            } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
-                makeMoveOperation();
-                startGameIteration();
-            }
-        }
-        else{
+        if (m_NumOfPlayersWithoutPossibleMove == m_GameInfo.getNumOfPlayers()) {
+            gameStarted = false;
             m_StatusBar.set(getPlayersResults());
+            return;
+        } else if (m_Logic.checkIfNotPossibleMove()) {
+            //player doesn't have possible moves. notify and go to next player
+            int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
+            m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
+            m_NumOfPlayersWithoutPossibleMove++;
+            m_Logic.nextPlayer(indexOfCurrPlayer);
+            updateCurrPlayer();
+            startGameIteration();
+        } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
+            makeMoveOperation();
+            startGameIteration();
         }
+
     }
 
     @FXML
     public void makeMoveClicked(){
         makeMove();
         m_Logic.loadPastMovesToGameInfo();
-        m_MarkerMovesInd = m_GameInfo.getMarkMoves().size();
-        m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size();
-        if(m_GameInfo.getNumOfMoves() > 0){
-            //prevMoveButton.setDisable(false);
-        }
-        else {
-            //prevMoveButton.setDisable(true);
-        }
         startGameIteration();
     }
 
     @FXML
     public void prevButtonClicked(){
-        //nextMoveButton.setDisable(false);
-        //makeMoveButton.setDisable(true);
+        nextMoveButton.setDisable(false);
         showPrevMove();
     }
 
     @FXML
     public void nextButtonClicked(){
-        //prevMoveButton.setDisable(false);
+        prevMoveButton.setDisable(false);
         showNextMove();
     }
 
@@ -296,8 +286,7 @@ public class GameController implements Initializable{
          m_PlayerMovesInd++;
          m_MarkerMovesInd++;
          if(m_PlayerMovesInd == m_GameInfo.getPlayersMoves().size()){
-             //nextMoveButton.setDisable(true);
-             //makeMoveButton.setDisable(false);
+             nextMoveButton.setDisable(true);
          }
      }
 
@@ -395,6 +384,9 @@ public class GameController implements Initializable{
             removeCurrentPlayerFromList();
             removeCurrentPlayerFromPlayerView();
             m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
+            while(m_GameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && m_GameInfo.getNumOfPlayers() > 1){
+                m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(++nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
+            }
             m_Logic.updateCurrPlayer(nextPlayerIndex % m_GameInfo.getNumOfPlayers());
             updateCurrPlayer();
             if(m_GameInfo.getNumOfPlayers() == 1){
@@ -496,8 +488,6 @@ public class GameController implements Initializable{
     }
 
     private void setBoardValuesFromXML() throws Exception {
-        String str = m_GameInfo.getBoardStructure();
-
         if(m_GameInfo.getBoardStructure().equals("Explicit")) {
             int row, col;
 

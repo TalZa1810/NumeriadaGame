@@ -201,6 +201,8 @@ public abstract class Game {
         //setting marker symbol and position
         m_Board.getSquareInPos(randomRow,randomCol).setSquareSymbol("@");
         m_Board.setMark(m_Board.getSquareInPos(randomRow,randomCol));
+        m_GameInfo.setMarkerCol(randomCol);
+        m_GameInfo.setMarkerRow(randomRow);
         loadBoardToGameInfo();
     }
 

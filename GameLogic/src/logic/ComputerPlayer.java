@@ -53,7 +53,7 @@ public class ComputerPlayer extends Player {
                 }
             }
             //finding the relevant square in col
-            while( hasNumberInColor && (illegalSquareToChoose (i_Board, randomMove, i_GameInfo.getMarkerCol()) )) {
+            while(hasNumberInColor && !i_Board.getSquareInPos(randomMove, i_GameInfo.getMarkerCol()).getColor().name().equals(getColor().name())) {
                 randomMove = r.nextInt(i_Board.getBoardSize());
             }
             //saving chosen square
@@ -73,7 +73,7 @@ public class ComputerPlayer extends Player {
                     }
                 }
                 //finding the relevant square in row
-                while( hasNumberInColor && (illegalSquareToChoose (i_Board, i_GameInfo.getMarkerRow(), randomMove ))) {
+                while( hasNumberInColor && !i_Board.getSquareInPos(i_GameInfo.getMarkerRow(), randomMove).getColor().name().equals(getColor().name())) {
                     randomMove = r.nextInt(i_Board.getBoardSize());
                 }
 
