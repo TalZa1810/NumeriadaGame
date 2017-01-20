@@ -10,8 +10,6 @@
     -fx-text-fill: mediumpurple;
     -fx-font-family: "Rockwell";
     -fx-font-weight: bold;
-
-
 }
 
 .bottomBtn{
@@ -20,7 +18,6 @@
     -fx-text-fill: purple;
     -fx-font-family: "Rockwell";
     -fx-font-weight: bold;
-
 }
 
 #quitBtn{

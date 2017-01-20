@@ -4,12 +4,12 @@ import Generated.GameDescriptor;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -106,6 +106,30 @@ public class GameController implements Initializable{
     private boolean gameStarted = false;
     private int m_NumOfPlayersWithoutPossibleMove = 0;
 
+    ////////////////////////////////////
+    /*CSS Layout*/
+
+    private ObservableList<String> styleList ;
+    StringProperty m_StyleCssProperty;
+
+    @FXML
+    private ChoiceBox<String> skinChoiceBox;
+
+    private void initializaeChoiceBox(){
+
+        m_StyleCssProperty = new SimpleStringProperty("MainWindow");
+        styleList = FXCollections.observableArrayList("MainWindow", "MainWindow2", "MainWindow3") ;
+        skinChoiceBox.setValue("MainWindow");
+        skinChoiceBox.setItems(styleList);
+        m_StyleCssProperty.bind(skinChoiceBox.getSelectionModel().selectedItemProperty());
+    }
+
+    public StringProperty getStyleCssProperty(){
+        return m_StyleCssProperty;
+    }
+
+    ////////////////////////////////////
+
 
     public GameController() {
         m_GameInfoWrapper[0] = m_GameInfo;
@@ -139,8 +163,8 @@ public class GameController implements Initializable{
         pathTextBox.textProperty().bind(Bindings.format("%s", m_FilePath ));
         loadButton.disableProperty().bind(m_isFileSelected.not());
         statusBarText.textProperty().bind(Bindings.format("%s", m_StatusBar));
+        initializaeChoiceBox();
     }
-
 
     @FXML
     public void browseButtonClicked(){

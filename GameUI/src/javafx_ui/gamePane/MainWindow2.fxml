@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="m_MainWindow" prefHeight="504.0" prefWidth="791.0" styleClass="background" stylesheets="@../CSS/MainWindow.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx_ui.gamePane.GameController">
+<BorderPane fx:id="m_MainWindow" prefHeight="504.0" prefWidth="791.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx_ui.gamePane.GameController">
    <top>
       <VBox alignment="CENTER" styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
          <children>
@@ -24,6 +25,7 @@
                   <Font name="Comic Sans MS" size="43.0" />
                </font>
             </Text>
+            <ChoiceBox fx:id="skinChoiceBox" prefHeight="25.0" prefWidth="124.0" />
             <HBox spacing="5.0">
                <children>
                   <Label text="File name">
@@ -35,9 +37,9 @@
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="pathTextBox" prefHeight="25.0" prefWidth="482.0" promptText=" " />
-                  <Button id="browesBtn" fx:id="browseButton" mnemonicParsing="false" onAction="#browseButtonClicked" prefHeight="25.0" prefWidth="71.0" styleClass="topBtn" stylesheets="@../CSS/MainWindow.css" text="Browse" />
-                  <Button id="loadBtn" fx:id="loadButton" disable="true" mnemonicParsing="false" onAction="#loadButtonClicked" prefHeight="25.0" prefWidth="68.0" styleClass="topBtn" stylesheets="@../CSS/MainWindow.css" text="Load" />
-                  <Button id="startGameBtn" fx:id="startGameButton" disable="true" mnemonicParsing="false" onAction="#startGameClicked" prefHeight="25.0" prefWidth="76.0" styleClass="topBtn" stylesheets="@../CSS/MainWindow.css" text="Start game" />
+                  <Button fx:id="browseButton" mnemonicParsing="false" onAction="#browseButtonClicked" prefHeight="25.0" prefWidth="71.0" styleClass="topBtn" text="Browse" />
+                  <Button fx:id="loadButton" disable="true" mnemonicParsing="false" onAction="#loadButtonClicked" prefHeight="25.0" prefWidth="68.0" styleClass="topBtn" text="Load" />
+                  <Button fx:id="startGameButton" disable="true" mnemonicParsing="false" onAction="#startGameClicked" prefHeight="25.0" prefWidth="76.0" styleClass="topBtn" text="Start game" />
                </children>
                <VBox.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
@@ -72,11 +74,11 @@
          <bottom>
             <VBox alignment="CENTER" spacing="3.0" styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="makeMoveBtn" fx:id="makeMoveButton" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#makeMoveClicked" styleClass="bottomBtn" stylesheets="@../CSS/MainWindow.css" text="make move" textAlignment="CENTER" />
+                  <Button fx:id="makeMoveButton" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#makeMoveClicked" styleClass="bottomBtn" text="make move" textAlignment="CENTER" />
                   <HBox alignment="CENTER" spacing="3.0" styleClass="background" stylesheets="@../CSS/MainWindow.css">
                      <children>
-                        <Button id="prevBtn" fx:id="prevMoveButton" disable="true" mnemonicParsing="false" onAction="#prevButtonClicked" styleClass="bottomBtn" stylesheets="@../CSS/MainWindow.css" text="&lt; Prev " textAlignment="CENTER" />
-                        <Button id="nextBtn" fx:id="nextMoveButton" disable="true" mnemonicParsing="false" onAction="#nextButtonClicked" styleClass="bottomBtn" stylesheets="@../CSS/MainWindow.css" text="Next &gt;" textAlignment="CENTER" />
+                        <Button fx:id="prevMoveButton" disable="true" mnemonicParsing="false" onAction="#prevButtonClicked" styleClass="bottomBtn" text="&lt; Prev " textAlignment="CENTER" />
+                        <Button fx:id="nextMoveButton" disable="true" mnemonicParsing="false" onAction="#nextButtonClicked" styleClass="bottomBtn" text="Next &gt;" textAlignment="CENTER" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -211,7 +213,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="background" stylesheets="@../CSS/MainWindow.css">
                                  <children>
-                                    <Button id="quitBtn" fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#quitButtonClicked" stylesheets="@../CSS/MainWindow.css" text="Quit" />
+                                    <Button id="quitBtn" fx:id="quitButton" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#quitButtonClicked" text="Quit" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
