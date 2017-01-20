@@ -74,11 +74,11 @@
          <bottom>
             <VBox alignment="CENTER" spacing="3.0" styleClass="background" stylesheets="@../CSS/MainWindow.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="makeMoveButton" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#makeMoveClicked" styleClass="bottomBtn" text="make move" textAlignment="CENTER" />
+                  <Button fx:id="makeMoveButton" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#makeMoveClicked" styleClass="downBtn" text="make move" textAlignment="CENTER" />
                   <HBox alignment="CENTER" spacing="3.0" styleClass="background" stylesheets="@../CSS/MainWindow.css">
                      <children>
-                        <Button fx:id="prevMoveButton" disable="true" mnemonicParsing="false" onAction="#prevButtonClicked" styleClass="bottomBtn" text="&lt; Prev " textAlignment="CENTER" />
-                        <Button fx:id="nextMoveButton" disable="true" mnemonicParsing="false" onAction="#nextButtonClicked" styleClass="bottomBtn" text="Next &gt;" textAlignment="CENTER" />
+                        <Button fx:id="prevMoveButton" disable="true" mnemonicParsing="false" onAction="#prevButtonClicked" styleClass="downBtn" text="&lt; Prev " textAlignment="CENTER" />
+                        <Button fx:id="nextMoveButton" disable="true" mnemonicParsing="false" onAction="#nextButtonClicked" styleClass="downBtn" text="Next &gt;" textAlignment="CENTER" />
                      </children>
                      <VBox.margin>
                         <Insets />

@@ -1,32 +1,17 @@
 .root{
-    -fx-font-size: 10pt;
-    -fx-background: rgb(236,143,211);
-    -fx-background-opacity: 50%;
+
 }
 
 .topBtn{
-    -fx-font-size: 10px;
-    -fx-font-weight: bold;
-    -fx-text-fill: mediumpurple;
-    -fx-font-family: "Rockwell";
-    -fx-font-weight: bold;
+
 }
 
-.bottomBtn{
-    -fx-font-size: 10px;
-    -fx-font-weight: bold;
-    -fx-text-fill: purple;
-    -fx-font-family: "Rockwell";
-    -fx-font-weight: bold;
+.downBtn{
+
 }
 
 #quitBtn{
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-text-fill: blue;
-    -fx-font-weight: bold;
-    -fx-font-family: "Rockwell";
-    -fx-font-weight: bold;
+
 }
 
 
