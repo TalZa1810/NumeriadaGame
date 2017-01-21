@@ -1,15 +1,15 @@
 .root{
-    -fx-font-size: 10pt;
+    -fx-font-size: 12pt;
     -fx-background: rgb(255,193,193);
     -fx-background-opacity: 50%;
 }
+
 
 .topBtn{
     -fx-font-size: 10px;
     -fx-font-weight: bold;
     -fx-text-fill: mediumpurple;
     -fx-font-family: "Rockwell";
-    -fx-font-weight: bold;
 }
 
 .downBtn{
@@ -17,22 +17,23 @@
     -fx-font-weight: bold;
     -fx-text-fill: darkred;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-weight: bold;
+
 }
 
 #quitBtn{
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: indianred;
-    -fx-font-weight: bold;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-weight: bold;
 }
 
+
 .background{
-    -fx-background-color: aquamarine;
-    -fx-border-color: aquamarine;
+    -fx-background-color: rgb(227, 197, 236);
+    -fx-border-color:rgb(181,157,188);
 }
+
+
 
 
 

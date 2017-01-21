@@ -1,36 +1,32 @@
 .root{
     -fx-font-size: 10pt;
-    -fx-background: rgb(255,193,193);
+    -fx-background: rgb(178,240,255);
     -fx-background-opacity: 50%;
 }
 
 .topBtn{
     -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-text-fill: blue;
+    -fx-text-fill: rgb(4,87,108);
+    -fx-font-family: Arial, sans-serif, Helvetica,"Segoe UI"  ;
 }
 
-.topBtn{
-    -fx-font-size: 10px;
-    -fx-font-weight: bold;
-    -fx-text-fill:  rgb(202,10,10);
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-weight: bold;
-}
 
 .downBtn{
     -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-text-fill: midnightblue;
+    -fx-text-fill: rgb(4,119,148);
+    -fx-font-family: Arial, sans-serif, Helvetica,"Segoe UI"  ;
 }
 
 #quitBtn{
     -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-font-weight: bold;
+    -fx-text-fill: rgb(10,52,63);
+    -fx-font-family: Arial, sans-serif, Helvetica,"Segoe UI"  ;
 }
 
 .background{
-    -fx-background-color: pink;
-    -fx-border-color: pink;
+    -fx-background-color: rgb(143,186,196);
+    -fx-border-color: rgb(197,228,236);
 }
