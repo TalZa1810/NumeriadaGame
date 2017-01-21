@@ -36,9 +36,9 @@ public class PlayersController {
 
         int i = 0;
 
-        if (m_Players != null){
-            clearPreviousPlayersData(m_Players.size());
-        }
+        /*if (m_Players != null){
+            cleanPlayers();
+        }*/
 
         for (PlayerData player : m_Players) {
 
@@ -104,16 +104,17 @@ public class PlayersController {
         i_PlayerColorLabel.setTextFill(Paint.valueOf(i_PlayerData.getColor().name()));
     }
 
-    public void clearPreviousPlayersData(int i_NumOfPlayers) {
-        for (int i = 0; i < i_NumOfPlayers; i++) {
-            m_PlayersNamesLabels[i].setText("");
-            m_PlayersIDsLabels[i].setText("");
-            m_PlayersScoreLabels[i].setText("");
-            m_PlayersColorLabels[i].setText("");
-        }
-    }
-
     public Label[] getScoreLabels() {
         return m_PlayersScoreLabels;
+    }
+
+    public void cleanPlayers(int size) {
+        String empty = "";
+        for(int i = 0; i < size; i++){
+            m_PlayersColorLabels[i].setText(empty);
+            m_PlayersIDsLabels[i].setText(empty);
+            m_PlayersNamesLabels[i].setText(empty);
+            m_PlayersScoreLabels[i].setText(empty);
+        }
     }
 }

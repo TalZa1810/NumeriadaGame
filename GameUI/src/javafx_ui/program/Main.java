@@ -6,13 +6,11 @@ package javafx_ui.program;
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx_ui.gamePane.GameController;
-
 
 import java.net.URL;
 
@@ -41,7 +39,7 @@ public class Main extends Application {
         gameController.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("Numberiada");
-        this.scene = new Scene(gameLayout, 750, 550);
+        this.scene = new Scene(gameLayout, 670, 580);
 
         this.m_styleCssProperty.bind(gameController.getStyleCssProperty());
         this.m_styleCssProperty.addListener((observable, oldValue, newValue) -> {

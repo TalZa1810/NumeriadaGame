@@ -96,8 +96,6 @@ public class BoardController{
                 button.setOnAction((event) -> buttonClicked(button));
                 button.setText("");
                 m_GridRows[row].getChildren().add(col, button);
-                //button.textProperty().bind(Bindings.format("%s", m_GameInfo.getValueInPos(row, col).getValue()));
-                //button.textFillProperty().bind(Paint.valueOf(m_GameInfo.getValueInPos(row, col).getColor().name()));
             }
         }
 
@@ -119,7 +117,6 @@ public class BoardController{
         return -1;
     }
 
-
     public int getButtonIndexInHBox(int row, Button button) {
         for(int i = 0; i < m_GameInfo.getBoardSize(); i++){
             if(m_GridRows[row].getChildren().get(i) == button){
@@ -131,5 +128,14 @@ public class BoardController{
 
     public void setChosenButton(Button chosenButton) {
            this.m_ChosenButton = chosenButton;
+    }
+
+    public void cleanBoard() {
+        for(int i = 0; i < m_GameInfo.getBoardSize(); i++){
+            m_GridRows[i].getChildren().removeAll(m_GridRows[i].getChildren());
+        }
+
+        m_BoardGrid.getChildren().removeAll(m_BoardGrid.getChildren());
+
     }
 }

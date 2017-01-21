@@ -22,6 +22,7 @@ import logic.AdvancedGame;
 import logic.BasicGame;
 import logic.Game;
 import shared.GameInfo;
+import shared.PlayerComparator;
 import shared.Validator;
 import sharedStructures.*;
 
@@ -40,7 +41,7 @@ public class GameController implements Initializable{
     private Validator m_Validator = new Validator();
     private GameDescriptor m_GameDescriptor = new GameDescriptor();
     private Notifier m_Notifier = new Notifier();
-    private GameInfo m_GameInfo = new GameInfo();
+    private GameInfo m_GameInfo;
     private GameInfo[] m_GameInfoWrapper = new GameInfo[1];
     private Game m_Logic;
     private BoardController m_Board;
@@ -104,7 +105,7 @@ public class GameController implements Initializable{
     private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
     private SimpleBooleanProperty m_isFileSelected = new SimpleBooleanProperty();
     private boolean gameStarted = false;
-    private int m_NumOfPlayersWithoutPossibleMove = 0;
+    private int m_NumOfPlayersWithoutPossibleMove;
 
     ////////////////////////////////////
     /*CSS Layout*/
@@ -132,7 +133,6 @@ public class GameController implements Initializable{
 
 
     public GameController() {
-        m_GameInfoWrapper[0] = m_GameInfo;
     }
 
     public void initializeGameController(BorderPane i_GameLayout){
@@ -188,6 +188,8 @@ public class GameController implements Initializable{
 
     @FXML
     public void loadButtonClicked(){
+        m_GameInfo = new GameInfo();
+        m_GameInfoWrapper[0] = m_GameInfo;
         try {
             m_GameDescriptor = fromXmlFileToObject();
             if(m_GameDescriptor != null) {
@@ -205,39 +207,53 @@ public class GameController implements Initializable{
 
     @FXML
     public void startGameClicked() {
-        gameStarted = true;
-        makeMoveButton.setDisable(false);
-        quitButton.setDisable(false);
-        startGameIteration();
-        updateCurrPlayer();
+        if(startGameButton.getText().equals("Start game")) {
+            gameStarted = true;
+            makeMoveButton.setDisable(false);
+            quitButton.setDisable(false);
+            browseButton.setDisable(true);
+            updateCurrPlayer();
+            startGameButton.setText("New game");
+            m_NumOfPlayersWithoutPossibleMove = 0;
+            startGameIteration();
+        }
+        else{
+            m_Board.cleanBoard();
+            m_PlayersController.cleanPlayers(m_GameInfo.getNumOfPlayers());
+            browseButton.setDisable(false);
+            m_StatusBar.set("");
+            cleanCurrPlayer();
+            startGameButton.setText("Start game");
+
+        }
+    }
+
+    private void cleanCurrPlayer() {
+        currPlayerTypeLabel.setText("");
+        currPlayerColorLabel.setText("");
+        currPlayerIDLabel.setText("");
+        currPlayerNameLabel.setText("");
+        currPlayerScoreLabel.setText("");
+        numOfMovesLabel.setText("");
     }
 
     private String getPlayersResults() {
         ArrayList<PlayerData> players = m_GameInfo.getPlayers();
-        String winnerAnnounce = "Game finished!\nThe winner is " + players.get(0).getName() + " with " + players.get(0).getScore() + " points";;
-        PlayerData winner = players.get(0);
-        int maxScore = players.get(0).getScore();
-        for(int i = 1; i < m_GameInfo.getNumOfPlayers(); i++){
-            if(players.get(i).getScore() > maxScore){
-                maxScore = players.get(i).getScore();
-                winner = players.get(i);
-                winnerAnnounce = "Game finished!\nThe winner is " + players.get(i).getName() + " with " + players.get(i).getScore() + " points";
-            }
-            else if(maxScore == players.get(i).getScore()){
-                if(winner.getID() != players.get(i).getID()){
-                    winnerAnnounce = "Game finished!\nIs a tie between " + players.get(i).getName() + " and " + winner.getName() + " with " + players.get(i).getScore() + " points";
-                }
-            }
+        players.sort(new PlayerComparator());
+        StringBuilder winnerAnnounce = new StringBuilder("Final scores:\n");
+        for(PlayerData player : players){
+            winnerAnnounce.append(player.getScore() + " " + player.getName() + "\n");
         }
 
         quitButton.setDisable(true);
-        makeMoveButton.setDisable(true);
-        prevMoveButton.setDisable(false);
-        nextMoveButton.setDisable(false);
-        m_MarkerMovesInd = m_GameInfo.getMarkMoves().size();
-        m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size();
+        if(m_GameInfo.getNumOfMoves() > 0) {
+            makeMoveButton.setDisable(true);
+            prevMoveButton.setDisable(false);
+            m_MarkerMovesInd = m_GameInfo.getMarkMoves().size();
+            m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size();
+        }
 
-        return winnerAnnounce;
+        return winnerAnnounce.toString();
     }
 
     private void updateCurrPlayer() {
@@ -287,7 +303,6 @@ public class GameController implements Initializable{
         prevMoveButton.setDisable(false);
         showNextMove();
     }
-
 
      private void showNextMove(){
          MoveData square = m_GameInfo.getPlayersMoves().get(m_PlayerMovesInd);
@@ -402,20 +417,30 @@ public class GameController implements Initializable{
 
     @FXML
     public void quitButtonClicked(){
-        if(m_GameInfo.getNumOfPlayers() > 1) {
+        int count = 0;
+        if (m_GameInfo.getNumOfPlayers() > 1) {
             int nextPlayerIndex = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
             removeCurrentPlayerCellsFromBoard();
             removeCurrentPlayerFromList();
             removeCurrentPlayerFromPlayerView();
             m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
-            while(m_GameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && m_GameInfo.getNumOfPlayers() > 1){
+            while (m_GameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && m_GameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
                 m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(++nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
+                count++;
             }
-            m_Logic.updateCurrPlayer(nextPlayerIndex % m_GameInfo.getNumOfPlayers());
-            updateCurrPlayer();
-            if(m_GameInfo.getNumOfPlayers() == 1){
-                quitButton.setDisable(true);
-                gameStarted = false;
+            if (count < m_GameInfo.getNumOfPlayers()) {
+                m_Logic.updateCurrPlayer(nextPlayerIndex % m_GameInfo.getNumOfPlayers());
+                updateCurrPlayer();
+                if (m_GameInfo.getNumOfPlayers() == 1) {
+                    if(m_GameInfo.getGameType().equals("Basic")){
+                        m_NumOfPlayersWithoutPossibleMove = 1;
+                    }
+                    quitButton.setDisable(true);
+                    gameStarted = false;
+                    startGameIteration();
+                }
+            }
+            else {
                 startGameIteration();
             }
         }
@@ -427,7 +452,7 @@ public class GameController implements Initializable{
     }
 
     private void removeCurrentPlayerFromPlayerView() {
-        m_PlayersController.clearPreviousPlayersData(m_GameInfo.getNumOfPlayers() + 1);
+        m_PlayersController.cleanPlayers(m_GameInfo.getNumOfPlayers() + 1);
         m_PlayersController.setPlayers();
     }
 
