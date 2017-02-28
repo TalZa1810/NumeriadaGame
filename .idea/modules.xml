@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/GameLogic/GameLogic.iml" filepath="$PROJECT_DIR$/GameLogic/GameLogic.iml" />
       <module fileurl="file://$PROJECT_DIR$/GameManager/GameManager.iml" filepath="$PROJECT_DIR$/GameManager/GameManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/GameUI/GameUI.iml" filepath="$PROJECT_DIR$/GameUI/GameUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GameWebUI/GameWebUI.iml" filepath="$PROJECT_DIR$/GameWebUI/GameWebUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/SharedClasses/SharedClasses.iml" filepath="$PROJECT_DIR$/SharedClasses/SharedClasses.iml" />
     </modules>
   </component>
