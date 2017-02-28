@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="javafx-preloader" name="NumberiadaGame">
+    <output-path>$PROJECT_DIR$/out/artifacts/NumberiadaGame</output-path>
+    <root id="archive" name="NumberiadaGame.jar">
+      <element id="module-output" name="GameLogic" />
+      <element id="module-output" name="SharedClasses" />
+      <element id="module-output" name="GameUI" />
+      <element id="module-output" name="GameManager" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/GameUI/src/javafx_ui/program/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
