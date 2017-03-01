@@ -1,0 +1,39 @@
+.lobby-container{
+    margin-top:15px;
+    margin-bottom:18px;
+    border:2px solid #eee;
+    border-radius:2px;
+    padding-bottom:15px;
+}
+
+.deep{
+    -webkit-box-shadow: inset 0px 0px 17px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px 0px 17px -6px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 0px 15px -5px rgba(0,0,0,0.75);
+    padding-top:10px;
+    padding-bottom:10px;
+    background-color: #93c1d8;
+}
+
+.gameRoom{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.gameRoom h4{
+    text-decoration: underline;
+}
+
+#playersList {
+    line-height: 1.5em;
+    list-style-image: url("/Griddler_Game/resource/User.png");
+    margin-left: 25%;
+    text-align: left;
+}
+
+#gameRoomsList {
+    padding-left: 0;
+    list-style-type: none;
+}

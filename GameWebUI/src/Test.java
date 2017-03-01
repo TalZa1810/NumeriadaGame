@@ -20,6 +20,4 @@ public class Test {
         Test m_Test= new Test();
         m_Test.foo();
     }
-
-
 }

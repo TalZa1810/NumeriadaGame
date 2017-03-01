@@ -1,0 +1,58 @@
+.gameRoomHeader {
+    margin-bottom: 5px;
+}
+
+.gameRoomContainer {
+    height:80%;
+    padding-top: 3%
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height:100%;
+}
+
+.contained {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#gameBoardDiv {
+    -webkit-box-shadow: inset 0px 0px 17px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px 0px 17px -6px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 0px 30px -5px rgba(0,0,0,0.75);
+    background-color: #93c1d8;
+    padding-top:20px;
+    padding-bottom:15px;
+    padding-left:15px;
+    pading-right:15px;
+    border: 1px solid white;
+    text-align: left;
+    overflow:auto;
+    height: 100%;
+    white-space: nowrap;
+}
+
+.gameCell {
+    width:25px;
+    height:25px;
+    border:1px solid #000;
+    margin-bottom: 3px;
+    background-color: darkturquoise;
+}
+
+.slice {
+    width:25px;
+    height:25px;
+    margin-bottom: 3px;
+    text-align: center;
+}
+
+div.col-sm-12.text-center {
+    height:100%;
+}
