@@ -7,14 +7,12 @@ public class User
     private String score;
     private boolean isPlaying = false;
 
-    public User (String name, String type)
-    {
+    public User (String name, String type)  {
         this.userName = name;
         this.userType = type;
     }
 
-    public User (String name, String type, String score)
-    {
+    public User (String name, String type, String score)   {
         this.userName = name;
         this.userType = type;
         this.score = score;

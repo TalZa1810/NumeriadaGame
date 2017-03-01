@@ -10,5 +10,6 @@
     <orderEntry type="module" module-name="SharedClasses" />
     <orderEntry type="module" module-name="GameUI" />
     <orderEntry type="library" name="Tomcat 7.0.754" level="application_server_libraries" />
+    <orderEntry type="library" name="gson-2.6.2" level="project" />
   </component>
 </module>
