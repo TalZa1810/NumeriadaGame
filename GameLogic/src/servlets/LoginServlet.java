@@ -20,8 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
-public class LoginServlet extends HttpServlet
-{
+
+public class LoginServlet extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("application/json");
@@ -38,8 +39,7 @@ public class LoginServlet extends HttpServlet
         }
     }
 
-    private void isAlreadyLogIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void isAlreadyLogIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
         response.setContentType("application/json");
         String isAlreadyLogIn = "false";
         User userFromSession = SessionUtils.getLoginUser(request);
@@ -51,8 +51,8 @@ public class LoginServlet extends HttpServlet
         response.getWriter().flush();
     }
 
-    private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void logIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+
         response.setContentType("application/json");
         String isNameExist = "false";
         User userFromSession = SessionUtils.getLoginUser(request);

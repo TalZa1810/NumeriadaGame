@@ -34,13 +34,9 @@ import javax.servlet.http.Part;
 
 @WebServlet(name = "LobbyServlet", urlPatterns = {"/lobby"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
-public class LobbyServlet extends HttpServlet
-{
+public class LobbyServlet extends HttpServlet{
 
-    /*
-
-    private void checkUserPlaying(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void checkUserPlaying(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
         response.setContentType("application/json");
         String isAlreadyPlaying = "false";
         User userFromSession = SessionUtils.getLoginUser(request);
@@ -52,8 +48,7 @@ public class LobbyServlet extends HttpServlet
         response.getWriter().flush();
     }
 
-    private void gameAndUserLists(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void gameAndUserLists(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
         response.setContentType("application/json");
 
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
@@ -68,8 +63,8 @@ public class LobbyServlet extends HttpServlet
         response.getWriter().flush();
     }
 
-    private void joinGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void joinGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
+
         response.setContentType("application/json");
         String success = "true";
 
@@ -95,8 +90,8 @@ public class LobbyServlet extends HttpServlet
         }
     }
 
-    private void logOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void logOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
+
         response.setContentType("text/html");
         User userFromSession = SessionUtils.getLoginUser(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
@@ -109,8 +104,8 @@ public class LobbyServlet extends HttpServlet
 
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+
         String action = request.getParameter(Constants.ACTION_TYPE);
         switch (action)
         {
@@ -132,9 +127,6 @@ public class LobbyServlet extends HttpServlet
         }
     }
 
-
-
-
         private void joinGameVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
         response.setContentType("application/json");
         boolean canJoin;
@@ -152,11 +144,11 @@ public class LobbyServlet extends HttpServlet
             if(!canJoin)
                 message = "There are no Human Players";
         }
-        else
-        {
+        else {
             canJoin =false;
             message = "The game didnt started yet";
         }
+
         String firstEle = new Gson().toJson(canJoin);
         String secEle = new Gson().toJson(message);
         String retJson = "["+firstEle+","+secEle+"]";
@@ -165,8 +157,7 @@ public class LobbyServlet extends HttpServlet
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
         //response.setContentType("text/html");
         response.setContentType("application/json");
 
@@ -182,7 +173,4 @@ public class LobbyServlet extends HttpServlet
             response.getWriter().flush();
         }
     }
-
-
-    */
 }
