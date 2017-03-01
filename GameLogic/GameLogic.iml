@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SharedClasses" />
     <orderEntry type="module" module-name="GameUI" />
+    <orderEntry type="library" name="Tomcat 7.0.754" level="application_server_libraries" />
   </component>
 </module>

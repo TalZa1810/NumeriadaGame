@@ -1,45 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
-
-    <!--
-     <link href="css/bootstrap.min.css" rel="stylesheet">
-     -->
-
-    <link href="css/allPages.css" rel="stylesheet">
-    <link href="css/index.css" rel="stylesheet">
-    <script src="script/jquery-3.1.1.min.js"></script>
-    <script src="script/index.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Griddler Online</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light');
+    </style>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <script src="script/jquery-2.0.3.min.js"></script>
+    <script src="script/login.js"></script>
 </head>
 
 <body>
-<div class="jumbotron text-center jumbotron-shadow">
-    <h2>Numberiada</h2>
-</div>
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12 text-center">
-            <h3>Login</h3>
-            <div class="login-error">
+    <div id="loginTitle">Welcome to Numberiada Online </div>
 
+    <div class="login">
+        <img src="images/user.png" alt="Avatar" class="avatar">
+
+
+        <span id="loginInput">
+            <input type="text" name="username" id="inputFromUser" class="form-control" placeholder="User Name" required
+                   autofocus/>
+            <div id="UserType">
+                <input type="radio" name="UserType" value="Human" checked> Human
+                <input id="MachineType" type="radio" name="UserType" value="Machine"> Computer
             </div>
-            <form method="GET" action="login" class="form-inline" name="loginForm" id="loginForm">
-                <div class="form-group">
-                    <label for="userName">User name:</label>
-                    <input type="text" id="username" class="form-control" onkeyup="checkIfWritten()" placeholder="Enter user name">
-                </div>
-                <br>
-                <label class="radio-inline"><input id="radioButtonHuman" type="radio" name="optradio" checked>Human</label>
-                <label class="radio-inline"><input type="radio" name="optradio">Computer</label>
-                <br>
-                <button type="submit" form="loginForm" value="Submit" id="submitButton" class="btn btn-info" disabled>Login</button>
-            </form>
-        </div>
+            <input type="button" value="Login" id="buttonLogin"/>
+        </span>
+    </div>
+
+    <div class="login">
+        <img src="images/login.png">
     </div>
 </div>
+
+<div id="popup">
+    <div id="popupBg" onclick="closePopup()"/>
+    <div id="message">Message</div>
+</div>
+
 </body>
 </html>
