@@ -1,19 +1,10 @@
 package servlets;
 
-
-/*
 import GameLogic.BoardInfo;
 import GameLogic.GameLogic;
-
-
-import UILogic.GamesManager;
 import UILogic.SimpleBoard;
 
-
-* */
-
-
-
+import UILogic.GamesManager;
 
 import UILogic.User;
 import UILogic.UserManager;

@@ -3,10 +3,10 @@ package servlets;
 
 import GriddlerWeb.GameLogic.*;
 import GriddlerWeb.GameLogic.Player;
-import GriddlerWeb.UILogic.*;
-import GriddlerWeb.Utils.Constants;
-import GriddlerWeb.Utils.ServletUtils;
-import GriddlerWeb.Utils.SessionUtils;
+import UILogic.*;
+import utils.Constants;
+import utils.ServletUtils;
+import utils.SessionUtils;
 import GriddlerWeb.jaxb.schema.generated.*;
 import com.google.gson.Gson;
 import com.sun.org.apache.bcel.internal.generic.CASTORE;

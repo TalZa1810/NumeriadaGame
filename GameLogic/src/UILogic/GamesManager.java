@@ -1,8 +1,6 @@
 package UILogic;
 
 
-/*
-
 
 import GriddlerWeb.GameLogic.*;
 
@@ -128,9 +126,3 @@ public class GamesManager
     }
     //endregion
 }
-
-
-
-
-
-*/
