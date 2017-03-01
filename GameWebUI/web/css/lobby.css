@@ -19,14 +19,14 @@ body {
 
 .lobbyBtns{
     color: #f0f0f1;
-    background-color: #982929;
+    background-color: #660033;
     border: solid 1px #555;
     border-radius: 4px;
 }
 
 .sectionTitle {
     font-size: 2em;
-    color: #982929;
+    color: #660033;
 }
 
 .tableColTitle {

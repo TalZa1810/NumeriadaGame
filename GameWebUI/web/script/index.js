@@ -14,7 +14,7 @@ function checkUserNameAndType(){
     var inputFromUser = $('#inputFromUser').val();
 
     if(inputFromUser == ""){
-        openPopup("Must fill User Name.");
+        openPopup("Please fill User Name.");
     }
     else {
         var UserType = $('input[name=UserType]:checked').val();
@@ -29,7 +29,7 @@ function checkUserNameAndType(){
             },
             success: function(isNameExist) {
                 if (isNameExist === true){
-                    openPopup("This user name is already in the system.");
+                    openPopup("The user was already registered.");
                 } else {
                     window.location.replace("lobby.html");
                 }

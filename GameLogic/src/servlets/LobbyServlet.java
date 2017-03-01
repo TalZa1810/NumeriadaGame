@@ -1,12 +1,18 @@
 package servlets;
 
 
+/*
 import GameLogic.BoardInfo;
 import GameLogic.GameLogic;
 
 
 import UILogic.GamesManager;
 import UILogic.SimpleBoard;
+
+
+* */
+
+
 
 
 import UILogic.User;
@@ -30,6 +36,9 @@ import javax.servlet.http.Part;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class LobbyServlet extends HttpServlet
 {
+
+    /*
+
     private void checkUserPlaying(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("application/json");
@@ -123,7 +132,10 @@ public class LobbyServlet extends HttpServlet
         }
     }
 
-    private void joinGameVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
+
+
+
+        private void joinGameVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
         response.setContentType("application/json");
         boolean canJoin;
         String message ="";
@@ -170,4 +182,7 @@ public class LobbyServlet extends HttpServlet
             response.getWriter().flush();
         }
     }
+
+
+    */
 }

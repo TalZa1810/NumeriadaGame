@@ -6,7 +6,7 @@ body {
 #loginTitle {
     font-size: 4em;
     text-align: center;
-    color: #982929;
+    color: #660033;
     font-family: 'Shadows Into Light', cursive;
     margin: 2% 0;
 }
@@ -50,7 +50,7 @@ img.avatar {
     font-size: 1.5em;
     width: 100%;
     color: #f0f0f1;
-    background-color: #982929;
+    background-color: #660033;
     border: solid 1px #555;
     border-radius: 4px;
 }
