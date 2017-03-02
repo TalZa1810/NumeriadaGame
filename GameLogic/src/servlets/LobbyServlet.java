@@ -3,7 +3,6 @@ package servlets;
 import UILogic.GamesManager;
 import UILogic.UserManager;
 import com.google.gson.Gson;
-import com.google.gson.internal.Streams;
 import sharedStructures.PlayerData;
 import utils.Constants;
 import utils.ServletUtils;
@@ -15,7 +14,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
 
 @WebServlet(name = "LobbyServlet", urlPatterns = {"/lobby"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
@@ -140,7 +141,7 @@ public class LobbyServlet extends HttpServlet{
         response.getWriter().write(retJson);
         response.getWriter().flush();
     }
-
+*/
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
         response.setContentType("text/html");
@@ -158,5 +159,4 @@ public class LobbyServlet extends HttpServlet{
             response.getWriter().flush();
         }
     }
-    */
 }
