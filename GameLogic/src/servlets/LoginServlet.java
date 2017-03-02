@@ -49,6 +49,7 @@ public class LoginServlet extends HttpServlet {
 
         response.setContentType("application/json");
         String isNameExist = "false";
+        //Map<request.getParameterMap();
         PlayerData userFromSession = SessionUtils.getLoginUser(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         if (userFromSession == null)  //user is not logged in yet

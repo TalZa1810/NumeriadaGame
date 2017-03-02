@@ -180,14 +180,14 @@ function refreshGameList(games)
     })
 }
 
-function refreshUsersList(users)
-{
+function refreshUsersList(users){
+
     //clear all current users
     $("#usersTable").empty();
     $.each(users || [], function(index, user) {
         // console.log("Adding user #" + index + ": " + name);
         var icon;
-        if(user.userType === 'Human') {
+        if(user.m_PlayerType === 'Human') {
             icon = "<span class='HumanIcon'></span>"
         }
         else {
@@ -195,7 +195,7 @@ function refreshUsersList(users)
         }
 
         var userList = $('<tr class="active"> </tr>')
-        $('<th>' + user.userName + '</th>').appendTo(userList);
+        $('<th>' + user.m_Name + '</th>').appendTo(userList);
         $('<th>' + icon + '</th>').appendTo(userList);
         userList.appendTo($("#usersTable"));
     });
