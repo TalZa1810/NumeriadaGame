@@ -1,13 +1,13 @@
+
 package servlets;
+/*
 
-
-import GriddlerWeb.GameLogic.*;
-import GriddlerWeb.GameLogic.Player;
+import logic.*;
 import UILogic.*;
+import sharedStructures.PlayerData;
 import utils.Constants;
 import utils.ServletUtils;
 import utils.SessionUtils;
-import GriddlerWeb.jaxb.schema.generated.*;
 import com.google.gson.Gson;
 import com.sun.org.apache.bcel.internal.generic.CASTORE;
 import com.sun.org.apache.xerces.internal.impl.dv.xs.BooleanDV;
@@ -87,7 +87,7 @@ public class GameRoomServlet extends HttpServlet
     private void plyIsVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
         response.setContentType("application/json");
 
-        String nameJson = new Gson().toJson(((User)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
+        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
         String name = nameJson.substring(1, nameJson.length()-1);
         GameLogic currGame = getGameLogic(request);
 
@@ -110,7 +110,7 @@ public class GameRoomServlet extends HttpServlet
 
     private Player getSpecificPlayerByName(HttpServletRequest request)
     {
-        String nameJson = new Gson().toJson(((User)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
+        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
         GameLogic currGame = getGameLogic(request);
         Player currPly = searchAndGetPly(currGame.getPlayers(),nameJson);
         return currPly;
@@ -178,7 +178,7 @@ public class GameRoomServlet extends HttpServlet
         String isComputer = "false";
         GameLogic currGame = getGameLogic(request);
         ArrayList<Player> players = currGame.getPlayers();
-        String nameJson = new Gson().toJson(((User)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
+        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
 
        Player thisPly = searchAndGetPly(players,nameJson);
 
@@ -324,8 +324,8 @@ public class GameRoomServlet extends HttpServlet
     {
 
         Pair<Boolean,String> retPair;
-        User userFromSession = SessionUtils.getLoginUser(request);
-        if(userFromSession.GetName().equals(currGame.getNameCurrPlayer())) {
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
+        if(userFromSession.getName().equals(currGame.getNameCurrPlayer())) {
             if(!fromDoMove|| currGame.canMakeAnotherMove()) {
                 retPair = new Pair<>(true, "");
             }
@@ -339,11 +339,11 @@ public class GameRoomServlet extends HttpServlet
         return retPair;
     }
 
-    private GameLogic getGameLogic(HttpServletRequest request)   {
+    private Game getGameLogic(HttpServletRequest request)   {
 
-        String cuurGameTile = (String)request.getSession(false).getAttribute(Constants.GAME_TITLE);
+        String currGameTile = (String)request.getSession(false).getAttribute(Constants.GAME_TITLE);
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
-        return gamesManager.getSpecificGame(cuurGameTile);
+        return gamesManager.getSpecificGame(currGameTile);
     }
 
     private void getBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
@@ -388,7 +388,7 @@ public class GameRoomServlet extends HttpServlet
 
         response.setContentType("text/html");
         GameLogic currGame = getGameLogic(request);
-        User userFromSession = SessionUtils.getLoginUser(request);
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
         currGame.removePlayer(userFromSession.GetName());
         request.getSession(true).removeAttribute(Constants.GAME_TITLE);
         userFromSession.setPlay(false);
@@ -398,7 +398,7 @@ public class GameRoomServlet extends HttpServlet
 
 
         response.setContentType("application/json");
-        String nameJson = new Gson().toJson(((User)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
+        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
 
         String usersJson, gameDetalisJson,visitorJson;
         GameLogic currGame = getGameLogic(request);
@@ -430,7 +430,7 @@ public class GameRoomServlet extends HttpServlet
         {
             String score = Float.toString(ply.getScore());
             String userType = getUserType(ply.isHuman());
-            userManage.addUser(new User(ply.getName(), userType, score));
+            userManage.addUser(new PlayerData(ply.getName(), userType, score));
         }
 
         Gson gson = new Gson();
@@ -457,7 +457,7 @@ public class GameRoomServlet extends HttpServlet
      * @throws IOException if an I/O error occurs
      */
 
-
+/*
 
 
     @Override
@@ -475,7 +475,7 @@ public class GameRoomServlet extends HttpServlet
      * @throws IOException if an I/O error occurs
      */
 
-
+/*
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -488,12 +488,12 @@ public class GameRoomServlet extends HttpServlet
      * @return a String containing servlet description
      */
 
-
+/*
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+*/
 
-}
 
 

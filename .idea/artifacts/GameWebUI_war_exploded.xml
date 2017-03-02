@@ -6,10 +6,14 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="GameWebUI" />
+          <element id="module-output" name="GameUI" />
+          <element id="module-output" name="GameLogic" />
+          <element id="module-output" name="SharedClasses" />
         </element>
         <element id="directory" name="lib">
-          <element id="artifact" artifact-name="NumberiadaGame" />
           <element id="library" level="project" name="gson-2.6.2" />
+          <element id="artifact" artifact-name="GameLogic:jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/google-gson-2.1/gson-1.1.jar" />
         </element>
       </element>
     </root>

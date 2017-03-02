@@ -1,6 +1,6 @@
 //MAIN
 
-
+/*
 package javafx_ui.program;
 
 
@@ -56,4 +56,6 @@ public class Main extends Application {
         this.scene.getStylesheets().remove("/javafx_ui/CSS/" + oldStyle + ".css");
         this.scene.getStylesheets().add("/javafx_ui/CSS/" + newStyle + ".css");
     }
+
 }
+*/

@@ -1,23 +1,17 @@
 package servlets;
 
-import javax.servlet.http.HttpServlet;
-
-import utils.Constants;
-
-import UILogic.User;
 import UILogic.UserManager;
-
-
-import utils.SessionUtils;
+import sharedStructures.PlayerData;
+import utils.Constants;
 import utils.ServletUtils;
+import utils.SessionUtils;
 
-
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 
@@ -42,7 +36,7 @@ public class LoginServlet extends HttpServlet {
     private void isAlreadyLogIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
         response.setContentType("application/json");
         String isAlreadyLogIn = "false";
-        User userFromSession = SessionUtils.getLoginUser(request);
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
 
         if(userFromSession != null) {
             isAlreadyLogIn = "true";
@@ -55,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 
         response.setContentType("application/json");
         String isNameExist = "false";
-        User userFromSession = SessionUtils.getLoginUser(request);
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         if (userFromSession == null)  //user is not logged in yet
         {
@@ -63,9 +57,9 @@ public class LoginServlet extends HttpServlet {
             String userType = request.getParameter(Constants.USER_TYPE);
 
             userNameFromParameter = userNameFromParameter.trim();  //normalize the username value
-            User newUser = new User(userNameFromParameter, userType);
+            PlayerData newUser = new PlayerData(userNameFromParameter, userType);
 
-            if (userManager.isUserExists(newUser.GetName())) {   //username already exists
+            if (userManager.isUserExists(newUser.getName())) {   //username already exists
                 isNameExist = "true";
             } else {
                 //add the new user to the users list

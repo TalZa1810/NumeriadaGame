@@ -18,6 +18,7 @@ public class GameInfo {
     private PlayerData m_CurrPlayer;
     private int m_NumOfMoves;
     private String m_Path;
+    private String m_GameTitle;
 
 
     private int m_ElapsedTime;
@@ -71,6 +72,10 @@ public class GameInfo {
     public int getChosenRow() {
         return m_ChosenRow;
     }
+
+    public void setGameTitle(String title) { m_GameTitle = title; }
+
+    public String getGameTitle() { return m_GameTitle; }
 
     public void setChosenCol(int i_ChosenCol) {
         this.m_ChosenCol = i_ChosenCol;

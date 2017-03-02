@@ -9,7 +9,16 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SharedClasses" />
     <orderEntry type="module" module-name="GameUI" />
-    <orderEntry type="library" name="Tomcat 7.0.754" level="application_server_libraries" />
     <orderEntry type="library" name="gson-2.6.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.75" level="application_server_libraries" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../google-gson-2.1/gson-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

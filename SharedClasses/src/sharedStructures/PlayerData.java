@@ -15,6 +15,11 @@ public class PlayerData {
         m_Score = i_Score;
     }
 
+    public PlayerData(String i_Name, String i_PlayerType){
+        m_Name = i_Name;
+        m_PlayerType = ePlayerType.valueOf(i_PlayerType);
+    }
+
     public PlayerData() {}
 
     public ePlayerType getType() {

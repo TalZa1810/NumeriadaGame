@@ -1,27 +1,20 @@
 package servlets;
 
-import GameLogic.BoardInfo;
-import GameLogic.GameLogic;
-import UILogic.SimpleBoard;
-
 import UILogic.GamesManager;
-
-import UILogic.User;
 import UILogic.UserManager;
+import com.google.gson.Gson;
+import sharedStructures.PlayerData;
 import utils.Constants;
 import utils.ServletUtils;
 import utils.SessionUtils;
-import com.google.gson.Gson;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import java.io.IOException;
 
 @WebServlet(name = "LobbyServlet", urlPatterns = {"/lobby"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
@@ -30,11 +23,11 @@ public class LobbyServlet extends HttpServlet{
     private void checkUserPlaying(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
         response.setContentType("application/json");
         String isAlreadyPlaying = "false";
-        User userFromSession = SessionUtils.getLoginUser(request);
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
 
-        if(userFromSession.isPlaying()){
-            isAlreadyPlaying = "true";
-        }
+        //if(userFromSession.isPlaying()){
+        //    isAlreadyPlaying = "true";
+        //}
         response.getWriter().write(isAlreadyPlaying);
         response.getWriter().flush();
     }
@@ -53,13 +46,13 @@ public class LobbyServlet extends HttpServlet{
         response.getWriter().write(bothJson);
         response.getWriter().flush();
     }
-
+/*
     private void joinGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
 
         response.setContentType("application/json");
         String success = "true";
 
-        User userFromSession = SessionUtils.getLoginUser(request);
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
 
         String gameTitle = request.getParameter(Constants.GAME_TITLE);
@@ -80,15 +73,15 @@ public class LobbyServlet extends HttpServlet{
             response.getWriter().flush();
         }
     }
-
+*/
     private void logOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
 
         response.setContentType("text/html");
-        User userFromSession = SessionUtils.getLoginUser(request);
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
 
         if (userFromSession != null) {
-            userManager.removeUser(userFromSession.GetName());
+            userManager.removeUser(userFromSession.getName());
             SessionUtils.clearSession(request);
         }
     }
@@ -104,30 +97,30 @@ public class LobbyServlet extends HttpServlet{
                 gameAndUserLists(request, response);
                 break;
             case Constants.JOIN_GAME:
-                joinGame(request, response);
+                //joinGame(request, response);
                 break;
             case Constants.JOIN_AS_VISITOR:
-                joinGameVisitor(request,response);
+                //joinGameVisitor(request,response);
                 break;
             case Constants.LOGOUT:
                 logOut(request, response);
                 break;
             case Constants.CHECK_USER_PLAYING:
-                checkUserPlaying(request, response);
+                //checkUserPlaying(request, response);
                 break;
         }
     }
-
+/*
         private void joinGameVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
         response.setContentType("application/json");
         boolean canJoin;
         String message ="";
-        User userFromSession = SessionUtils.getLoginUser(request);
+            PlayerData userFromSession = SessionUtils.getLoginUser(request);
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
-        String name = userFromSession.GetName();
+        String name = userFromSession.getName();
 
         String gameTitle = request.getParameter(Constants.GAME_TITLE);
-        GameLogic gameToJoin = gamesManager.getSpecificGame(gameTitle);
+        Game gameToJoin = gamesManager.getSpecificGame(gameTitle);
 
         if(!gameToJoin.isUnActiveGame()) {
             canJoin = gameToJoin.checkAndEnterVisitor(name);
@@ -149,14 +142,14 @@ public class LobbyServlet extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
-        //response.setContentType("text/html");
+        response.setContentType("text/html");
         response.setContentType("application/json");
 
         Part myPart = request.getPart(Constants.XML_FILE);
         InputStream file = myPart.getInputStream();
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
-        User userFromSession = SessionUtils.getLoginUser(request);
-        String result = gamesManager.addNewGame(file, userFromSession.GetName());
+        PlayerData userFromSession = SessionUtils.getLoginUser(request);
+        String result = gamesManager.addNewGame(file, userFromSession.getName());
 
         if(result != null){
             Gson gson = new Gson();
@@ -164,4 +157,5 @@ public class LobbyServlet extends HttpServlet{
             response.getWriter().flush();
         }
     }
+    */
 }

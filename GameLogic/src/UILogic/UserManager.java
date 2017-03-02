@@ -1,25 +1,29 @@
 package UILogic;
 
-import java.util.*;
+import sharedStructures.PlayerData;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class UserManager {
 
-    private final ArrayList<User> m_UsersList;
+    private final ArrayList<PlayerData> m_UsersList;
     private final Object lockObj = new Object();
 
     public UserManager() {
-        m_UsersList = new ArrayList<User>();
+        m_UsersList = new ArrayList<PlayerData>();
     }
 
-    public void addUser(User newUser) {
+    public void addUser(PlayerData newUser) {
         m_UsersList.add(newUser);
     }
 
     public void removeUser(String userName)
     {
         synchronized (this) {
-            for (User user : m_UsersList) {
-                if (userName.equals(user.GetName())) {
+            for (PlayerData user : m_UsersList) {
+                if (userName.equals(user.getName())) {
                     m_UsersList.remove(user);
                     break;
                 }
@@ -29,8 +33,8 @@ public class UserManager {
 
     public boolean isUserExists(String nameTocheck) {
             boolean result = false;
-            for (User user : m_UsersList) {
-                if (nameTocheck.equals(user.GetName())) {
+            for (PlayerData user : m_UsersList) {
+                if (nameTocheck.equals(user.getName())) {
                     result = true;
                 }
             }

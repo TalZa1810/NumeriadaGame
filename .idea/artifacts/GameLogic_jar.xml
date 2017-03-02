@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GameLogic:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GameLogic_jar</output-path>
+    <root id="archive" name="GameLogic.jar">
+      <element id="module-output" name="GameLogic" />
+      <element id="module-output" name="SharedClasses" />
+    </root>
+  </artifact>
+</component>

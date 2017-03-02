@@ -1,7 +1,10 @@
 package utils;
 
 /*import UILogic.GamesManager;*/
+
+import UILogic.GamesManager;
 import UILogic.UserManager;
+
 import javax.servlet.ServletContext;
 
 public class ServletUtils
@@ -13,12 +16,11 @@ public class ServletUtils
 	return (UserManager) servletContext.getAttribute(Constants.USER_MANAGER_ATTRIBUTE_NAME);
     }
 
-    /*
 	public static GamesManager getGamesManager(ServletContext servletContext) {
 		if (servletContext.getAttribute(Constants.GAMES_MANAGER_ATTRIBUTE_NAME) == null) {
 			servletContext.setAttribute(Constants.GAMES_MANAGER_ATTRIBUTE_NAME, new GamesManager());
 		}
 		return (GamesManager) servletContext.getAttribute(Constants.GAMES_MANAGER_ATTRIBUTE_NAME);
 	}
-	*/
+
 }
