@@ -144,6 +144,7 @@ public class LobbyServlet extends HttpServlet{
 */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+
         response.setContentType("text/html");
         response.setContentType("application/json");
 

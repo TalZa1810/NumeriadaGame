@@ -6,7 +6,6 @@ $(document).ready(function ()
 
     $.ajaxSetup({cache: false});
     $('#joinGameButton').hide();
-    $('#joinGameVisitor').hide();
     $('#showBoard').hide();
 
 
@@ -16,7 +15,7 @@ $(document).ready(function ()
     $('#joinGameButton').on("click", joinGame);
     $('#showBoard').on("click",openPopupWithBoard);
     $('#buttonLogOut').on("click", logOut);
-    $('#joinGameVisitor').on("click",joinGameAsVisitor);
+
 
     $('#uploadButton').on("click", function (event) {
         event.preventDefault();
@@ -35,13 +34,13 @@ $(document).ready(function ()
 $(document).on("click", "#gameTable tr", function(e){
     $(this).addClass('success').siblings().removeClass('success');
     $('#joinGameButton').fadeIn(200);
-    $('#joinGameVisitor').fadeIn(200);
+
     $('#showBoard').fadeIn(200);
 });
 
 
-function valideFileExtension(file)
-{
+function valideFileExtension(file) {
+
     var ext = file.split(".");
     ext = ext[ext.length-1].toLocaleLowerCase();
     var arrayExtensions = ["xml"];
@@ -54,29 +53,9 @@ function valideFileExtension(file)
     return true;
 }
 
-function joinGameAsVisitor(){
 
-    var gamettl = $("#gameTable").find("tr.success").attr('value');
-    var actionType = "joinGameVisitor";
+function joinGame() {
 
-    $.ajax({
-        url: "lobby",
-        type: 'GET',
-        data: {
-            "gameTitle": gamettl,
-            "ActionType": actionType
-        },
-        success: function(result) {
-            if (result[0]){
-                window.location.replace("GameRoom.html");
-            } else {
-                openPopup(result[1]);
-            }
-        }
-    });
-}
-function joinGame()
-{
     $('#joinGameButton').hide();
 
     var gamettl = $("#gameTable").find("tr.success").attr('value');
@@ -155,11 +134,11 @@ function refreshGameList(games)
     $.each(games || [], function (gameKey, gameValue)
     {
         var gameList = $('<tr value="'+gameKey+'"> </tr>');
-        var bordSize = gameValue.m_OrginalBoard.m_Rows + " * " + gameValue.m_OrginalBoard.m_Cols;
-        var players = gameValue.m_Players.length + " / " + gameValue.m_TotalPlayers;
-        var visitors = gameValue.m_VisitorPlayers.length;
+        var bordSize = gameValue.m_BoardSize;
+        var players = gameValue.m_NumOfPlayers;
+        var signedUpPlayers = gameValue.m_Players.length ;
         var gameStatus;
-        if(gameValue.m_UnActiveGame && gameValue.m_Players.length < gameValue.m_TotalPlayers){
+        if(!gameValue.m_isGameActive && gameValue.m_Players.length < gameValue.m_NumOfPlayers){
             gameStatus = "Available"
         }else {
             gameStatus = "Not Available"
@@ -168,9 +147,8 @@ function refreshGameList(games)
         $('<th>' + gameKey + '</th>').appendTo(gameList);
         $('<th>' + gameValue.m_Organizer + '</th>').appendTo(gameList);
         $('<th>' + players + '</th>').appendTo(gameList);
-        $('<th>' + gameValue.m_TotalRounds + '</th>').appendTo(gameList);
+        $('<th>' + signedUpPlayers + '</th>').appendTo(gameList);
         $('<th>' + bordSize + '</th>').appendTo(gameList);
-        $('<th>' + visitors + '</th>').appendTo(gameList);
         $('<th>' + gameStatus + '</th>').appendTo(gameList);
         gameList.appendTo($("#gameTable"));
 
@@ -201,8 +179,7 @@ function refreshUsersList(users){
     });
 }
 
-function ajaxIsAlreadyPlaying()
-{
+function ajaxIsAlreadyPlaying() {
     var actionType = "CheckUserPlaying";
 
     $.ajax({
@@ -219,8 +196,8 @@ function ajaxIsAlreadyPlaying()
     });
 }
 
-function uploadFile()
-{
+function uploadFile() {
+
     var formData = new FormData();
     formData.append('xmlFileName', $('#xmlFile')[0].files[0]);
 
@@ -254,5 +231,6 @@ function openPopupWithBoard(){
     var table = $("<table></table>");
     $("#message").append(table);
     getShowBoard(table);
+
     $("#popup").show();
 }

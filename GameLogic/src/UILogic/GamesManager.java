@@ -86,6 +86,9 @@ public class GamesManager
                 //m_StatusBar.set(m_Notifier.fileWasLoadedSuccessfully());
                 //createGame();
                 //initializeGameController(m_MainWindow);
+
+                //TODO: check if game name exists
+                newGameInfo.setOrganizer(userNameFromSession);
                 m_GamesMap.put(newGameInfo.getGameTitle(), newGameInfo);
             }
         }
@@ -124,6 +127,7 @@ public class GamesManager
         m_Validator = new Validator(gameInfo);
 
         gameInfo.setGameType(m_GameDescriptor.getGameType());
+        gameInfo.setGameTitle(m_GameDescriptor.getDynamicPlayers().getGameTitle());
         m_Validator.checkBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         gameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         gameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());

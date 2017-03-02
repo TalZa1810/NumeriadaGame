@@ -1,6 +1,6 @@
 
 package servlets;
-/*
+
 
 import logic.*;
 import UILogic.*;
@@ -89,7 +89,7 @@ public class GameRoomServlet extends HttpServlet
 
         String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
         String name = nameJson.substring(1, nameJson.length()-1);
-        GameLogic currGame = getGameLogic(request);
+        Game currGame = getGameLogic(request);
 
         boolean retVal=currGame.isVisitor(name);
         String retJson = new Gson().toJson(retVal);
@@ -100,7 +100,7 @@ public class GameRoomServlet extends HttpServlet
 
     private void pullBoardVisitor(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         response.setContentType("application/json");
-        GameLogic currGame = getGameLogic(request);
+        Game currGame = getGameLogic(request);
         BoardInfo boardCurrPly = currGame.getCurrentBoardVisitor();
         String board = new Gson().toJson(boardCurrPly);
         response.getWriter().write(board);
@@ -228,7 +228,7 @@ public class GameRoomServlet extends HttpServlet
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
 
         String gameTitle = request.getParameter(Constants.GAME_TITLE);
-        GameLogic gameBoard = gamesManager.getSpecificGame(gameTitle);
+        Game gameBoard = gamesManager.getSpecificGame(gameTitle);
         BoardInfo board = gameBoard.getOriginalBoard();
 
         SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());

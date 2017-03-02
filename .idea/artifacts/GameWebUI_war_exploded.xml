@@ -12,7 +12,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="artifact" artifact-name="GameLogic:jar" />
-          <element id="file-copy" path="$PROJECT_DIR$/gson-2.6.2.jar" />
+          <element id="library" level="project" name="gson-2.6.2" />
         </element>
       </element>
     </root>

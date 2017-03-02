@@ -19,7 +19,9 @@ public class GameInfo {
     private int m_NumOfMoves;
     private String m_Path;
     private String m_GameTitle;
+    private boolean m_isGameActive = false;
 
+    private String m_Organizer;
 
     private int m_ElapsedTime;
     private int m_RowPlayerScore;
@@ -30,7 +32,7 @@ public class GameInfo {
     private String m_BoardStructure;
     private int m_GameMode;
     private ArrayList<PlayerData> m_Players = new ArrayList<PlayerData>();
-    private  int m_NumOfPlayers = 0;
+    private  int m_NumOfPlayers ;
     private int m_ChosenRow;
     private int m_ChosenCol;
     protected ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
@@ -59,6 +61,14 @@ public class GameInfo {
     public void addPlayerData(PlayerData i_Player){
         m_Players.add(i_Player);
         m_NumOfPlayers++;
+    }
+
+    public void setOrganizer(String m_Organizer) {
+        this.m_Organizer = m_Organizer;
+    }
+
+    public String getOrganizer() {
+        return m_Organizer;
     }
 
     public ArrayList<PlayerData> getPlayers() {
