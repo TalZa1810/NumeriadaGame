@@ -426,8 +426,7 @@ public class GameRoomServlet extends HttpServlet
     private String getPlayesToJson(List<Player> gamePlayers) {
 
         UserManager userManage = new UserManager();
-        for (Player ply: gamePlayers)
-        {
+        for (Player ply: gamePlayers) {
             String score = Float.toString(ply.getScore());
             String userType = getUserType(ply.isHuman());
             userManage.addUser(new PlayerData(ply.getName(), userType, score));
