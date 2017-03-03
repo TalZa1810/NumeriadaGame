@@ -98,6 +98,8 @@ public class GameRoomServlet extends HttpServlet
         response.getWriter().flush();
     }
 
+    /*
+
     private void pullBoardVisitor(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         response.setContentType("application/json");
         Game currGame = getGameLogic(request);
@@ -106,6 +108,8 @@ public class GameRoomServlet extends HttpServlet
         response.getWriter().write(board);
         response.getWriter().flush();
     }
+
+    */
 
 
     private Player getSpecificPlayerByName(HttpServletRequest request)
