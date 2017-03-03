@@ -1,26 +1,18 @@
 
 package servlets;
 
-
-import logic.*;
-import UILogic.*;
-import sharedStructures.PlayerData;
+import UILogic.GamesManager;
+import com.google.gson.Gson;
+import logic.Game;
 import utils.Constants;
 import utils.ServletUtils;
-import utils.SessionUtils;
-import com.google.gson.Gson;
-import com.sun.org.apache.bcel.internal.generic.CASTORE;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.BooleanDV;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import javafx.util.Pair;
 
-import java.io.IOException;
-import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 
@@ -36,54 +28,54 @@ public class GameRoomServlet extends HttpServlet
         switch (action)
         {
             case Constants.DO_MOVE:
-                handleDoMove(request,response);
+                //handleDoMove(request,response);
                 break;
             case Constants.UNDO:
-                undoRedoMove(request, response, action);
+                //undoRedoMove(request, response, action);
                 break;
             case Constants.REDO:
-                undoRedoMove(request, response, action);
+                //undoRedoMove(request, response, action);
                 break;
             case Constants.PASS_TURN:
-                passTurn(request, response);
+                //passTurn(request, response);
                 break;
             case Constants.GAME_STATUS:
-                gameStatus(request, response);
+                //gameStatus(request, response);
                 break;
             case Constants.IS_GAME_STARTED:
-                isGameStarted(request, response);
+                //isGameStarted(request, response);
                 break;
             case Constants.EXIT_GAME:
-                exitGame(request, response);
+                //exitGame(request, response);
                 break;
             case Constants.GET_BOARD:
-                getBoard(request, response);
+                //getBoard(request, response);
                 break;
             case Constants.GET_SHOW_BOARD:
                 getShowBoard(request,response);
                 break;
             case Constants.PULL_BOARD:
-                pullBoard(request,response);
+                //pullBoard(request,response);
                 break;
             case Constants.FIRST_PLY_COMP:
-                checkAndManageFirstPlayer(request,response);
+                //checkAndManageFirstPlayer(request,response);
                 break;
             case Constants.REPLAY:
-                startReplay(request,response);
+                //startReplay(request,response);
                 break;
             case Constants.PREV_OR_NEXT:
-                prevOrNextOption(request,response);
+                //prevOrNextOption(request,response);
                 break;
             case Constants.PULL_VISITOR_BOARD:
-                pullBoardVisitor(request,response);
+                //pullBoardVisitor(request,response);
                 break;
             case Constants.IS_VISITOR:
-                plyIsVisitor(request,response);
+                //plyIsVisitor(request,response);
                 break;
 
         }
     }
-
+/*
     private void plyIsVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
         response.setContentType("application/json");
 
@@ -221,6 +213,7 @@ public class GameRoomServlet extends HttpServlet
         }
         return retPly;
     }
+    */
 
     private void getShowBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
         response.setContentType("application/json");
@@ -229,14 +222,14 @@ public class GameRoomServlet extends HttpServlet
 
         String gameTitle = request.getParameter(Constants.GAME_TITLE);
         Game gameBoard = gamesManager.getSpecificGame(gameTitle);
-        BoardInfo board = gameBoard.getOriginalBoard();
+        //BoardInfo board = gameBoard.getOriginalBoard();
 
-        SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
-        String boardJson = new Gson().toJson(responseBoard);
+        //SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
+        String boardJson = new Gson().toJson(gameBoard.getBoard());
         response.getWriter().write(boardJson);
         response.getWriter().flush();
-    }
-
+    }}
+/*
     private void computerMove(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
     {
         response.setContentType("application/json");
@@ -445,6 +438,7 @@ public class GameRoomServlet extends HttpServlet
             return Constants.MACHINE;
         }
     }
+    */
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

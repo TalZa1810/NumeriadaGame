@@ -22,6 +22,7 @@ public abstract class Game {
 
     private eBoardStructure m_BoardStructure;
     private eGameType m_GameType;
+    private String m_Organizer;
     private Square m_ChosenSquare = new Square();
 
     protected ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
@@ -55,6 +56,10 @@ public abstract class Game {
     }
 
     public abstract boolean checkIfNotPossibleMove();
+
+    public String getOrganize() { return m_Organizer; }
+
+    public void setOrganizer(String name) { m_Organizer = name; }
 
     public void setNumOfPlayers(int i) {
         m_NumOfPlayers = i;
@@ -102,13 +107,16 @@ public abstract class Game {
 
     public Game(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
+        m_Organizer = m_GameInfo.getOrganizer();
         setGameType();
-        setPlayers();
         setBoard();
         initBoard();
-        m_CurrentPlayer = m_Players.get(0);
-        m_NumOfPlayers = m_Players.size();
-        m_GameInfo.setCurrPlayer(getCurrPlayerData());
+        //TODO: the following lines need to happen when game starts
+        //setPlayers();
+        //m_CurrentPlayer = m_Players.get(0);
+        //m_GameInfo.setCurrPlayer(getCurrPlayerData());
+        //m_GameInfo.setIsGameActive = true;
+        m_NumOfPlayers = m_GameInfo.getNumOfPlayers();
     }
 
     private PlayerData getCurrPlayerData() {
@@ -186,7 +194,7 @@ public abstract class Game {
                     randomRow = generateRandomPositionForRandomSquare(boardSize);
                 }
 
-                initRandomBoardSquare(randomRow, randomCol, m_Players.get(j % m_Players.size()).getColor().ordinal(), i);
+                initRandomBoardSquare(randomRow, randomCol, j + 1 ,i);
             }
         }
 

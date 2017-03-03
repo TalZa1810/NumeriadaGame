@@ -1,8 +1,10 @@
 package UILogic;
 
 
-
 import Generated.GameDescriptor;
+import logic.AdvancedGame;
+import logic.BasicGame;
+import logic.Game;
 import shared.GameInfo;
 import shared.Validator;
 import sharedStructures.eColor;
@@ -26,13 +28,15 @@ import GriddlerWeb.jaxb.schema.generated.Square;
 
 public class GamesManager
 {
-    private final Map<String, GameInfo> m_GamesMap;
+    private final Map<String, GameInfo> m_GamesInfoMap;
+    private final Map<String, Game> m_GamesMap;
     GameDescriptor m_GameDescriptor = new GameDescriptor();
     Validator m_Validator = new Validator();
 
     public GamesManager()
     {
-        m_GamesMap = new HashMap<>();
+        m_GamesInfoMap = new HashMap<>();
+        m_GamesMap  = new HashMap<>();
     }
 
     // returm error or null if all good
@@ -77,23 +81,25 @@ public class GamesManager
     }
 
     public boolean loadXML(InputStream file, String userNameFromSession) {
-       GameInfo newGameInfo = new GameInfo();
+        GameInfo newGameInfo = new GameInfo();
+        Game game;
         boolean res = true;
         try {
             m_GameDescriptor = fromXmlFileToObject(file);
             if(m_GameDescriptor != null) {
                 getDataFromGeneratedXML(newGameInfo);
-                //m_StatusBar.set(m_Notifier.fileWasLoadedSuccessfully());
-                //createGame();
+                newGameInfo.setOrganizer(userNameFromSession);
+                game = createGame(newGameInfo);
                 //initializeGameController(m_MainWindow);
 
-                //TODO: check if game name exists
-                newGameInfo.setOrganizer(userNameFromSession);
-                m_GamesMap.put(newGameInfo.getGameTitle(), newGameInfo);
+                if(!m_GamesInfoMap.containsKey(newGameInfo.getGameTitle())) {
+                    m_GamesInfoMap.put(newGameInfo.getGameTitle(), newGameInfo);
+                    m_GamesMap.put(newGameInfo.getGameTitle(), game);
+                }
             }
         }
         catch(Exception e){
-            //m_StatusBar.set(m_Notifier.showExceptionThrown(e.getMessage()));
+            System.out.println(e.getMessage());
             res = false;
         }
         finally {
@@ -166,8 +172,23 @@ public class GamesManager
         }
     }
 
+    private Game createGame(GameInfo gameInfo) {
+        GameInfo wrapper[] = new GameInfo[1];
+        wrapper[0] = gameInfo;
+        Game game;
+
+        if(gameInfo.getGameType().equals("Basic")){
+            game = new BasicGame(wrapper);
+        }
+        else{
+            game = new AdvancedGame(wrapper);
+        }
+
+        return game;
+    }
+
     public Map<String, GameInfo> getGames() {
-        return Collections.unmodifiableMap(m_GamesMap);
+        return Collections.unmodifiableMap(m_GamesInfoMap);
     }
 /*
     //region Load Game
@@ -225,9 +246,14 @@ public class GamesManager
     }
     */
 
-    public GameInfo getSpecificGame(String gameTitleToJoin)
+    public Game getSpecificGame(String gameTitleToJoin)
     {
         return m_GamesMap.get(gameTitleToJoin);
+    }
+
+    public GameInfo getSpecificGameInfo(String gameTitleToJoin)
+    {
+        return m_GamesInfoMap.get(gameTitleToJoin);
     }
     //endregion
 }

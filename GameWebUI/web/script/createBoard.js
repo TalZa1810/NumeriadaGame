@@ -50,15 +50,12 @@ function createBoard(theBoard,table) {
 
 
 function createTopPart(board, table) {
-    var theBoard = board.board;
-    var columns = theBoard[0].length;
-    var columnsBlocks = board.columnsBlocks;
-    var maxRowBlock = getMaxLengthOfList(board.rowsBlocks);
-    var maxColumnBlock = getMaxLengthOfList(columnsBlocks);
+    var columns = board.m_BoardSize;
+    var rows = board.m_BoardSize;
 
-    for (var row = 0; row < maxColumnBlock; row++) {
+    for (var row = 0; row < rows; row++) {
         var tr = document.createElement('tr');
-        for (var column = 0; column < columns + maxRowBlock; column++) {
+        for (var column = 0; column < columns; column++) {
             var td = document.createElement('td');
             td.setAttribute("column",column- maxRowBlock);
             td.classList.add("block");
