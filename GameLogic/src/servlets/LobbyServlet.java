@@ -3,6 +3,7 @@ package servlets;
 import UILogic.GamesManager;
 import UILogic.UserManager;
 import com.google.gson.Gson;
+import logic.Game;
 import sharedStructures.PlayerData;
 import utils.Constants;
 import utils.ServletUtils;
@@ -48,7 +49,7 @@ public class LobbyServlet extends HttpServlet{
         response.getWriter().write(bothJson);
         response.getWriter().flush();
     }
-/*
+
     private void joinGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
 
         response.setContentType("application/json");
@@ -58,15 +59,15 @@ public class LobbyServlet extends HttpServlet{
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
 
         String gameTitle = request.getParameter(Constants.GAME_TITLE);
-        GameLogic gameToJoin = gamesManager.getSpecificGame(gameTitle);
+        Game gameToJoin = gamesManager.getSpecificGame(gameTitle);
         if(gameToJoin != null)
         {
-            String playerName = userFromSession.GetName();
-            if(gameToJoin.isUnActiveGame() && gameToJoin.notInGame(playerName) && gameToJoin.hasRoom())
+            String playerName = userFromSession.getName();
+            if(!gameToJoin.isActiveGame() && !gameToJoin.isPlayerInGame(playerName) && !gameToJoin.isFull())
             {
-                gameToJoin.insertPlayer(playerName, userFromSession.GetType().equals(Constants.HUMAN));
+                gameToJoin.addPlayer(playerName, userFromSession.getType().name().equals(Constants.HUMAN));
                 request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitle);
-                userFromSession.setPlay(true);
+                //userFromSession.setPlay(true);
             }
             else {
                 success = "false";
@@ -75,7 +76,7 @@ public class LobbyServlet extends HttpServlet{
             response.getWriter().flush();
         }
     }
-*/
+/*
     private void logOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
 
         response.setContentType("text/html");
@@ -88,7 +89,7 @@ public class LobbyServlet extends HttpServlet{
         }
     }
 
-
+*/
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
 
@@ -99,13 +100,13 @@ public class LobbyServlet extends HttpServlet{
                 gameAndUserLists(request, response);
                 break;
             case Constants.JOIN_GAME:
-                //joinGame(request, response);
+                joinGame(request, response);
                 break;
             case Constants.JOIN_AS_VISITOR:
                 //joinGameVisitor(request,response);
                 break;
             case Constants.LOGOUT:
-                logOut(request, response);
+                //logOut(request, response);
                 break;
             case Constants.CHECK_USER_PLAYING:
                 //checkUserPlaying(request, response);

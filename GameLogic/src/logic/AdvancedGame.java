@@ -4,8 +4,6 @@ import shared.GameInfo;
 import sharedStructures.MoveData;
 import sharedStructures.eColor;
 
-import java.util.ArrayList;
-
 public class AdvancedGame extends Game {
 
     @Override
@@ -59,7 +57,7 @@ public class AdvancedGame extends Game {
 
     @Override
     void setPlayers() {
-        m_Players = new ArrayList<Player>();
+        //m_Players = new ArrayList<Player>();
         for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++) {
             m_Players.add(Player.CreatePlayer(m_GameInfo.getPlayer(i)));
         }

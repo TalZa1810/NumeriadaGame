@@ -102,7 +102,7 @@ public class GameRoomServlet extends HttpServlet
     }
 
     */
-
+/*
 
     private Player getSpecificPlayerByName(HttpServletRequest request)
     {

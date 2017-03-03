@@ -1,10 +1,7 @@
 package logic;
 
 import shared.GameInfo;
-import sharedStructures.MoveData;
-import sharedStructures.PlayerData;
-import sharedStructures.SquareData;
-import sharedStructures.eColor;
+import sharedStructures.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -92,6 +89,36 @@ public abstract class Game {
         m_GameInfo.setMarkMoves(m_MarkMoves);
     }
 
+    public boolean isActiveGame() {
+        return m_GameInfo.isActiveGame();
+    }
+
+    public boolean isPlayerInGame(String playerName) {
+        for(Player player: m_Players){
+            if(player.getName().equals(playerName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFull() {
+        return m_Players.size() == m_NumOfPlayers;
+    }
+
+    public void addPlayer(String playerName, boolean trueForHuman) {
+        ePlayerType type;
+        if(trueForHuman){
+            type = ePlayerType.Human;
+        }
+        else{
+            type = ePlayerType.Computer;
+        }
+        PlayerData playerInfo = new PlayerData(playerName, m_Players.size()+1, eColor.values()[(m_Players.size()+1)% m_NumOfPlayers], type, 0);
+        m_Players.add(Player.CreatePlayer(playerInfo));
+        m_GameInfo.getPlayers().add(playerInfo);
+    }
+
 
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
@@ -108,11 +135,11 @@ public abstract class Game {
     public Game(GameInfo[] i_GameInfoWrapper){
         m_GameInfo = i_GameInfoWrapper[0];
         m_Organizer = m_GameInfo.getOrganizer();
+        m_Players = new ArrayList<>(0);
         setGameType();
         setBoard();
         initBoard();
-        //TODO: the following lines need to happen when game starts
-        //setPlayers();
+        //TODO: the following lines need to happen when game start
         //m_CurrentPlayer = m_Players.get(0);
         //m_GameInfo.setCurrPlayer(getCurrPlayerData());
         //m_GameInfo.setIsGameActive = true;

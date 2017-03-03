@@ -71,6 +71,10 @@ public class GameInfo {
         return m_Organizer;
     }
 
+    public boolean isActiveGame() { return m_isGameActive; }
+
+    public void setActiveGame(boolean val) { m_isGameActive = val; }
+
     public ArrayList<PlayerData> getPlayers() {
         return m_Players;
     }
