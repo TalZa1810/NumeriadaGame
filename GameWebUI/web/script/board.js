@@ -1,3 +1,5 @@
+
+
 $(document).on("click", "td.toggler", function () {
     $(this).toggleClass('selected');
 });
@@ -5,6 +7,8 @@ $(document).on("click", "td.toggler", function () {
 $(document).ready(function () {
     $('#buttonPassTurn').on("click", ajaxPassTurn);
 });
+
+
 
 $(document).on("click", "#buttonPerformeMove", function (e) {
     var userAction = $('.optionSelected').html();
@@ -93,6 +97,7 @@ function updatePerfectBlock(rowBlock, colBlock) {
     updateSpecificBlocks(colBlock,false)
 }
 
+/*
 function updateSpecificBlocks (blocks,isRow) {
     var direction = (isRow) ? "row" : "column";
     for(var currSlice = 0; currSlice <blocks.length ; currSlice++)
@@ -110,7 +115,7 @@ function updateSpecificBlocks (blocks,isRow) {
             }
         }
 
-}
+}*/
 
 function Coordinate(row, column) {
     this.key = row;

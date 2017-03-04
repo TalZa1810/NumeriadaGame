@@ -110,6 +110,8 @@ function updateAllBoard(boardInfo)
     updatePullingBoard(rows,cols,board);
     updateSpecificBlocks(rowBlocks,colBlocks);
 }
+
+
 function updatePullingBoard(rows,cols,board){
     for(var currR = 0 ; currR < rows ; currR++) {
         for (var currC = 0; currC < cols; currC++) {
@@ -174,8 +176,8 @@ function refreshPlayerList(players, PlayerFromSesion) {
 
 }
 
-function refreshVisitors(visitors)
-{
+function refreshVisitors(visitors) {
+
     if(visitors.length == 0) {
         $('#visitorsTable').hide();
     } else {
@@ -191,6 +193,7 @@ function refreshVisitors(visitors)
 }
 
 function refreshGameDeatils(gameDetails) {
+
     $('#lableGameTitle').text(gameDetails.m_GameTitle);
     $('#lableCurrentPlayer').text(gameDetails.m_CurrentPlayer.m_Name);
     $('#lableCurrentMove').text( gameDetails.m_NumOfMoves);
@@ -250,15 +253,17 @@ function ajaxIsGameStarted() {
     });
 }
 
- function replayExit() {
+function replayExit() {
 
      ajaxBoard();
      $('#Replay').hide();
      $('#GameAction').fadeIn(200);
  }
+
 function nextMove() {
     ajaxNextOrPrev("true");
 }
+
 function prevMove(){
     ajaxNextOrPrev("false");
 }
@@ -282,9 +287,11 @@ function ajaxNextOrPrev(next){
         }
     });
 }
+
 function replyFromEnd(){
 ajaxStartReplay("false");
 }
+
 function replayFromStart() {
     ajaxStartReplay("true");
 }
@@ -311,8 +318,6 @@ function ajaxStartReplay(start){
             console.log(e);
         }
     });
-
-
 }
 
 function actionSelected() {
