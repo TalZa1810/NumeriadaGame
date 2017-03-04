@@ -21,8 +21,44 @@ td {
     background-color:  gray;
 }
 
-
 .boardBtn{
     width: 32px;
     height: 32px;
+}
+
+.orangeBtn{
+    background-color:  orange;
+}
+
+.blackBtn{
+
+}
+
+.blueBtn{
+    background-color:  blue;
+}
+
+.redBtn{
+    background-color:  red;
+}
+
+.greenBtn{
+    background-color:  springgreen;
+}
+
+
+.mangentaBtn{
+    background-color:  magenta;
+
+}
+
+.purpleBtn{
+    background-color:  purple;
+
+}
+
+.greyBtn{
+
+    background-color:  lightgrey;
+
 }

@@ -38,14 +38,17 @@ function getBoard(table) {
 function createBoard(theBoard,table) {
     console.log("board create");
     table.addClass("myTable");
-    createBoard(theBoard, table);
+    createBoardButtons(theBoard, table);
     //createDownPart(theBoard, table);
 }
 
-
-function createBoard(board, table) {
+function createBoardButtons(board, table) {
     var columns = board.m_BoardSize;
     var rows = board.m_BoardSize;
+
+    //private SquareData[][] m_Board;
+
+
 
     for (var row = 0; row < rows; row++) {
 
@@ -55,33 +58,64 @@ function createBoard(board, table) {
 
             //Standard cells - contains data (created with the <td> element)
             var td = document.createElement('td');
-            td.setAttribute("column",column);
-            td.setAttribute("row",row);
+            setRowCol(td, row, column);
 
             var btn = document.createElement("button");
-            btn.setAttribute("column",column);
-            btn.setAttribute("row",row);
+            setRowCol(btn, row, column);
             $(btn).addClass( "boardBtn");
 
+            var boardBtn = board.m_Board[row][column];
 
+            setButtonColor(boardBtn , btn);
+            setButtonSymbol( boardBtn , btn );
 
             td.appendChild(btn);
-
-
-            //td.classList.add("block");
-
-            /*
-             if (column >= maxRowBlock && maxColumnBlock - row <= columnsBlocks[column - maxRowBlock].length) {
-             var index =columnsBlocks[column - maxRowBlock].length - maxColumnBlock + row;
-             td.setAttribute("blockIndex",index);
-             td.innerText = columnsBlocks[column - maxRowBlock][index].m_Value;
-             }*/
-
             tr.appendChild(td);
         }
         table.append(tr);
     }
 }
+
+function setRowCol(elm, row, col){
+    elm.setAttribute("column",col);
+    elm.setAttribute("row",row);
+}
+
+function setButtonColor(buttonObject, btn){
+
+    switch(buttonObject.m_Color) {
+        case "BLACK":
+            $(btn).addClass( "blackBtn");
+            break;
+        case "BLUE":
+            $(btn).addClass( "blueBtn");
+            break;
+        case "RED":
+            $(btn).addClass( "redBtn");
+            break;
+        case "GREEN":
+            $(btn).addClass( "greenBtn");
+            break;
+        case "MAGENTA":
+            $(btn).addClass( "mangentaBtn");
+            break;
+        case "ORANGE":
+            $(btn).addClass( "orangeBtn");
+            break;
+        case "PURPLE":
+            $(btn).addClass( "purpleBtn");
+            break;
+        default:
+            $(btn).addClass( "greyBtn");
+    }
+}
+
+function setButtonSymbol(buttonObject, btn){
+
+    btn.innerText = buttonObject.m_SquareSymbol;
+
+}
+
 
 /*
 function createDownPart(board, table) {
@@ -120,6 +154,8 @@ function createDownPart(board, table) {
 
 */
 
+/*
+
 function getMaxLengthOfList(list) {
     var retValue = 0;
     for (var i = 0; i < list.length; i++) {
@@ -128,4 +164,4 @@ function getMaxLengthOfList(list) {
         }
     }
     return retValue;
-}
+}*/
