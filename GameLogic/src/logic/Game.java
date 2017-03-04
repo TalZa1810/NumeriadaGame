@@ -127,6 +127,10 @@ public abstract class Game {
         return m_GameInfo;
     }
 
+    public void setIsActiveGame(boolean isActiveGame) {
+        m_GameInfo.setActiveGame(isActiveGame);
+    }
+
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
     }

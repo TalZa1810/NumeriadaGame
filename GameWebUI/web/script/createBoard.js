@@ -29,6 +29,7 @@ function getBoard(table) {
         },
         success: function (board) {
             createBoard(board, table);
+
         },
         error: function (data) {
             console.log(data);
@@ -40,6 +41,9 @@ function createBoard(theBoard,table) {
     console.log("board create");
     table.addClass("myTable");
     createBoardButtons(theBoard, table);
+
+
+
 }
 
 function createBoardButtons(board, table) {
@@ -68,8 +72,11 @@ function createBoardButtons(board, table) {
             td.appendChild(btn);
             tr.appendChild(td);
         }
+
         table.append(tr);
     }
+
+
 }
 
 function setRowCol(elm, row, col){

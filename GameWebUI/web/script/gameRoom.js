@@ -8,10 +8,18 @@ $(document).ready(function () {
     $('#visitorsTable').hide();
 
     $('#buttonQuit').on("click", ajaxQuitGame);
+    $('.boardBtn').on("click", ajaxBoardBtnClicked);
+
+
     ajaxGamesDeatilsAndPlayers();
+
     GamesDeatilsAndPlayers = setInterval(ajaxGamesDeatilsAndPlayers, refreshRate);
 
+
     getBoard($('#board'));
+
+    realPlayer();
+    /*
     var actionType = "isVisitor";
     $.ajax({
         url: "gamingRoom",
@@ -19,24 +27,40 @@ $(document).ready(function () {
             "ActionType": actionType
         },
         success:function (result){
-            if(result){
-                visitoPlayer();
-            }
-            else
-            {
+            if(!result){
                realPlayer();
             }
         }
     });
+    */
 
 });
 
-function visitoPlayer()
-{
+function ajaxBoardBtnClicked(btnClicked) {
+
+    var actionType = "doMove";
+    $.ajax({
+        url: "gamingRoom",
+        data: {
+            "row": btnClicked.getAttribute("row"),
+            "column": btnClicked.getAttribute("column"),
+            "ActionType": actionType
+        },
+        success:function (board){
+            updateAllBoard(board);
+        }
+    });
+
+}
+
+function visitoPlayer() {
     $('#buttonQuit').val("Back To Lobby");
     setInterval(ajaxVisitorBoard,refreshRate);
 
 }
+
+
+
 
 function ajaxVisitorBoard() {
     var actionType = "pullVisitorBoard";

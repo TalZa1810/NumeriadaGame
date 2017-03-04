@@ -3,11 +3,13 @@ package servlets;
 
 import UILogic.GamesManager;
 import com.google.gson.Gson;
+import javafx.util.Pair;
 import javafx_ui.gamePane.GameController;
 import logic.Game;
 import logic.Player;
 import shared.GameInfo;
 import sharedStructures.PlayerData;
+import sharedStructures.SquareData;
 import utils.Constants;
 import utils.ServletUtils;
 import utils.SessionUtils;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 @WebServlet(name = "GameRoomServlet", urlPatterns = {"/gamingRoom"})
 public class GameRoomServlet extends HttpServlet {
     GameController controller = new GameController();
+    private boolean m_GameFull = false;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
@@ -31,7 +34,7 @@ public class GameRoomServlet extends HttpServlet {
         String action = request.getParameter(Constants.ACTION_TYPE);
         switch (action) {
             case Constants.DO_MOVE:
-                //handleDoMove(request,response);
+                handleDoMove(request,response);
                 break;
             case Constants.UNDO:
                 //undoRedoMove(request, response, action);
@@ -46,13 +49,13 @@ public class GameRoomServlet extends HttpServlet {
                 gameStatus(request, response);
                 break;
             case Constants.IS_GAME_STARTED:
-                //isGameStarted(request, response);
+                isGameStarted(request, response);
                 break;
             case Constants.EXIT_GAME:
                 exitGame(request, response);
                 break;
             case Constants.GET_BOARD:
-                //getBoard(request, response);
+                getBoard(request, response);
                 break;
             case Constants.GET_SHOW_BOARD:
                 getShowBoard(request, response);
@@ -77,6 +80,10 @@ public class GameRoomServlet extends HttpServlet {
                 break;
 
         }
+
+       // if(m_GameFull){
+       //     controller.startGameClicked();
+       // }
     }
 /*
     private void plyIsVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
@@ -287,15 +294,16 @@ public class GameRoomServlet extends HttpServlet {
             String cellsInJson = new Gson().toJson(listCell);
             return cellsInJson;
         }
+*/
 
 
+        private void handleDoMove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        private void handleDoMove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-        {
             response.setContentType("application/json");
             Gson gson = new Gson();
             String resultParameter;
-            GameLogic currGame = getGameLogic(request);
+            Game currGame = getGame(request);
+
             Pair<Boolean,String> responseCanPlay = canPlayerPlay(request,currGame,true);
             if(responseCanPlay.getKey()){
                 String signString = request.getParameter(Constants.REQUEST_TYPE);
@@ -321,12 +329,12 @@ public class GameRoomServlet extends HttpServlet {
             response.getWriter().flush();
         }
 
-        private Pair<Boolean,String> canPlayerPlay(HttpServletRequest request, GameLogic currGame,boolean fromDoMove)
-        {
+
+        private Pair<Boolean,String> canPlayerPlay(HttpServletRequest request, Game currGame, boolean fromDoMove) {
 
             Pair<Boolean,String> retPair;
             PlayerData userFromSession = SessionUtils.getLoginUser(request);
-            if(userFromSession.getName().equals(currGame.getNameCurrPlayer())) {
+            if(userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
                 if(!fromDoMove|| currGame.canMakeAnotherMove()) {
                     retPair = new Pair<>(true, "");
                 }
@@ -339,7 +347,7 @@ public class GameRoomServlet extends HttpServlet {
             }
             return retPair;
         }
-    */
+
     private Game getGame(HttpServletRequest request) {
 
         String currGameTile = (String) request.getSession(false).getAttribute(Constants.GAME_TITLE);
@@ -354,13 +362,12 @@ public class GameRoomServlet extends HttpServlet {
         return gamesManager.getSpecificGameInfo(currGameTile);
     }
 
-    /*
+
         private void getBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
             response.setContentType("application/json");
-            GameLogic currGame = getGameLogic(request);
-            BoardInfo board = currGame.getOriginalBoard();
-            SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
-            String boardJson = new Gson().toJson(responseBoard);
+            Game currGame = getGame(request);
+            // SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
+            String boardJson = new Gson().toJson(currGame.getBoard());
             response.getWriter().write(boardJson);
             response.getWriter().flush();
         }
@@ -368,16 +375,16 @@ public class GameRoomServlet extends HttpServlet {
         private void isGameStarted(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
             response.setContentType("application/json");
             String isGameStarted = "false";
-            GameLogic currGame = getGameLogic(request);
+            Game currGame = getGame(request);
 
-            if(currGame.isFullPlayers()){
+            if(m_GameFull){
                 isGameStarted = "true";
-                currGame.setUnActiveGame(false);
+                currGame.setIsActiveGame(true);
             }
             response.getWriter().write(isGameStarted);
             response.getWriter().flush();
         }
-
+/*
         private void passTurn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
             response.setContentType("application/json");
             boolean nextPlayerIsComputer = false;
@@ -418,6 +425,10 @@ public class GameRoomServlet extends HttpServlet {
         Game currGame = getGame(request);
         GameInfo currGameInfo = getGameInfo(request);
         ArrayList<Player> gamePlayers = currGame.getPlayers();
+
+        if(currGame.getNumOfPlayers() == currGame.getPlayers().size()){
+            m_GameFull = true;
+        }
 
         Gson gson = new Gson();
 
