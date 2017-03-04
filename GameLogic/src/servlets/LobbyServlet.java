@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 @WebServlet(name = "LobbyServlet", urlPatterns = {"/lobby"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
+
 public class LobbyServlet extends HttpServlet{
 
     private void checkUserPlaying(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {

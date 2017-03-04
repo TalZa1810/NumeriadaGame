@@ -18,6 +18,7 @@ function getShowBoard(table){
         }
     });
 }
+
 function getBoard(table) {
     var actionType = "getBoard";
 
@@ -39,16 +40,11 @@ function createBoard(theBoard,table) {
     console.log("board create");
     table.addClass("myTable");
     createBoardButtons(theBoard, table);
-    //createDownPart(theBoard, table);
 }
 
 function createBoardButtons(board, table) {
     var columns = board.m_BoardSize;
     var rows = board.m_BoardSize;
-
-    //private SquareData[][] m_Board;
-
-
 
     for (var row = 0; row < rows; row++) {
 
@@ -115,53 +111,3 @@ function setButtonSymbol(buttonObject, btn){
     btn.innerText = buttonObject.m_SquareSymbol;
 
 }
-
-
-/*
-function createDownPart(board, table) {
-    var theBoard = board.board;
-    var rowsBlocks = board.rowsBlocks;
-    var columnsBlocks = board.columnsBlocks;
-    var rows = theBoard.length;
-    var columns = theBoard[0].length;
-    var maxRowBlock = getMaxLengthOfList(rowsBlocks);
-
-    for (var row = 0; row < rows; row++) {
-        var tr = document.createElement('tr');
-        for (var column = 0; column < columns + maxRowBlock; column++) {
-            var td = document.createElement('td');
-            td.setAttribute("row", row);
-            if (column < maxRowBlock && maxRowBlock - column <= rowsBlocks[row].length) {
-                td.classList.add("block");
-                var index = [rowsBlocks[row].length - maxRowBlock + column];
-                td.setAttribute("blockIndex",index);
-                td.innerText = rowsBlocks[row][index].m_Value;
-            }
-            else if (column >= maxRowBlock) {   // add class according to real board
-                td.setAttribute("column", (column - maxRowBlock));
-                td.classList.add("toggler");
-                td.classList.add(theBoard[row][column - maxRowBlock].toLowerCase());
-            }
-            else {
-                td.classList.add("block");
-            }
-            tr.appendChild(td);
-        }
-
-        table.append(tr);
-    }
-}
-
-*/
-
-/*
-
-function getMaxLengthOfList(list) {
-    var retValue = 0;
-    for (var i = 0; i < list.length; i++) {
-        if (list[i].length > retValue) {
-            retValue = list[i].length;
-        }
-    }
-    return retValue;
-}*/

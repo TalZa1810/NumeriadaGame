@@ -79,8 +79,7 @@ function joinGame() {
     });
 }
 
-function logOut()
-{
+function logOut() {
     var actionType = "Logout";
 
     $.ajax({
@@ -98,8 +97,8 @@ function logOut()
     });
 }
 
-function ajaxUsersAndGameList()
-{
+function ajaxUsersAndGameList() {
+
     var actionType = "GameAndUserList";
 
     $.ajax({
@@ -117,8 +116,7 @@ function ajaxUsersAndGameList()
     });
 }
 
-function refreshUsersAndGameList(data)
-{
+function refreshUsersAndGameList(data) {
     var usersList = data[0];
     var gamesList = data[1];
 
@@ -126,8 +124,8 @@ function refreshUsersAndGameList(data)
     refreshGameList(gamesList);
 }
 
-function refreshGameList(games)
-{
+function refreshGameList(games) {
+
     var selected = $("#gameTable").find("tr.success").attr('value');
 
     $("#gameTable").empty();
@@ -180,6 +178,7 @@ function refreshUsersList(users){
 }
 
 function ajaxIsAlreadyPlaying() {
+
     var actionType = "CheckUserPlaying";
 
     $.ajax({
