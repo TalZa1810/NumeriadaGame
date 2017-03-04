@@ -61,9 +61,8 @@ function createBoard(board, table) {
             var btn = document.createElement("button");
             btn.setAttribute("column",column);
             btn.setAttribute("row",row);
-            //btn.setAttribute("width", 32 );
-            //btn.setAttribute("height",32 );
-            //btn.classList("boardBtn");
+            $(btn).addClass( "boardBtn");
+
 
 
             td.appendChild(btn);
