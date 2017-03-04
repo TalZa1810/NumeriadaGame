@@ -142,11 +142,9 @@ function ajaxGamesDeatilsAndPlayers() {
             var players = data[0];
             var gameDetails = data[1];
             var PlayerFromSesion = data[2];
-            var visitors = data[3];
 
             refreshGameDeatils(gameDetails);
             refreshPlayerList(players, PlayerFromSesion);
-            refreshVisitors(visitors)
         }
     });
 }
@@ -155,22 +153,25 @@ function refreshPlayerList(players, PlayerFromSesion) {
     $("#playingUsersTable").empty();
     $.each(players || [], function (index, user) {
         var icon;
-        if (user.userType === 'Human') {
+        if (user.m_PlayerType === 'Human') {
             icon = "<span class='HumanIcon'></span>"
         }
         else {
             icon = "<span class='MachineIcon'></span>"
         }
+
         var userList = $('<tr> </tr>');
-        $('<th>' + user.userName + '</th>').appendTo(userList);
+        $('<th>' + user.m_Name + '</th>').appendTo(userList);
         $('<th>' + icon + '</th>').appendTo(userList);
-        $('<th>' + user.score + '</th>').appendTo(userList);
+        $('<th>' + user.m_Color + '</th>').appendTo(userList);
+        $('<th>' + user.m_Score + '</th>').appendTo(userList);
         userList.appendTo($("#playingUsersTable"));
 
         if (PlayerFromSesion == user.userName) {
             userList.addClass('success');
         }
     });
+
 }
 
 function refreshVisitors(visitors)
@@ -190,10 +191,9 @@ function refreshVisitors(visitors)
 }
 
 function refreshGameDeatils(gameDetails) {
-    $('#lableGameTitle').text(gameDetails.gameTitle);
-    $('#lableCurrentPlayer').text(gameDetails.currPlayer);
-    $('#lableRound').text(gameDetails.currRound + " / " + gameDetails.totalRounds);
-    $('#lableCurrentMove').text( gameDetails.cuurMove + " / 2");
+    $('#lableGameTitle').text(gameDetails.m_GameTitle);
+    $('#lableCurrentPlayer').text(gameDetails.m_CurrentPlayer.m_Name);
+    $('#lableCurrentMove').text( gameDetails.m_NumOfMoves);
 
     if  (gameDetails.winnerName !== undefined || gameDetails.finishAllRound === true){
         if (gameDetails.technicalVictory === true) {

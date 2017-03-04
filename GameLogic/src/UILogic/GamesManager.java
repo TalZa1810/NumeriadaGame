@@ -90,7 +90,6 @@ public class GamesManager
                 getDataFromGeneratedXML(newGameInfo);
                 newGameInfo.setOrganizer(userNameFromSession);
                 game = createGame(newGameInfo);
-                //initializeGameController(m_MainWindow);
 
                 if(!m_GamesInfoMap.containsKey(newGameInfo.getGameTitle())) {
                     m_GamesInfoMap.put(newGameInfo.getGameTitle(), newGameInfo);

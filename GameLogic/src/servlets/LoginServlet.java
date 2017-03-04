@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 
@@ -49,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 
         response.setContentType("application/json");
         String isNameExist = "false";
-        //Map<request.getParameterMap();
+        Map<String, String[]> i = request.getParameterMap();
         PlayerData userFromSession = SessionUtils.getLoginUser(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         if (userFromSession == null)  //user is not logged in yet
@@ -58,7 +59,7 @@ public class LoginServlet extends HttpServlet {
             String userType = request.getParameter(Constants.USER_TYPE);
 
             userNameFromParameter = userNameFromParameter.trim();  //normalize the username value
-            PlayerData newUser = new PlayerData(userNameFromParameter, userType);
+            PlayerData newUser = createPlayerData(userNameFromParameter, userType);
 
             if (userManager.isUserExists(newUser.getName())) {   //username already exists
                 isNameExist = "true";
@@ -73,6 +74,17 @@ public class LoginServlet extends HttpServlet {
             response.getWriter().write(isNameExist);
             response.getWriter().flush();
         }
+    }
+
+    private PlayerData createPlayerData(String userNameFromParameter, String userType) {
+        if(userType.equals(Constants.MACHINE)){
+            userType = "Computer";
+        }
+        else {
+            userType = "Human";
+        }
+
+        return new PlayerData(userNameFromParameter, userType);
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

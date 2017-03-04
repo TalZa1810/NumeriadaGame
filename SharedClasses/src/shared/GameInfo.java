@@ -15,7 +15,7 @@ public class GameInfo {
     private int m_RangeTo;
     private int m_BoardSize;
     private SquareData[][] m_Board;
-    private PlayerData m_CurrPlayer;
+    private PlayerData m_CurrentPlayer;
     private int m_NumOfMoves;
     private String m_Path;
     private String m_GameTitle;
@@ -208,7 +208,7 @@ public class GameInfo {
     }
 
     public void setCurrPlayer(PlayerData i_CurrPlayer) {
-        this.m_CurrPlayer = i_CurrPlayer;
+        this.m_CurrentPlayer = i_CurrPlayer;
     }
 
     public void setMarkerCol(int i_MarkerCol) {
@@ -247,7 +247,7 @@ public class GameInfo {
     }
 
     public PlayerData getCurrPlayer() {
-        return m_CurrPlayer;
+        return m_CurrentPlayer;
     }
 
     public void setMove(SquareData i_Square) {
@@ -280,7 +280,7 @@ public class GameInfo {
 
     public void removeCurrentPlayer() {
         for(PlayerData player: m_Players){
-            if(player.getID() == m_CurrPlayer.getID()){
+            if(player.getID() == m_CurrentPlayer.getID()){
                 m_Players.remove(player);
                 break;
             }

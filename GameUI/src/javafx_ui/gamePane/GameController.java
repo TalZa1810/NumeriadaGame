@@ -416,27 +416,26 @@ public class GameController implements Initializable{
 
 
     @FXML
-    public void quitButtonClicked(){
+    public void quitButtonClicked(Game game){
         int count = 0;
-        if (m_GameInfo.getNumOfPlayers() > 1) {
-            int nextPlayerIndex = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
+        GameInfo gameInfo = game.getGameInfo();
+        if (gameInfo.getNumOfPlayers() > 1) {
+            int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
             removeCurrentPlayerCellsFromBoard();
             removeCurrentPlayerFromList();
             removeCurrentPlayerFromPlayerView();
-            m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
-            while (m_GameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && m_GameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
-                m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(++nextPlayerIndex % m_GameInfo.getNumOfPlayers()));
+            gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
+            while (gameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && gameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
+                gameInfo.setCurrPlayer(gameInfo.getPlayers().get(++nextPlayerIndex % gameInfo.getNumOfPlayers()));
                 count++;
             }
-            if (count < m_GameInfo.getNumOfPlayers()) {
-                m_Logic.updateCurrPlayer(nextPlayerIndex % m_GameInfo.getNumOfPlayers());
+            if (count < gameInfo.getNumOfPlayers()) {
+                game.updateCurrPlayer(nextPlayerIndex % gameInfo.getNumOfPlayers());
                 updateCurrPlayer();
-                if (m_GameInfo.getNumOfPlayers() == 1) {
-                    if(m_GameInfo.getGameType().equals("Basic")){
+                if (gameInfo.getNumOfPlayers() == 1) {
+                    if(gameInfo.getGameType().equals("Basic")){
                         m_NumOfPlayersWithoutPossibleMove = 1;
                     }
-                    quitButton.setDisable(true);
-                    gameStarted = false;
                     startGameIteration();
                 }
             }

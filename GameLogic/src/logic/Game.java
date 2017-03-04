@@ -117,8 +117,15 @@ public abstract class Game {
         PlayerData playerInfo = new PlayerData(playerName, m_Players.size()+1, eColor.values()[(m_Players.size()+1)% m_NumOfPlayers], type, 0);
         m_Players.add(Player.CreatePlayer(playerInfo));
         m_GameInfo.getPlayers().add(playerInfo);
+        if(m_Players.size() == 1) {
+            m_CurrentPlayer = m_Players.get(0);
+            m_GameInfo.setCurrPlayer(m_GameInfo.getPlayers().get(0));
+        }
     }
 
+    public GameInfo getGameInfo() {
+        return m_GameInfo;
+    }
 
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
@@ -140,8 +147,6 @@ public abstract class Game {
         setBoard();
         initBoard();
         //TODO: the following lines need to happen when game start
-        //m_CurrentPlayer = m_Players.get(0);
-        //m_GameInfo.setCurrPlayer(getCurrPlayerData());
         //m_GameInfo.setIsGameActive = true;
         m_NumOfPlayers = m_GameInfo.getNumOfPlayers();
     }
@@ -160,6 +165,8 @@ public abstract class Game {
     public ArrayList<Player> getPlayers() {
         return m_Players;
     }
+
+
 
     abstract void setPlayers( );
 

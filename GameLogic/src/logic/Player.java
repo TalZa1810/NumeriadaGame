@@ -8,20 +8,20 @@ import sharedStructures.ePlayerType;
 
 import java.util.List;
 
-abstract class Player {
+public abstract class Player {
 
-    private int m_Points = 0;
+    private int m_Score = 0;
     private int m_ID;
     private String m_Name;
     private ePlayerType m_PlayerType;
-    private eColor m_PlayerColor;
+    private eColor m_Color;
 
     public Player(){}
 
     public Player(int i_ID, String i_Name, ePlayerType i_Type, eColor i_Color){
         m_ID = i_ID;
         m_Name = i_Name;
-        m_PlayerColor = i_Color;
+        m_Color = i_Color;
         m_PlayerType = i_Type;
     }
 
@@ -67,11 +67,11 @@ abstract class Player {
     }
 
     public int getPlayerScore() {
-        return m_Points;
+        return m_Score;
     }
 
     public void addToPlayerScore(int i_PointsToAdd){
-        m_Points += i_PointsToAdd;
+        m_Score += i_PointsToAdd;
     }
 
     public static Player CreatePlayer(PlayerData i_Player) {
@@ -87,6 +87,6 @@ abstract class Player {
     }
 
     public eColor getColor() {
-        return m_PlayerColor;
+        return m_Color;
     }
 }

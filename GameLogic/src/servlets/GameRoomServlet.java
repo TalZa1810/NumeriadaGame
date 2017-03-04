@@ -3,9 +3,14 @@ package servlets;
 
 import UILogic.GamesManager;
 import com.google.gson.Gson;
+import javafx_ui.gamePane.GameController;
 import logic.Game;
+import logic.Player;
+import shared.GameInfo;
+import sharedStructures.PlayerData;
 import utils.Constants;
 import utils.ServletUtils;
+import utils.SessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,20 +18,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-
+import java.util.ArrayList;
 
 
 @WebServlet(name = "GameRoomServlet", urlPatterns = {"/gamingRoom"})
-public class GameRoomServlet extends HttpServlet
-{
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
-        //response.setContentType("application/json");
+public class GameRoomServlet extends HttpServlet {
+    GameController controller = new GameController();
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
         //response.setContentType("text/html");
         String action = request.getParameter(Constants.ACTION_TYPE);
-        switch (action)
-        {
+        switch (action) {
             case Constants.DO_MOVE:
                 //handleDoMove(request,response);
                 break;
@@ -40,19 +43,19 @@ public class GameRoomServlet extends HttpServlet
                 //passTurn(request, response);
                 break;
             case Constants.GAME_STATUS:
-                //gameStatus(request, response);
+                gameStatus(request, response);
                 break;
             case Constants.IS_GAME_STARTED:
                 //isGameStarted(request, response);
                 break;
             case Constants.EXIT_GAME:
-                //exitGame(request, response);
+                exitGame(request, response);
                 break;
             case Constants.GET_BOARD:
                 //getBoard(request, response);
                 break;
             case Constants.GET_SHOW_BOARD:
-                getShowBoard(request,response);
+                getShowBoard(request, response);
                 break;
             case Constants.PULL_BOARD:
                 //pullBoard(request,response);
@@ -219,7 +222,7 @@ public class GameRoomServlet extends HttpServlet
     }
     */
 
-    private void getShowBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
+    private void getShowBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
@@ -232,185 +235,200 @@ public class GameRoomServlet extends HttpServlet
         String boardJson = new Gson().toJson(gameBoard.getBoard());
         response.getWriter().write(boardJson);
         response.getWriter().flush();
-    }}
-/*
-    private void computerMove(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
-    {
-        response.setContentType("application/json");
-        String resultPar;
-        ArrayList<GameMove> movesDone;
-        GameLogic currGame = getGameLogic(request);
-        movesDone = currGame.manageComputerMove();
-        String firstMove = getCellInJson(movesDone.get(0));
-        String secondMove = getCellInJson(movesDone.get(1));
-        resultPar = "["+firstMove+","+secondMove+"]";
-
-        response.getWriter().write(resultPar);
-        response.getWriter().flush();
     }
-    private void undoRedoMove(HttpServletRequest request, HttpServletResponse response, String action)  throws ServletException, IOException
-    {
-        response.setContentType("application/json");
-        GameLogic currGame = getGameLogic(request);
-        GameMove gameMove = null;
-        if (action.equals(Constants.UNDO)) {
-            gameMove = currGame.UndoLastMoveFromPlayer();
 
-        }else {
-            gameMove = currGame.RedoLastMoveFromPlayer();
+    /*
+        private void computerMove(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
+        {
+            response.setContentType("application/json");
+            String resultPar;
+            ArrayList<GameMove> movesDone;
+            GameLogic currGame = getGameLogic(request);
+            movesDone = currGame.manageComputerMove();
+            String firstMove = getCellInJson(movesDone.get(0));
+            String secondMove = getCellInJson(movesDone.get(1));
+            resultPar = "["+firstMove+","+secondMove+"]";
+
+            response.getWriter().write(resultPar);
+            response.getWriter().flush();
         }
-        if(gameMove != null){
-            String cellsToJson = getCellInJson(gameMove);
+        private void undoRedoMove(HttpServletRequest request, HttpServletResponse response, String action)  throws ServletException, IOException
+        {
+            response.setContentType("application/json");
+            GameLogic currGame = getGameLogic(request);
+            GameMove gameMove = null;
+            if (action.equals(Constants.UNDO)) {
+                gameMove = currGame.UndoLastMoveFromPlayer();
+
+            }else {
+                gameMove = currGame.RedoLastMoveFromPlayer();
+            }
+            if(gameMove != null){
+                String cellsToJson = getCellInJson(gameMove);
+                String resultParameter;
+                String perfectRowBlockJson = new Gson().toJson(currGame.getRowList());
+                String perfectColBlockJson = new Gson().toJson(currGame.getColumnList());
+                resultParameter = "["+cellsToJson+","+perfectRowBlockJson+","+perfectColBlockJson+"]";
+
+                response.getWriter().write(resultParameter);
+                response.getWriter().flush();
+            }
+        }
+
+        private String getCellInJson(GameMove gameMove)
+        {
+            List<CellUI> listCell = new ArrayList<>();
+
+            LinkedList<Cell> gameMoveCells = gameMove.getCells();
+            for (Cell cell: gameMoveCells) {
+                listCell.add(new CellUI(cell.getPoint().x, cell.getPoint().y, cell.getStatus().toString()));
+            }
+
+            String cellsInJson = new Gson().toJson(listCell);
+            return cellsInJson;
+        }
+
+
+
+        private void handleDoMove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            response.setContentType("application/json");
+            Gson gson = new Gson();
             String resultParameter;
-            String perfectRowBlockJson = new Gson().toJson(currGame.getRowList());
-            String perfectColBlockJson = new Gson().toJson(currGame.getColumnList());
-            resultParameter = "["+cellsToJson+","+perfectRowBlockJson+","+perfectColBlockJson+"]";
+            GameLogic currGame = getGameLogic(request);
+            Pair<Boolean,String> responseCanPlay = canPlayerPlay(request,currGame,true);
+            if(responseCanPlay.getKey()){
+                String signString = request.getParameter(Constants.REQUEST_TYPE);
+                BoardInfo.BoardOptions sign =  BoardInfo.BoardOptions.ParseFromString(signString);
+
+                LinkedList<Cell> moveCellList = new LinkedList<>();
+                javafx.util.Pair[] selectedCoords = gson.fromJson(request.getParameter(Constants.SELECTED_COORDS), javafx.util.Pair[].class);
+                for (javafx.util.Pair coordinate : selectedCoords) {
+                    moveCellList.add(new Cell(Integer.parseInt((String) coordinate.getKey()), Integer.parseInt((String) coordinate.getValue()), sign));
+                }
+                currGame.DoMoveOfCurrPlayer(new GameMove(moveCellList));
+                String retVal = new Gson().toJson(true);
+                String perfectRowBlockJson = new Gson().toJson(currGame.getRowList());
+                String perfectColBlockJson = new Gson().toJson(currGame.getColumnList());
+                resultParameter = "["+retVal+","+perfectRowBlockJson+","+perfectColBlockJson+"]";
+            }else {
+                String canMake = new Gson().toJson(responseCanPlay.getKey());
+                String message = new Gson().toJson(responseCanPlay.getValue());
+                resultParameter = "["+canMake+","+message+"]";
+            }
 
             response.getWriter().write(resultParameter);
             response.getWriter().flush();
         }
-    }
 
-    private String getCellInJson(GameMove gameMove)
-    {
-        List<CellUI> listCell = new ArrayList<>();
+        private Pair<Boolean,String> canPlayerPlay(HttpServletRequest request, GameLogic currGame,boolean fromDoMove)
+        {
 
-        LinkedList<Cell> gameMoveCells = gameMove.getCells();
-        for (Cell cell: gameMoveCells) {
-            listCell.add(new CellUI(cell.getPoint().x, cell.getPoint().y, cell.getStatus().toString()));
-        }
-
-        String cellsInJson = new Gson().toJson(listCell);
-        return cellsInJson;
-    }
-
-
-
-    private void handleDoMove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
-        response.setContentType("application/json");
-        Gson gson = new Gson();
-        String resultParameter;
-        GameLogic currGame = getGameLogic(request);
-        Pair<Boolean,String> responseCanPlay = canPlayerPlay(request,currGame,true);
-        if(responseCanPlay.getKey()){
-            String signString = request.getParameter(Constants.REQUEST_TYPE);
-            BoardInfo.BoardOptions sign =  BoardInfo.BoardOptions.ParseFromString(signString);
-
-            LinkedList<Cell> moveCellList = new LinkedList<>();
-            javafx.util.Pair[] selectedCoords = gson.fromJson(request.getParameter(Constants.SELECTED_COORDS), javafx.util.Pair[].class);
-            for (javafx.util.Pair coordinate : selectedCoords) {
-                moveCellList.add(new Cell(Integer.parseInt((String) coordinate.getKey()), Integer.parseInt((String) coordinate.getValue()), sign));
+            Pair<Boolean,String> retPair;
+            PlayerData userFromSession = SessionUtils.getLoginUser(request);
+            if(userFromSession.getName().equals(currGame.getNameCurrPlayer())) {
+                if(!fromDoMove|| currGame.canMakeAnotherMove()) {
+                    retPair = new Pair<>(true, "");
+                }
+                else
+                {
+                    retPair = new Pair<>(false,"Made The Max Amount Of Moves");
+                }
+            } else{
+                retPair =  new Pair<>(false,"Not Your Turn");
             }
-            currGame.DoMoveOfCurrPlayer(new GameMove(moveCellList));
-            String retVal = new Gson().toJson(true);
-            String perfectRowBlockJson = new Gson().toJson(currGame.getRowList());
-            String perfectColBlockJson = new Gson().toJson(currGame.getColumnList());
-            resultParameter = "["+retVal+","+perfectRowBlockJson+","+perfectColBlockJson+"]";
-        }else {
-            String canMake = new Gson().toJson(responseCanPlay.getKey());
-            String message = new Gson().toJson(responseCanPlay.getValue());
-            resultParameter = "["+canMake+","+message+"]";
+            return retPair;
         }
+    */
+    private Game getGame(HttpServletRequest request) {
 
-        response.getWriter().write(resultParameter);
-        response.getWriter().flush();
-    }
-
-    private Pair<Boolean,String> canPlayerPlay(HttpServletRequest request, GameLogic currGame,boolean fromDoMove)
-    {
-
-        Pair<Boolean,String> retPair;
-        PlayerData userFromSession = SessionUtils.getLoginUser(request);
-        if(userFromSession.getName().equals(currGame.getNameCurrPlayer())) {
-            if(!fromDoMove|| currGame.canMakeAnotherMove()) {
-                retPair = new Pair<>(true, "");
-            }
-            else
-            {
-                retPair = new Pair<>(false,"Made The Max Amount Of Moves");
-            }
-        } else{
-            retPair =  new Pair<>(false,"Not Your Turn");
-        }
-        return retPair;
-    }
-
-    private Game getGameLogic(HttpServletRequest request)   {
-
-        String currGameTile = (String)request.getSession(false).getAttribute(Constants.GAME_TITLE);
+        String currGameTile = (String) request.getSession(false).getAttribute(Constants.GAME_TITLE);
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
         return gamesManager.getSpecificGame(currGameTile);
     }
 
-    private void getBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
-        response.setContentType("application/json");
-        GameLogic currGame = getGameLogic(request);
-        BoardInfo board = currGame.getOriginalBoard();
-        SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
-        String boardJson = new Gson().toJson(responseBoard);
-        response.getWriter().write(boardJson);
-        response.getWriter().flush();
+    private GameInfo getGameInfo(HttpServletRequest request) {
+
+        String currGameTile = (String) request.getSession(false).getAttribute(Constants.GAME_TITLE);
+        GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
+        return gamesManager.getSpecificGameInfo(currGameTile);
     }
 
-    private void isGameStarted(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
-        response.setContentType("application/json");
-        String isGameStarted = "false";
-        GameLogic currGame = getGameLogic(request);
-
-        if(currGame.isFullPlayers()){
-            isGameStarted = "true";
-            currGame.setUnActiveGame(false);
+    /*
+        private void getBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
+            response.setContentType("application/json");
+            GameLogic currGame = getGameLogic(request);
+            BoardInfo board = currGame.getOriginalBoard();
+            SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
+            String boardJson = new Gson().toJson(responseBoard);
+            response.getWriter().write(boardJson);
+            response.getWriter().flush();
         }
-        response.getWriter().write(isGameStarted);
-        response.getWriter().flush();
-    }
 
-    private void passTurn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
-        response.setContentType("application/json");
-        boolean nextPlayerIsComputer = false;
-        String result = "true";
-        GameLogic currGame = getGameLogic(request);
-        if(canPlayerPlay(request, currGame,false).getKey()) {
-            currGame.PassTurn();
+        private void isGameStarted(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+            response.setContentType("application/json");
+            String isGameStarted = "false";
+            GameLogic currGame = getGameLogic(request);
 
-        }else {
-            result = "false";
+            if(currGame.isFullPlayers()){
+                isGameStarted = "true";
+                currGame.setUnActiveGame(false);
+            }
+            response.getWriter().write(isGameStarted);
+            response.getWriter().flush();
         }
-        response.getWriter().write(result);
-        response.getWriter().flush();
-    }
 
-    private void exitGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+        private void passTurn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
+            response.setContentType("application/json");
+            boolean nextPlayerIsComputer = false;
+            String result = "true";
+            GameLogic currGame = getGameLogic(request);
+            if(canPlayerPlay(request, currGame,false).getKey()) {
+                currGame.PassTurn();
 
-        response.setContentType("text/html");
-        GameLogic currGame = getGameLogic(request);
-        PlayerData userFromSession = SessionUtils.getLoginUser(request);
-        currGame.removePlayer(userFromSession.GetName());
-        request.getSession(true).removeAttribute(Constants.GAME_TITLE);
-        userFromSession.setPlay(false);
-    }
+            }else {
+                result = "false";
+            }
+            response.getWriter().write(result);
+            response.getWriter().flush();
+        }
+*/
+        private void exitGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+
+            response.setContentType("text/html");
+            Game currGame = getGame(request);
+            PlayerData userFromSession = SessionUtils.getLoginUser(request);
+            //TODO: need to check if works
+            //TODO: need to check if ongoing game or just waiting for more players(if numOfPlayers < m_Player.size, just erase from players list)
+            //TODO: in refresh players when numOfPlayers = m_Players.size then do controller.start
+            controller.quitButtonClicked(currGame);
+            request.getSession(true).removeAttribute(Constants.GAME_TITLE);
+            //TODO: check what is this line for
+            //userFromSession.setPlay(false);
+        }
+
 
     private void gameStatus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
         response.setContentType("application/json");
-        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
+        String nameJson = new Gson().toJson(((PlayerData) request.getSession(false).getAttribute(Constants.LOGIN_USER)).getName());
 
-        String usersJson, gameDetalisJson,visitorJson;
-        GameLogic currGame = getGameLogic(request);
-        List<Player> gamePlayers = currGame.getPlayers();
-        ArrayList<String> visitors = currGame.getVisitor();
+        String usersJson, gameDetailsJson;
+        Game currGame = getGame(request);
+        GameInfo currGameInfo = getGameInfo(request);
+        ArrayList<Player> gamePlayers = currGame.getPlayers();
 
-        usersJson = getPlayesToJson(gamePlayers);
-        gameDetalisJson = getGameDetalisJson(currGame);
-        visitorJson=new Gson().toJson(visitors);
+        Gson gson = new Gson();
 
-        String bothJson = "["+usersJson+","+gameDetalisJson+","+nameJson+","+visitorJson+"]"; //Put both objects in an array of 3 elements
+        usersJson = gson.toJson(gamePlayers);
+        gameDetailsJson = gson.toJson(currGameInfo);
+
+        String bothJson = "[" + usersJson + "," + gameDetailsJson + "," + nameJson + "]"; //Put both objects in an array of 3 elements
         response.getWriter().write(bothJson);
         response.getWriter().flush();
     }
-
+/*
     private String getGameDetalisJson(GameLogic game)     {
 
         GameDetails gameDetalis = new GameDetails(game.getCurrentPlayer().getName(), game.getCurrGameRound(), game.getTotalRounds(),
@@ -454,7 +472,7 @@ public class GameRoomServlet extends HttpServlet
      * @throws IOException if an I/O error occurs
      */
 
-/*
+
 
 
     @Override
@@ -462,6 +480,7 @@ public class GameRoomServlet extends HttpServlet
             throws ServletException, IOException {
         processRequest(request, response);
     }
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.
