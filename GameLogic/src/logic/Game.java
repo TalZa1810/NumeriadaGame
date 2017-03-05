@@ -116,7 +116,7 @@ public abstract class Game {
             type = ePlayerType.Computer;
         }
 
-        PlayerData playerInfo = new PlayerData(playerName, m_Players.size()+1, eColor.values()[m_Players.size()% (m_NumOfPlayers + 1)], type, 0);
+        PlayerData playerInfo = new PlayerData(playerName, m_Players.size()+1, eColor.values()[(m_Players.size()% (m_NumOfPlayers)) +1], type, 0);
         m_Players.add(Player.CreatePlayer(playerInfo));
         m_GameInfo.getPlayers().add(playerInfo);
         if(m_Players.size() == 1) {
@@ -160,8 +160,6 @@ public abstract class Game {
         setGameType();
         setBoard();
         initBoard();
-        //TODO: the following lines need to happen when game start
-        //m_GameInfo.setIsGameActive = true;
         m_NumOfPlayers = m_GameInfo.getNumOfPlayers();
     }
 
@@ -358,6 +356,4 @@ public abstract class Game {
         return m_MarkMoves;
     }
 
-    //TODO: show prev\next move (the question is previos to what, do we hold a member of current move.
-    //TODO: also todo is to block option to make move when only showing the previous moves
 }

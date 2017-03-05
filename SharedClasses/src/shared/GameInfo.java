@@ -37,6 +37,8 @@ public class GameInfo {
     private int m_ChosenCol;
     protected ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
     private ArrayList<MoveData> m_MarkMoves = new ArrayList<MoveData>();
+    private boolean m_ErrorFound = false;
+    private String m_ErrorMsg = "";
 
     public ArrayList<MoveData> getMarkMoves() {
         return m_MarkMoves;
@@ -285,5 +287,21 @@ public class GameInfo {
                 break;
             }
         }
+    }
+
+    public void setErrorFound(boolean errorFound) {
+        this.m_ErrorFound = errorFound;
+    }
+
+    public boolean getErrorFound() {
+        return m_ErrorFound;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.m_ErrorMsg = errorMsg;
+    }
+
+    public void getErrorMsg(String errorMsg) {
+        this.m_ErrorMsg = errorMsg;
     }
 }

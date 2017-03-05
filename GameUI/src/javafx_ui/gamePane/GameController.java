@@ -186,6 +186,7 @@ public class GameController implements Initializable{
     }
 
     @FXML
+    //not relevant function
     public void loadButtonClicked(){
         m_GameInfo = new GameInfo();
         m_GameInfoWrapper[0] = m_GameInfo;
@@ -572,8 +573,8 @@ public class GameController implements Initializable{
         validInput = game.checkMove(gameInfo.getChosenRow(), gameInfo.getChosenCol());
 
         if (!validInput) {
-            //TODO: send out invalid input
-            //m_StatusBar.setValue(m_Notifier.notifyInvalidSquareChoice(m_GameInfo.getGameType()));
+            gameInfo.setErrorFound(true);
+            gameInfo.setErrorMsg(m_Notifier.notifyInvalidSquareChoice(gameInfo.getGameType()));
             return;
         }
 
@@ -625,6 +626,7 @@ public class GameController implements Initializable{
         return new SquareData(row, col, color, value);
     }
 
+    //relevant only for basic game
     private void gameDoneProcedure(){
         m_Notifier.notifyGameDone();
         if(m_GameInfo.getRowPlayerScore() != m_GameInfo.getColPlayerScore()) {

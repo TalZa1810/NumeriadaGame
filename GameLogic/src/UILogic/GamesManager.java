@@ -39,51 +39,24 @@ public class GamesManager
         m_GamesMap  = new HashMap<>();
     }
 
-    // returm error or null if all good
+    // return error or null if all good
     public String addNewGame(InputStream file, String userNameFromSession)
     {
-        boolean gameLoaded;
+        String gameLoaded;
 
         synchronized (this) {
             gameLoaded = loadXML(file, userNameFromSession);
         }
-        /*if(gameLoaded)
-        {
-            synchronized (this) {
-                String gameTitle = m_GameDescriptor.getDynamicPlayers().getGameTitle();
-                if (m_GamesMap.get(gameTitle) == null) // game not exsist
-                {
-                    int rows = m_XmlManager.getGameData().getBoard().getDefinition().getRows().intValue();
-                    int cols = m_XmlManager.getGameData().getBoard().getDefinition().getColumns().intValue();
-                    ////////////////
-                    ArrayList<Cell> solutionCells = new ArrayList();
-                    ArrayList<BlockValues>[] rowBlocks, colsBlock;
-                    rowBlocks = new ArrayList[rows];
-                    colsBlock = new ArrayList[cols];
-                    getSolutionAndBlocks(solutionCells, rowBlocks, colsBlock);
-                    ////////////////
-                    int totalPlayers = Integer.parseInt(m_XmlManager.getGameData().getDynamicMultiPlayers().getTotalPlayers());
-                    int totalRounds = Integer.parseInt(m_XmlManager.getGameData().getDynamicMultiPlayers().getTotalmoves());
-
-                    GameLogic newGame = new GameLogic(userNameFromSession, gameTitle, totalPlayers, totalRounds,
-                            rows, cols, rowBlocks, colsBlock, solutionCells);
-                    m_GamesMap.put(gameTitle, newGame);
-                } else {
-                    return "Game With The Same Name Exsist";
-                }
-            }
-        }*/
-        if(!gameLoaded) {
-            //TODO: get error message in a variable or something and see what nico does with it
-            //return m_XmlManager.m_ExceptionOcurred.toString();
+        if(!gameLoaded.equals("success")) {
+            return gameLoaded;
         }
         return null;
     }
 
-    public boolean loadXML(InputStream file, String userNameFromSession) {
+    public String loadXML(InputStream file, String userNameFromSession) {
         GameInfo newGameInfo = new GameInfo();
         Game game;
-        boolean res = true;
+        String res = "success";
         try {
             m_GameDescriptor = fromXmlFileToObject(file);
             if(m_GameDescriptor != null) {
@@ -98,8 +71,7 @@ public class GamesManager
             }
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
-            res = false;
+            return e.getMessage();
         }
         finally {
             return res;

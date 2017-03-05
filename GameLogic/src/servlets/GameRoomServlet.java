@@ -410,8 +410,7 @@ public class GameRoomServlet extends HttpServlet {
             Game currGame = getGame(request);
             PlayerData userFromSession = SessionUtils.getLoginUser(request);
             //TODO: need to check if works
-            //TODO: need to check if ongoing game or just waiting for more players(if numOfPlayers < m_Player.size, just erase from players list)
-            //TODO: in refresh players when numOfPlayers = m_Players.size then do controller.start
+            //TODO: need to check if ongoing game or just waiting for more players(if numOfPlayers < m_Player.size, just erase from players list
             controller.quitButtonClicked(currGame);
             request.getSession(true).removeAttribute(Constants.GAME_TITLE);
             //TODO: check what is this line for
