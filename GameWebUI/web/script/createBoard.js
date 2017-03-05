@@ -46,6 +46,8 @@ function createBoard(theBoard,table) {
 
 }
 
+
+
 function createBoardButtons(board, table) {
     var columns = board.m_BoardSize;
     var rows = board.m_BoardSize;
@@ -63,6 +65,7 @@ function createBoardButtons(board, table) {
             var btn = document.createElement("button");
             setRowCol(btn, row, column);
             $(btn).addClass( "boardBtn");
+            $(btn).on("click", ajaxBoardBtnClicked);
 
             var boardBtn = board.m_Board[row][column];
 

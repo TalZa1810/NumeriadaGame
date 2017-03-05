@@ -42,12 +42,13 @@ function ajaxBoardBtnClicked(btnClicked) {
     $.ajax({
         url: "gamingRoom",
         data: {
-            "row": btnClicked.getAttribute("row"),
-            "column": btnClicked.getAttribute("column"),
+            "row": btnClicked.currentTarget.getAttribute("row"),
+            "column": btnClicked.currentTarget.getAttribute("column"),
             "ActionType": actionType
         },
         success:function (board){
-            updateAllBoard(board);
+            createBoard(board, $('#board'));
+
         }
     });
 
@@ -77,8 +78,7 @@ function ajaxVisitorBoard() {
 }
 
 
-function realPlayer()
-{
+function realPlayer() {
     $("#radioMark").prop("checked", true);
 
     startGame = setInterval(ajaxIsGameStarted, refreshRate);
@@ -88,8 +88,8 @@ function realPlayer()
     $('.option').on("click", actionSelected);
 }
 
-function startIfFirstPlayerComputer()
-{
+function startIfFirstPlayerComputer() {
+
     var actionType = "firstPlyComputer";
 
     $.ajax({
@@ -109,8 +109,8 @@ function startIfFirstPlayerComputer()
         }
     });
 }
-function ajaxBoard()
-{
+function ajaxBoard() {
+
     var actionType = "pullBoard";
 
     $.ajax({
@@ -123,38 +123,8 @@ function ajaxBoard()
         }
     });
 }
-function updateAllBoard(boardInfo)
-{
-    var rows = boardInfo.m_Rows;
-    var cols = boardInfo.m_Cols;
-    var board = boardInfo.m_Board;
-    var rowBlocks = boardInfo.m_RowBlocks;
-    var colBlocks = boardInfo.m_ColBlocks;
-
-    updatePullingBoard(rows,cols,board);
-    updateSpecificBlocks(rowBlocks,colBlocks);
-}
 
 
-function updatePullingBoard(rows,cols,board){
-    for(var currR = 0 ; currR < rows ; currR++) {
-        for (var currC = 0; currC < cols; currC++) {
-            var containSelecte = false;
-            var td = $('[row="' + currR + '"][column="' + currC + '"]');
-            var lastClass = td.attr('class').split(' ');
-            if ((lastClass[lastClass.length - 1] === "selected")) {
-                td.removeClass(td.attr('class').split(' ').pop());
-                containSelecte = true;
-            }
-            td.removeClass(td.attr('class').split(' ').pop());
-            td.addClass(board[currR][currC].toLowerCase());
-            if (containSelecte) {
-                td.addClass("selected");
-            }
-
-        }
-    }
-}
 
 function ajaxGamesDeatilsAndPlayers() {
     var actionType = "GameStatus";

@@ -24,6 +24,7 @@ public abstract class Game {
 
     protected ArrayList<MoveData> m_PlayersMoves = new ArrayList<MoveData>();
     private ArrayList<MoveData> m_MarkMoves = new ArrayList<MoveData>();
+    private int m_NumOfPlayersWithoutPossibleMove;
 
     //Timer
     int m_secondsPassed = 0;
@@ -44,8 +45,8 @@ public abstract class Game {
     }
 
     public boolean checkMove(int chosenRow, int chosenCol) {
-        Square chosenSquare = m_Board.getSquareInPos(chosenRow, chosenCol);
-        return checkIfLegalMove(m_CurrentPlayer, chosenSquare);
+        loadChosenSquare();
+        return checkIfLegalMove(m_CurrentPlayer, m_ChosenSquare);
     }
 
     public eColor getCurrentPlayerColor() {
@@ -114,7 +115,8 @@ public abstract class Game {
         else{
             type = ePlayerType.Computer;
         }
-        PlayerData playerInfo = new PlayerData(playerName, m_Players.size()+1, eColor.values()[(m_Players.size()+1)% m_NumOfPlayers], type, 0);
+
+        PlayerData playerInfo = new PlayerData(playerName, m_Players.size()+1, eColor.values()[m_Players.size()% (m_NumOfPlayers + 1)], type, 0);
         m_Players.add(Player.CreatePlayer(playerInfo));
         m_GameInfo.getPlayers().add(playerInfo);
         if(m_Players.size() == 1) {
@@ -129,6 +131,14 @@ public abstract class Game {
 
     public void setIsActiveGame(boolean isActiveGame) {
         m_GameInfo.setActiveGame(isActiveGame);
+    }
+
+    public void setNumOfPlayersWithoutPossibleMove(int numOfPlayersWithoutPossibleMove) {
+        this.m_NumOfPlayersWithoutPossibleMove = numOfPlayersWithoutPossibleMove;
+    }
+
+    public int getNumOfPlayersWithoutPossibleMove() {
+        return m_NumOfPlayersWithoutPossibleMove;
     }
 
     public enum eGameMode {
@@ -307,7 +317,7 @@ public abstract class Game {
         return gameDone;
     }
 
-    private void loadChosenSquare() {
+    public void loadChosenSquare() {
         m_ChosenSquare = m_Board.getSquareInPos(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
     }
 

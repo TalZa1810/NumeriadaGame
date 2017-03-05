@@ -105,7 +105,6 @@ public class GameController implements Initializable{
     private SimpleStringProperty m_StatusBar = new SimpleStringProperty("");
     private SimpleBooleanProperty m_isFileSelected = new SimpleBooleanProperty();
     private boolean gameStarted = false;
-    private int m_NumOfPlayersWithoutPossibleMove;
 
     ////////////////////////////////////
     /*CSS Layout*/
@@ -206,18 +205,19 @@ public class GameController implements Initializable{
     }
 
     @FXML
-    public void startGameClicked() {
-        if(startGameButton.getText().equals("Start game")) {
+    public void startGameClicked(Game game) {
+        //if(startGameButton.getText().equals("Start game")) {
             gameStarted = true;
-            makeMoveButton.setDisable(false);
-            quitButton.setDisable(false);
-            browseButton.setDisable(true);
-            updateCurrPlayer();
-            startGameButton.setText("New game");
-            m_NumOfPlayersWithoutPossibleMove = 0;
-            startGameIteration();
-        }
-        else{
+            //makeMoveButton.setDisable(false);
+            //quitButton.setDisable(false);
+            //browseButton.setDisable(true);
+            //updateCurrPlayer();
+            //startGameButton.setText("New game");
+            game.setNumOfPlayersWithoutPossibleMove(0);
+            startGameIteration(game);
+        //}
+
+/*        else{
             m_Board.cleanBoard();
             m_PlayersController.cleanPlayers(m_GameInfo.getNumOfPlayers());
             browseButton.setDisable(false);
@@ -225,7 +225,7 @@ public class GameController implements Initializable{
             cleanCurrPlayer();
             startGameButton.setText("Start game");
 
-        }
+        }*/
     }
 
     private void cleanCurrPlayer() {
@@ -255,7 +255,7 @@ public class GameController implements Initializable{
 
         return winnerAnnounce.toString();
     }
-
+/*
     private void updateCurrPlayer() {
         numOfMovesLabel.setText((String.valueOf(m_GameInfo.getNumOfMoves())));
         currPlayerIDLabel.setText(String.valueOf(m_GameInfo.getCurrPlayer().getID()));
@@ -264,32 +264,37 @@ public class GameController implements Initializable{
         currPlayerTypeLabel.setText(m_GameInfo.getCurrPlayer().getType().name());
         currPlayerScoreLabel.setText(String.valueOf(m_GameInfo.getCurrPlayer().getScore()));
     }
+*/
+    private void startGameIteration(Game game) {
+        int numOfPlayersWithoutPossibleMove = game.getNumOfPlayersWithoutPossibleMove();
+        GameInfo gameInfo = game.getGameInfo();
 
-    private void startGameIteration() {
-        if (m_NumOfPlayersWithoutPossibleMove == m_GameInfo.getNumOfPlayers()) {
+        if (numOfPlayersWithoutPossibleMove == gameInfo.getNumOfPlayers()) {
             gameStarted = false;
-            m_StatusBar.set(getPlayersResults());
+            //TODO: game done, show players score
+            //m_StatusBar.set(getPlayersResults());
             return;
-        } else if (m_Logic.checkIfNotPossibleMove()) {
+        } else if (game.checkIfNotPossibleMove()) {
             //player doesn't have possible moves. notify and go to next player
-            int indexOfCurrPlayer = m_GameInfo.getIndexOfPlayer(m_GameInfo.getCurrPlayer());
-            m_StatusBar.set("No possible moves for " + m_GameInfo.getCurrPlayer().getName() + ". Moved to next player");
-            m_NumOfPlayersWithoutPossibleMove++;
-            m_Logic.nextPlayer(indexOfCurrPlayer);
-            updateCurrPlayer();
-            startGameIteration();
-        } else if (m_GameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
-            makeMoveOperation();
-            startGameIteration();
+            int indexOfCurrPlayer = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
+            //TODO: notify
+            //m_StatusBar.set("No possible moves for " + gameInfo.getCurrPlayer().getName() + ". Moved to next player");
+            game.setNumOfPlayersWithoutPossibleMove(game.getNumOfPlayersWithoutPossibleMove() + 1);
+            game.nextPlayer(indexOfCurrPlayer);
+            //updateCurrPlayer();
+            startGameIteration(game);
+        } else if (gameInfo.getCurrPlayer().getType().equals(ePlayerType.Computer)) {
+            makeMoveOperation(game);
+            startGameIteration(game);
         }
 
     }
 
     @FXML
-    public void makeMoveClicked(){
-        makeMove();
-        m_Logic.loadPastMovesToGameInfo();
-        startGameIteration();
+    public void makeMoveClicked(Game game){
+        makeMove(game);
+        game.loadPastMovesToGameInfo();
+        startGameIteration(game);
     }
 
     @FXML
@@ -431,16 +436,16 @@ public class GameController implements Initializable{
             }
             if (count < gameInfo.getNumOfPlayers()) {
                 game.updateCurrPlayer(nextPlayerIndex % gameInfo.getNumOfPlayers());
-                updateCurrPlayer();
+                //updateCurrPlayer();
                 if (gameInfo.getNumOfPlayers() == 1) {
                     if(gameInfo.getGameType().equals("Basic")){
-                        m_NumOfPlayersWithoutPossibleMove = 1;
+                        game.setNumOfPlayersWithoutPossibleMove(1);
                     }
-                    startGameIteration();
+                    startGameIteration(game);
                 }
             }
             else {
-                startGameIteration();
+                startGameIteration(game);
             }
         }
     }
@@ -513,7 +518,7 @@ public class GameController implements Initializable{
 
     private void getPlayersFromXML() throws Exception {
         List<GameDescriptor.Players.Player> players = m_GameDescriptor.getPlayers().getPlayer();
-        m_Validator.checkValidNumberOfPlayers(players);
+        //m_Validator.checkValidNumberOfPlayers(players);
         m_Validator.checkValidPlayersID(players);
         m_Validator.checkValidPlayersColors(players);
 
@@ -559,38 +564,43 @@ public class GameController implements Initializable{
         }
     }
 
-    private void makeMove() {
+    private void makeMove(Game game) {
         boolean validInput;
+        GameInfo gameInfo = game.getGameInfo();
 
-        m_Logic.getCurrMarkerPosition();
-        m_GameInfo.setMove(getDataFromChoseButton(m_Board.getChosenButton()));
-        validInput = m_Logic.checkMove(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
+        game.getCurrMarkerPosition();
+        validInput = game.checkMove(gameInfo.getChosenRow(), gameInfo.getChosenCol());
 
-        while (!validInput) {
-            m_StatusBar.setValue(m_Notifier.notifyInvalidSquareChoice(m_GameInfo.getGameType()));
+        if (!validInput) {
+            //TODO: send out invalid input
+            //m_StatusBar.setValue(m_Notifier.notifyInvalidSquareChoice(m_GameInfo.getGameType()));
             return;
         }
 
-        makeMoveOperation();
+        makeMoveOperation(game);
     }
 
-    public void makeMoveOperation(){
-        gameDone = m_Logic.makeMove();
-        updateBoardAfterMove();
-        updateScoresAfterMove();
-        updateCurrPlayer();
-        m_NumOfPlayersWithoutPossibleMove = 0;
+    public void makeMoveOperation(Game game){
+        gameDone = game.makeMove();
+        game.getGameInfo().setMarkerRow( game.getGameInfo().getChosenRow());
+        game.getGameInfo().setMarkerCol( game.getGameInfo().getChosenCol());
+        //updateBoardAfterMove(game);
+        //updateScoresAfterMove();
+        //updateCurrPlayer();
+        game.setNumOfPlayersWithoutPossibleMove(0);
         if (gameDone) {
             gameStarted = false;
-            startGameIteration();
+            startGameIteration(game);
         }
     }
 
-    private void updateBoardAfterMove() {
-        Button marker = m_Board.getButtonInPos(m_GameInfo.getChosenRow(), m_GameInfo.getChosenCol());
-        Button square = m_Board.getButtonInPos(m_GameInfo.getMarkerRow(), m_GameInfo.getMarkerCol());
-        m_GameInfo.setMarkerRow(m_GameInfo.getChosenRow());
-        m_GameInfo.setMarkerCol(m_GameInfo.getChosenCol());
+    private void updateBoardAfterMove(Game game) {
+        GameInfo gameInfo = game.getGameInfo();
+
+        Button marker = m_Board.getButtonInPos(gameInfo.getChosenRow(), gameInfo.getChosenCol());
+        Button square = m_Board.getButtonInPos(gameInfo.getMarkerRow(), gameInfo.getMarkerCol());
+        gameInfo.setMarkerRow(gameInfo.getChosenRow());
+        gameInfo.setMarkerCol(gameInfo.getChosenCol());
         marker.setText(m_Logic.getBoard().getMark().getSquareSymbol());
         square.setText("");
         marker.setTextFill(Paint.valueOf(eColor.BLACK.name()));
@@ -601,7 +611,7 @@ public class GameController implements Initializable{
         ArrayList<PlayerData> players = m_GameInfo.getPlayers();
         for(int i = 0; i < m_GameInfo.getNumOfPlayers(); i++){
             m_PlayersController.getScoreLabels()[i].setText(String.valueOf(players.get(i).getScore()));
-            updateCurrPlayer();
+            //updateCurrPlayer();
         }
     }
 
@@ -725,5 +735,9 @@ public class GameController implements Initializable{
 
     public void setStatusBar(String s) {
         m_StatusBar.set(s);
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 }

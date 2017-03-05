@@ -3,13 +3,11 @@ package servlets;
 
 import UILogic.GamesManager;
 import com.google.gson.Gson;
-import javafx.util.Pair;
 import javafx_ui.gamePane.GameController;
 import logic.Game;
 import logic.Player;
 import shared.GameInfo;
 import sharedStructures.PlayerData;
-import sharedStructures.SquareData;
 import utils.Constants;
 import utils.ServletUtils;
 import utils.SessionUtils;
@@ -80,10 +78,6 @@ public class GameRoomServlet extends HttpServlet {
                 break;
 
         }
-
-       // if(m_GameFull){
-       //     controller.startGameClicked();
-       // }
     }
 /*
     private void plyIsVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
@@ -304,6 +298,14 @@ public class GameRoomServlet extends HttpServlet {
             String resultParameter;
             Game currGame = getGame(request);
 
+            //load chosen move to game info
+            currGame.getGameInfo().setChosenRow(Integer.parseInt(request.getParameter("row")));
+            currGame.getGameInfo().setChosenCol(Integer.parseInt(request.getParameter("column")));
+
+            controller.makeMoveClicked(currGame);
+
+            String gameInfo = gson.toJson(currGame.getBoard());
+            /*
             Pair<Boolean,String> responseCanPlay = canPlayerPlay(request,currGame,true);
             if(responseCanPlay.getKey()){
                 String signString = request.getParameter(Constants.REQUEST_TYPE);
@@ -323,13 +325,13 @@ public class GameRoomServlet extends HttpServlet {
                 String canMake = new Gson().toJson(responseCanPlay.getKey());
                 String message = new Gson().toJson(responseCanPlay.getValue());
                 resultParameter = "["+canMake+","+message+"]";
-            }
+            }*/
 
-            response.getWriter().write(resultParameter);
+            response.getWriter().write(gameInfo);
             response.getWriter().flush();
         }
 
-
+/*
         private Pair<Boolean,String> canPlayerPlay(HttpServletRequest request, Game currGame, boolean fromDoMove) {
 
             Pair<Boolean,String> retPair;
@@ -347,7 +349,7 @@ public class GameRoomServlet extends HttpServlet {
             }
             return retPair;
         }
-
+*/
     private Game getGame(HttpServletRequest request) {
 
         String currGameTile = (String) request.getSession(false).getAttribute(Constants.GAME_TITLE);
@@ -380,6 +382,8 @@ public class GameRoomServlet extends HttpServlet {
             if(m_GameFull){
                 isGameStarted = "true";
                 currGame.setIsActiveGame(true);
+                controller.setGameStarted(true);
+                controller.startGameClicked(currGame);
             }
             response.getWriter().write(isGameStarted);
             response.getWriter().flush();
