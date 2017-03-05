@@ -46,9 +46,14 @@ function ajaxBoardBtnClicked(btnClicked) {
             "column": btnClicked.currentTarget.getAttribute("column"),
             "ActionType": actionType
         },
-        success:function (board){
-            createBoard(board, $('#board'));
-
+        success:function (gameInfo){
+            if(gameInfo.m_ErrorFound){
+                openPopup(gameInfo.m_ErrorMsg)
+            }
+            else {
+                $('#board').empty();
+                createBoard(gameInfo, $('#board'));
+            }
         }
     });
 
@@ -59,9 +64,6 @@ function visitoPlayer() {
     setInterval(ajaxVisitorBoard,refreshRate);
 
 }
-
-
-
 
 function ajaxVisitorBoard() {
     var actionType = "pullVisitorBoard";
@@ -76,7 +78,6 @@ function ajaxVisitorBoard() {
         }
     });
 }
-
 
 function realPlayer() {
     $("#radioMark").prop("checked", true);
@@ -109,6 +110,7 @@ function startIfFirstPlayerComputer() {
         }
     });
 }
+
 function ajaxBoard() {
 
     var actionType = "pullBoard";
@@ -123,8 +125,6 @@ function ajaxBoard() {
         }
     });
 }
-
-
 
 function ajaxGamesDeatilsAndPlayers() {
     var actionType = "GameStatus";
