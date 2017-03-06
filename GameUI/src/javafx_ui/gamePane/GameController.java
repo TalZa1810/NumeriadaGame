@@ -442,8 +442,9 @@ public class GameController implements Initializable{
             }
 
             //there are still human players
+            //TODO: AFTER QUITTING MAKING SURE THAT THE NEXT PLAYER WON'T PLAY TWICE
             if (count < gameInfo.getNumOfPlayers()) {
-                game.updateCurrPlayer(nextPlayerIndex % gameInfo.getNumOfPlayers());
+                game.updateCurrPlayer( nextPlayerIndex % gameInfo.getNumOfPlayers());
                 if (gameInfo.getNumOfPlayers() == 1) {
                     if(gameInfo.getGameType().equals("Basic")){
                         game.setNumOfPlayersWithoutPossibleMove(1);

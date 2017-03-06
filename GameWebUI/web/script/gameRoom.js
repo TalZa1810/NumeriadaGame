@@ -10,16 +10,10 @@ $(document).ready(function () {
     $('#buttonQuit').on("click", ajaxQuitGame);
     $('.boardBtn').on("click", ajaxBoardBtnClicked);
 
-
     ajaxGamesDeatilsAndPlayers();
-
     GamesDeatilsAndPlayers = setInterval(ajaxGamesDeatilsAndPlayers, refreshRate);
-
-
     getBoard($('#board'));
-
     realPlayer();
-
 });
 
 function ajaxBoardBtnClicked(btnClicked) {
@@ -197,73 +191,6 @@ function ajaxIsGameStarted() {
                 startIfFirstPlayerComputer();
             }
         },
-    });
-}
-
-function replayExit() {
-
-     ajaxBoard();
-     $('#Replay').hide();
-     $('#GameAction').fadeIn(200);
- }
-
-function nextMove() {
-    ajaxNextOrPrev("true");
-}
-
-function prevMove(){
-    ajaxNextOrPrev("false");
-}
-
-function ajaxNextOrPrev(next){
-    var actionType = "prevOrNext";
-
-    $.ajax({
-        url: "gamingRoom",
-        data: {
-            "ActionType": actionType,
-            "requestType": next
-        },
-        success: function (result) {
-            if (result[0]) {    // existBoard
-                updateAllBoard(result[1]);
-            } else {
-                openPopup(result[1]);
-            }
-            removeSelectedSquares();
-        }
-    });
-}
-
-function replyFromEnd(){
-ajaxStartReplay("false");
-}
-
-function replayFromStart() {
-    ajaxStartReplay("true");
-}
-
-function ajaxStartReplay(start){
-    var actionType = "replay";
-    $.ajax({
-        url: "gamingRoom",
-        data: {
-            "ActionType": actionType,
-            "requestType": start
-        },
-        success: function (result) {
-            if (result[0]) {    // existBoard
-                $('#GameAction').hide();
-                $('#Replay').fadeIn(200);
-                updateAllBoard(result[1]);
-            } else {
-                openPopup(result[1]);
-            }
-            removeSelectedSquares();
-        },
-        error:function (e) {
-            console.log(e);
-        }
     });
 }
 
