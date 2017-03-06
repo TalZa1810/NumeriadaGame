@@ -68,7 +68,7 @@ public class LobbyServlet extends HttpServlet{
             {
                 gameToJoin.addPlayer(playerName, userFromSession.getType().name().equals(Constants.HUMAN));
                 request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitle);
-                //userFromSession.setPlay(true);
+                userFromSession.setIsPlaying(true);
             }
             else {
                 success = "false";

@@ -6,6 +6,7 @@ public class PlayerData {
     private eColor m_Color;
     private ePlayerType m_PlayerType;
     private int m_Score;
+    private boolean isPlaying = false;
 
     public PlayerData(String i_Name, int i_ID, eColor i_Color, ePlayerType i_PlayerType, int i_Score){
         m_Name = i_Name;
@@ -21,6 +22,14 @@ public class PlayerData {
     }
 
     public PlayerData() {}
+
+    public boolean getIsPlaying(){
+        return isPlaying;
+    }
+
+    public void setIsPlaying(boolean val){
+        isPlaying = val;
+    }
 
     public ePlayerType getType() {
         return m_PlayerType;

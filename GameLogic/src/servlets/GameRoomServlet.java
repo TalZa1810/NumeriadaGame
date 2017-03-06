@@ -302,11 +302,19 @@ public class GameRoomServlet extends HttpServlet {
             currGame.getGameInfo().setChosenRow(Integer.parseInt(request.getParameter("row")));
             currGame.getGameInfo().setChosenCol(Integer.parseInt(request.getParameter("column")));
 
-            controller.makeMoveClicked(currGame);
+            String responseCanPlay = canPlayerPlay(request,currGame);
+
+            if(responseCanPlay.equals("true")){
+                controller.makeMoveClicked(currGame);
+            }
+            else{
+                currGame.getGameInfo().setErrorFound(true);
+                currGame.getGameInfo().setErrorMsg(responseCanPlay);
+            }
 
             String gameInfo = gson.toJson(currGame.getBoard());
+
             /*
-            Pair<Boolean,String> responseCanPlay = canPlayerPlay(request,currGame,true);
             if(responseCanPlay.getKey()){
                 String signString = request.getParameter(Constants.REQUEST_TYPE);
                 BoardInfo.BoardOptions sign =  BoardInfo.BoardOptions.ParseFromString(signString);
@@ -331,25 +339,17 @@ public class GameRoomServlet extends HttpServlet {
             response.getWriter().flush();
         }
 
-/*
-        private Pair<Boolean,String> canPlayerPlay(HttpServletRequest request, Game currGame, boolean fromDoMove) {
 
-            Pair<Boolean,String> retPair;
+        private String canPlayerPlay(HttpServletRequest request, Game currGame) {
+
+            String retPair = "true";
             PlayerData userFromSession = SessionUtils.getLoginUser(request);
             if(userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
-                if(!fromDoMove|| currGame.canMakeAnotherMove()) {
-                    retPair = new Pair<>(true, "");
-                }
-                else
-                {
-                    retPair = new Pair<>(false,"Made The Max Amount Of Moves");
-                }
-            } else{
-                retPair =  new Pair<>(false,"Not Your Turn");
+                retPair = "Not Your Turn";
             }
             return retPair;
         }
-*/
+
     private Game getGame(HttpServletRequest request) {
 
         String currGameTile = (String) request.getSession(false).getAttribute(Constants.GAME_TITLE);
@@ -413,8 +413,7 @@ public class GameRoomServlet extends HttpServlet {
             //TODO: need to check if ongoing game or just waiting for more players(if numOfPlayers < m_Player.size, just erase from players list
             controller.quitButtonClicked(currGame);
             request.getSession(true).removeAttribute(Constants.GAME_TITLE);
-            //TODO: check what is this line for
-            //userFromSession.setPlay(false);
+            userFromSession.setIsPlaying(false);
         }
 
 
