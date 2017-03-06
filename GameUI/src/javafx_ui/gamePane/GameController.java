@@ -421,23 +421,29 @@ public class GameController implements Initializable{
     }
 
 
-    @FXML
-    public void quitButtonClicked(Game game){
+    public void quitButtonClicked(Game game, boolean gameStarted){
         int count = 0;
         GameInfo gameInfo = game.getGameInfo();
-        if (gameInfo.getNumOfPlayers() > 1) {
+        if(!gameStarted){
             int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
-            removeCurrentPlayerCellsFromBoard();
-            removeCurrentPlayerFromList();
-            removeCurrentPlayerFromPlayerView();
+            removeCurrentPlayerFromList(game);
             gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
+        }
+        else if (gameInfo.getNumOfPlayers() > 1) {
+            int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
+            removeCurrentPlayerCellsFromBoard(game);
+            removeCurrentPlayerFromList(game);
+            gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
+
+            //count computer players
             while (gameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && gameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
                 gameInfo.setCurrPlayer(gameInfo.getPlayers().get(++nextPlayerIndex % gameInfo.getNumOfPlayers()));
                 count++;
             }
+
+            //there are still human players
             if (count < gameInfo.getNumOfPlayers()) {
                 game.updateCurrPlayer(nextPlayerIndex % gameInfo.getNumOfPlayers());
-                //updateCurrPlayer();
                 if (gameInfo.getNumOfPlayers() == 1) {
                     if(gameInfo.getGameType().equals("Basic")){
                         game.setNumOfPlayersWithoutPossibleMove(1);
@@ -451,9 +457,9 @@ public class GameController implements Initializable{
         }
     }
 
-    private void removeCurrentPlayerCellsFromBoard() {
-        m_Logic.removeCurrentPlayerCellsFromBoard();
-        m_Board.setBoardData();
+    private void removeCurrentPlayerCellsFromBoard(Game game) {
+        game.removeCurrentPlayerCellsFromBoard();
+        //m_Board.setBoardData(); (m_Board is boardController from javaFX)
     }
 
     private void removeCurrentPlayerFromPlayerView() {
@@ -461,9 +467,9 @@ public class GameController implements Initializable{
         m_PlayersController.setPlayers();
     }
 
-    private void removeCurrentPlayerFromList() {
+    private void removeCurrentPlayerFromList(Game game) {
         //updates list and numOfPlayers variable in game and in game info
-        m_Logic.removePlayerFromList();
+        game.removePlayerFromList();
     }
 
     public void setPrimaryStage(Stage i_PrimaryStage) {
@@ -741,5 +747,9 @@ public class GameController implements Initializable{
 
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+    }
+
+    public boolean getGameStarted() {
+        return gameStarted;
     }
 }

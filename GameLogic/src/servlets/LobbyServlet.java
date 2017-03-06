@@ -77,7 +77,7 @@ public class LobbyServlet extends HttpServlet{
             response.getWriter().flush();
         }
     }
-/*
+
     private void logOut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
 
         response.setContentType("text/html");
@@ -90,7 +90,7 @@ public class LobbyServlet extends HttpServlet{
         }
     }
 
-*/
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
 
@@ -107,43 +107,14 @@ public class LobbyServlet extends HttpServlet{
                 //joinGameVisitor(request,response);
                 break;
             case Constants.LOGOUT:
-                //logOut(request, response);
+                logOut(request, response);
                 break;
             case Constants.CHECK_USER_PLAYING:
                 //checkUserPlaying(request, response);
                 break;
         }
     }
-/*
-        private void joinGameVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
-        response.setContentType("application/json");
-        boolean canJoin;
-        String message ="";
-            PlayerData userFromSession = SessionUtils.getLoginUser(request);
-        GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
-        String name = userFromSession.getName();
 
-        String gameTitle = request.getParameter(Constants.GAME_TITLE);
-        Game gameToJoin = gamesManager.getSpecificGame(gameTitle);
-
-        if(!gameToJoin.isUnActiveGame()) {
-            canJoin = gameToJoin.checkAndEnterVisitor(name);
-            request.getSession(true).setAttribute(Constants.GAME_TITLE, gameTitle);
-            if(!canJoin)
-                message = "There are no Human Players";
-        }
-        else {
-            canJoin =false;
-            message = "The game didnt started yet";
-        }
-
-        String firstEle = new Gson().toJson(canJoin);
-        String secEle = new Gson().toJson(message);
-        String retJson = "["+firstEle+","+secEle+"]";
-        response.getWriter().write(retJson);
-        response.getWriter().flush();
-    }
-*/
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
 

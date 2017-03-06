@@ -1,4 +1,4 @@
-var refreshRate = 1000; //miliseconds
+var refreshRate = 500; //miliseconds
 
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
@@ -19,20 +19,6 @@ $(document).ready(function () {
     getBoard($('#board'));
 
     realPlayer();
-    /*
-    var actionType = "isVisitor";
-    $.ajax({
-        url: "gamingRoom",
-        data: {
-            "ActionType": actionType
-        },
-        success:function (result){
-            if(!result){
-               realPlayer();
-            }
-        }
-    });
-    */
 
 });
 
@@ -52,33 +38,9 @@ function ajaxBoardBtnClicked(btnClicked) {
             if(gameInfo.m_ErrorFound){
                 openPopup(gameInfo.m_ErrorMsg)
             }
-            else {
-                $('#board').empty();
-                createBoard(board, $('#board'));
-            }
         }
     });
 
-}
-
-function visitoPlayer() {
-    $('#buttonQuit').val("Back To Lobby");
-    setInterval(ajaxVisitorBoard,refreshRate);
-
-}
-
-function ajaxVisitorBoard() {
-    var actionType = "pullVisitorBoard";
-
-    $.ajax({
-        url: "gamingRoom",
-        data: {
-            "ActionType": actionType
-        },
-        success: function (boardInfo) {
-            updateAllBoard(boardInfo);
-        }
-    });
 }
 
 function realPlayer() {
@@ -140,9 +102,12 @@ function ajaxGamesDeatilsAndPlayers() {
             var players = data[0];
             var gameDetails = data[1];
             var PlayerFromSesion = data[2];
+            var board = data[3];
 
             refreshGameDeatils(gameDetails,PlayerFromSesion );
             refreshPlayerList(players, PlayerFromSesion);
+            $('#board').empty();
+            createBoard(board, $('#board'), actionType);
         }
     });
 }
@@ -170,22 +135,6 @@ function refreshPlayerList(players, PlayerFromSesion) {
         }
     });
 
-}
-
-function refreshVisitors(visitors) {
-
-    if(visitors.length == 0) {
-        $('#visitorsTable').hide();
-    } else {
-        $('#visitorsTable').show();
-        $('#allVisitors').empty();
-        for (var i = 0; i < visitors.length; i++) {
-            var visitor = $('<tr> </tr>');
-            $('<th>' + (i + 1) + '</th>').appendTo(visitor);
-            $('<th>' + visitors[i] + '</th>').appendTo(visitor);
-            visitor.appendTo($("#allVisitors"));
-        }
-    }
 }
 
 function refreshGameDeatils(gameDetails, PlayerFromSesion) {
@@ -223,7 +172,7 @@ function ajaxQuitGame() {
             "ActionType": actionType
         },
         success: function (data) {
-            window.location.replace("Lobby.html");
+            window.location.replace("lobby.html");
         },
         error: function (data) {
             console.log(data);

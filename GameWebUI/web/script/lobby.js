@@ -89,7 +89,7 @@ function logOut() {
             "ActionType": actionType
         },
         success: function(data) {
-            window.location.replace("Login.html");
+            window.location.replace("index.html");
         },
         error: function (data) {
             openPopup("There was an error. Please try again.")

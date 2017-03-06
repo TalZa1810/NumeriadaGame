@@ -19,8 +19,8 @@ public class UserManager {
         m_UsersList.add(newUser);
     }
 
-    public void removeUser(String userName)
-    {
+    public void removeUser(String userName) {
+
         synchronized (this) {
             for (PlayerData user : m_UsersList) {
                 if (userName.equals(user.getName())) {

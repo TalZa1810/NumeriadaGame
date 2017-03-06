@@ -11,7 +11,7 @@ function getShowBoard(table){
             "ActionType": actionType
         },
         success: function (board) {
-            createBoard(board, table);
+            createBoard(board, table, actionType);
         },
         error: function (data) {
             console.log(data);
@@ -29,7 +29,7 @@ function getBoard(table) {
         },
         success: function (board) {
 
-            createBoard(board, table);
+            createBoard(board, table, actionType);
 
         },
         error: function (data) {
@@ -38,88 +38,16 @@ function getBoard(table) {
     });
 }
 
-function createBoard(theBoard,table) {
-
+function createBoard(theBoard,table,actionType) {
+    $('#board').empty();
     console.log("board create");
 
     table.addClass("myTable");
-    createBoardButtons(theBoard, table);
-}
-
-/*
-function updateBoard(table) {
-    var actionType = "updateBoard";
-
-    $.ajax({
-        url: "gamingRoom",
-        data: {
-            "ActionType": actionType
-        },
-        success: function (board) {
-            createBoard(board, table);
-
-        },
-        error: function (data) {
-            console.log(data);
-        }
-    });
+    createBoardButtons(theBoard, table, actionType);
 }
 
 
-function createBoardTable(board, table) {
-
-    var columns = board.m_BoardSize;
-    var rows = board.m_BoardSize;
-
-    for (var row = 0; row < rows; row++) {
-
-        //A <tr> element contains one or more <th> or <td> elements.
-        var tr = document.createElement('tr');
-        for (var column = 0; column < columns; column++) {
-
-            //Standard cells - contains data (created with the <td> element)
-            var td = document.createElement('td');
-            setRowCol(td, row, column);
-            tr.appendChild(td);
-        }
-
-        table.append(tr);
-    }
-}
-
-function createButtons(board, table) {
-
-    var columns = board.m_BoardSize;
-    var rows = board.m_BoardSize;
-
-    for (var row = 0; row < rows; row++) {
-
-        for (var column = 0; column < columns; column++) {
-
-            var btn = document.createElement("button");
-            setRowCol(btn, row, column);
-            $(btn).addClass( "boardBtn");
-            $(btn).on("click", ajaxBoardBtnClicked);
-
-            var boardBtn = board.m_Board[row][column];
-
-            setButtonColor(boardBtn , btn);
-            setButtonSymbol( boardBtn , btn );
-
-            td.appendChild(btn);
-            tr.appendChild(td);
-        }
-
-        table.append(tr);
-    }
-
-
-}
-
-*/
-
-
-function createBoardButtons(board, table) {
+function createBoardButtons(board, table, action) {
     var columns = board.m_BoardSize;
     var rows = board.m_BoardSize;
 
@@ -136,7 +64,9 @@ function createBoardButtons(board, table) {
             var btn = document.createElement("button");
             setRowCol(btn, row, column);
             $(btn).addClass( "boardBtn");
-            $(btn).on("click", ajaxBoardBtnClicked);
+            if(action != "getShowBoard") {
+                $(btn).on("click", ajaxBoardBtnClicked);
+            }
 
             var boardBtn = board.m_Board[row][column];
 

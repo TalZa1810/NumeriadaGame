@@ -416,9 +416,8 @@ public class GameRoomServlet extends HttpServlet {
             response.setContentType("text/html");
             Game currGame = getGame(request);
             PlayerData userFromSession = SessionUtils.getLoginUser(request);
-            //TODO: need to check if works
-            //TODO: need to check if ongoing game or just waiting for more players(if numOfPlayers < m_Player.size, just erase from players list
-            controller.quitButtonClicked(currGame);
+
+            controller.quitButtonClicked(currGame, controller.getGameStarted());
             request.getSession(true).removeAttribute(Constants.GAME_TITLE);
             userFromSession.setIsPlaying(false);
         }
@@ -443,8 +442,9 @@ public class GameRoomServlet extends HttpServlet {
 
         usersJson = gson.toJson(gamePlayers);
         gameDetailsJson = gson.toJson(currGameInfo);
+        String board = gson.toJson(currGame.getBoard());
 
-        String bothJson = "[" + usersJson + "," + gameDetailsJson + "," + nameJson + "]"; //Put both objects in an array of 3 elements
+        String bothJson = "[" + usersJson + "," + gameDetailsJson + "," + nameJson + "," + board + "]"; //Put both objects in an array of 3 elements
         response.getWriter().write(bothJson);
         response.getWriter().flush();
     }
