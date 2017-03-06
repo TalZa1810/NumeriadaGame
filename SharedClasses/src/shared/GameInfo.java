@@ -40,6 +40,8 @@ public class GameInfo {
     private boolean m_ErrorFound = false;
     private String m_ErrorMsg = "";
 
+
+
     public ArrayList<MoveData> getMarkMoves() {
         return m_MarkMoves;
     }
@@ -301,7 +303,7 @@ public class GameInfo {
         this.m_ErrorMsg = errorMsg;
     }
 
-    public void getErrorMsg(String errorMsg) {
-        this.m_ErrorMsg = errorMsg;
+    public String getErrorMsg() {
+        return m_ErrorMsg ;
     }
 }

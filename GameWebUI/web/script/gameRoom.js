@@ -46,13 +46,15 @@ function ajaxBoardBtnClicked(btnClicked) {
             "column": btnClicked.currentTarget.getAttribute("column"),
             "ActionType": actionType
         },
-        success:function (gameInfo){
+        success:function (gameData){
+            var gameInfo = gameData[0];
+            var board = gameData[1];
             if(gameInfo.m_ErrorFound){
                 openPopup(gameInfo.m_ErrorMsg)
             }
             else {
                 $('#board').empty();
-                createBoard(gameInfo, $('#board'));
+                createBoard(board, $('#board'));
             }
         }
     });
@@ -139,7 +141,7 @@ function ajaxGamesDeatilsAndPlayers() {
             var gameDetails = data[1];
             var PlayerFromSesion = data[2];
 
-            refreshGameDeatils(gameDetails);
+            refreshGameDeatils(gameDetails,PlayerFromSesion );
             refreshPlayerList(players, PlayerFromSesion);
         }
     });
@@ -186,11 +188,13 @@ function refreshVisitors(visitors) {
     }
 }
 
-function refreshGameDeatils(gameDetails) {
+function refreshGameDeatils(gameDetails, PlayerFromSesion) {
 
+    $('#loggedinUser').text("Welcome " + PlayerFromSesion);
     $('#lableGameTitle').text(gameDetails.m_GameTitle);
     $('#lableCurrentPlayer').text(gameDetails.m_CurrentPlayer.m_Name);
     $('#lableCurrentMove').text( gameDetails.m_NumOfMoves);
+
 
     if  (gameDetails.winnerName !== undefined || gameDetails.finishAllRound === true){
         if (gameDetails.technicalVictory === true) {

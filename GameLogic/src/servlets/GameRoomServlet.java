@@ -312,7 +312,11 @@ public class GameRoomServlet extends HttpServlet {
                 currGame.getGameInfo().setErrorMsg(responseCanPlay);
             }
 
-            String gameInfo = gson.toJson(currGame.getBoard());
+            String gameInfo = gson.toJson(currGame.getGameInfo());
+            String board = gson.toJson(currGame.getBoard());
+
+            String bothJson = "[" + gameInfo + "," + board + "]";
+
 
             /*
             if(responseCanPlay.getKey()){
@@ -335,8 +339,11 @@ public class GameRoomServlet extends HttpServlet {
                 resultParameter = "["+canMake+","+message+"]";
             }*/
 
-            response.getWriter().write(gameInfo);
+            response.getWriter().write(bothJson);
             response.getWriter().flush();
+
+            currGame.getGameInfo().setErrorFound(false);
+            currGame.getGameInfo().setErrorMsg("");
         }
 
 
@@ -344,7 +351,7 @@ public class GameRoomServlet extends HttpServlet {
 
             String retPair = "true";
             PlayerData userFromSession = SessionUtils.getLoginUser(request);
-            if(userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
+            if(!userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
                 retPair = "Not Your Turn";
             }
             return retPair;
