@@ -104,6 +104,8 @@ public class GameManager {
                 case MAKE_MOVE:
                     if (fileLoaded) {
                         if (isGameSet){
+
+
                             makeMove();
                         }
                         else{

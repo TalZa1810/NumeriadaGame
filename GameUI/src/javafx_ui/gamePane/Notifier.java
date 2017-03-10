@@ -5,7 +5,6 @@ import sharedStructures.PlayerData;
 
 public class Notifier {
 
-
     public String showExceptionThrown(String message) {
         return message;
     }
@@ -38,6 +37,11 @@ public class Notifier {
            return "Square can't be chosen because it's color is not as the current player's color or it's value is not a number";
        }
     }
+
+    public String notifyOnePlayerLeft( ) {
+        return "All the other players left. You are the winner!";
+    }
+
 
     public String announceTie(int i_Points) {
         return "It's a tie! Both players with " + i_Points + " points\n";

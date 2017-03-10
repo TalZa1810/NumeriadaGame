@@ -1,5 +1,6 @@
 var refreshRate = 500; //miliseconds
 
+
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
@@ -12,7 +13,10 @@ $(document).ready(function () {
 
     ajaxGamesDeatilsAndPlayers();
     GamesDeatilsAndPlayers = setInterval(ajaxGamesDeatilsAndPlayers, refreshRate);
+
+    setInterval(ajaxGameDone, refreshRate);
     getBoard($('#board'));
+
     realPlayer();
 });
 
@@ -32,9 +36,48 @@ function ajaxBoardBtnClicked(btnClicked) {
             if(gameInfo.m_ErrorFound){
                 openPopup(gameInfo.m_ErrorMsg)
             }
+
+            isGameFinished(gameInfo);
+        }
+    });
+}
+
+function ajaxGameDone() {
+
+    var actionType = "isGameDone";
+    $.ajax({
+        url: "gamingRoom",
+        data: {
+            "ActionType": actionType
+        },
+        success:function (gameData){
+            if (gameData.m_FinishAllRound){
+                isGameFinished(gameData);
+            }
         }
     });
 
+}
+
+
+function isGameFinished (gameDetails) {
+
+   if  (gameDetails.m_FinishAllRound === true){
+       if (gameDetails.m_TechnicalVictory === true) {
+           openPopupFinishedGame("Technical Victory To " + gameDetails.m_WinnerName + "!!!");
+       } else {
+           if(gameDetails.m_WinnerName === undefined)
+           {
+               openPopupFinishedGame("We Have No Winner")
+           }
+           else
+               openPopupFinishedGame(gameDetails.m_WinnerName + " is Win!!!");
+       }
+       $('#GameAction').hide();
+       $('#GameInfo').hide();
+       $('#buttonQuit').val("Back To Lobby");
+       clearInterval(GamesDeatilsAndPlayers);
+   }
 }
 
 function realPlayer() {
@@ -138,23 +181,6 @@ function refreshGameDeatils(gameDetails, PlayerFromSesion) {
     $('#lableCurrentPlayer').text(gameDetails.m_CurrentPlayer.m_Name);
     $('#lableCurrentMove').text( gameDetails.m_NumOfMoves);
 
-
-    if  (gameDetails.winnerName !== undefined || gameDetails.finishAllRound === true){
-        if (gameDetails.technicalVictory === true) {
-            openPopup("Technical Victory To " + gameDetails.winnerName + "!!!");
-        } else {
-            if(gameDetails.winnerName === undefined)
-            {
-                openPopup("We Have No Winner")
-            }
-            else
-            openPopup(gameDetails.winnerName + " is Win!!!");
-        }
-        $('#GameAction').hide();
-        $('#GameInfo').hide();
-        $('#buttonQuit').val("Back To Lobby");
-        clearInterval(GamesDeatilsAndPlayers);
-    }
 }
 
 function ajaxQuitGame() {
@@ -206,4 +232,14 @@ function openPopup(msg) {
 
 function closePopup() {
     $("#popup").hide();
+}
+
+function openPopupFinishedGame(msg) {
+    $("#messageFinish").html(msg);
+    $("#popupFinishedGame").show();
+}
+
+function closePopupFinishedGame() {
+    $("#popupFinishedGame").hide();
+    window.location.replace("lobby.html");
 }

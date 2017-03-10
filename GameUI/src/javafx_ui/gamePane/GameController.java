@@ -238,21 +238,30 @@ public class GameController implements Initializable{
         numOfMovesLabel.setText("");
     }
 
-    private String getPlayersResults() {
-        ArrayList<PlayerData> players = m_GameInfo.getPlayers();
+    private String getPlayersResults(Game game) {
+
+        GameInfo gameInfo = game.getGameInfo();
+
+        ArrayList<PlayerData> players = gameInfo.getPlayers();
         players.sort(new PlayerComparator());
+        gameInfo.setWinnerName(players.get(0).getName());
+
+
+
+
         StringBuilder winnerAnnounce = new StringBuilder("Final scores:\n");
         for(PlayerData player : players){
             winnerAnnounce.append(player.getScore() + " " + player.getName() + "\n");
         }
 
-        quitButton.setDisable(true);
+        /*
+        //quitButton.setDisable(true);
         if(m_GameInfo.getNumOfMoves() > 0) {
             makeMoveButton.setDisable(true);
             prevMoveButton.setDisable(false);
             m_MarkerMovesInd = m_GameInfo.getMarkMoves().size();
             m_PlayerMovesInd = m_GameInfo.getPlayersMoves().size();
-        }
+        }*/
 
         return winnerAnnounce.toString();
     }
@@ -273,8 +282,21 @@ public class GameController implements Initializable{
         if (numOfPlayersWithoutPossibleMove == gameInfo.getNumOfPlayers()) {
             gameStarted = false;
             //TODO: game done, show players score
-            //m_StatusBar.set(getPlayersResults());
+            gameInfo.setActiveGame(false);
+            ArrayList<PlayerData> players = gameInfo.getPlayers();
+            players.sort(new PlayerComparator());
+
+            //winner
+            if (players.get(0).getScore() != players.get(1).getScore()){
+                gameInfo.setWinnerName(players.get(0).getName());
+            }
+            //else- undefined meaning there is a tie
+
+            gameInfo.setFinishAllRound(true);
+
+            // m_StatusBar.set(getPlayersResults());
             return;
+
         } else if (game.checkIfNotPossibleMove()) {
             //player doesn't have possible moves. notify and go to next player
             int indexOfCurrPlayer = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
@@ -424,37 +446,45 @@ public class GameController implements Initializable{
     public void quitButtonClicked(Game game, boolean gameStarted){
         int count = 0;
         GameInfo gameInfo = game.getGameInfo();
+
         if(!gameStarted){
             int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
             removeCurrentPlayerFromList(game);
             gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
         }
-        else if (gameInfo.getNumOfPlayers() > 1) {
-            int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
-            removeCurrentPlayerCellsFromBoard(game);
-            removeCurrentPlayerFromList(game);
-            gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
+        else if  (gameInfo.getNumOfPlayers() > 1) {
+                int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
+                removeCurrentPlayerCellsFromBoard(game);
+                removeCurrentPlayerFromList(game);
+                gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
 
-            //count computer players
-            while (gameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && gameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
-                gameInfo.setCurrPlayer(gameInfo.getPlayers().get(++nextPlayerIndex % gameInfo.getNumOfPlayers()));
-                count++;
-            }
+                if (gameInfo.getNumOfPlayers() == 1 ) {
+                    gameInfo.setTechnicalVictory(true);
+                    gameInfo.setErrorFound(true);
+                    gameInfo.setErrorMsg(m_Notifier.notifyOnePlayerLeft() + " You have " + gameInfo.getCurrPlayer().getScore() + " points!");
+                }
 
-            //there are still human players
-            //TODO: AFTER QUITTING MAKING SURE THAT THE NEXT PLAYER WON'T PLAY TWICE
-            if (count < gameInfo.getNumOfPlayers()) {
-                game.updateCurrPlayer( nextPlayerIndex % gameInfo.getNumOfPlayers());
-                if (gameInfo.getNumOfPlayers() == 1) {
-                    if(gameInfo.getGameType().equals("Basic")){
-                        game.setNumOfPlayersWithoutPossibleMove(1);
+
+                //count computer players
+                while (gameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && gameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
+                    gameInfo.setCurrPlayer(gameInfo.getPlayers().get(++nextPlayerIndex % gameInfo.getNumOfPlayers()));
+                    count++;
+                }
+
+                //there are still human players
+                //TODO: AFTER QUITTING MAKING SURE THAT THE NEXT PLAYER WON'T PLAY TWICE
+                if (count < gameInfo.getNumOfPlayers()) {
+                    game.updateCurrPlayer( nextPlayerIndex % gameInfo.getNumOfPlayers());
+                    if (gameInfo.getNumOfPlayers() == 1) {
+                        if(gameInfo.getGameType().equals("Basic")){
+                            game.setNumOfPlayersWithoutPossibleMove(1);
+                        }
+                        startGameIteration(game);
                     }
+                }
+                else {
                     startGameIteration(game);
                 }
-            }
-            else {
-                startGameIteration(game);
-            }
         }
     }
 

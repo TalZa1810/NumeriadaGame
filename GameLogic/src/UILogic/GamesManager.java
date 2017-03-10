@@ -47,10 +47,7 @@ public class GamesManager
         synchronized (this) {
             gameLoaded = loadXML(file, userNameFromSession);
         }
-        if(!gameLoaded.equals("success")) {
-            return gameLoaded;
-        }
-        return null;
+        return gameLoaded;
     }
 
     public String loadXML(InputStream file, String userNameFromSession) {
@@ -71,7 +68,7 @@ public class GamesManager
             }
         }
         catch(Exception e){
-            return e.getMessage();
+            res =  e.getMessage();
         }
         finally {
             return res;
@@ -106,6 +103,12 @@ public class GamesManager
         gameInfo.setGameType(m_GameDescriptor.getGameType());
         gameInfo.setGameTitle(m_GameDescriptor.getDynamicPlayers().getGameTitle());
         m_Validator.checkBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
+
+        //TODO: changed all validator exceptions to error messages
+
+
+
+
         gameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         gameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
 

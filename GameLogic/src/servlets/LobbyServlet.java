@@ -127,10 +127,9 @@ public class LobbyServlet extends HttpServlet{
         PlayerData userFromSession = SessionUtils.getLoginUser(request);
         String result = gamesManager.addNewGame(file, userFromSession.getName());
 
-        if(result != null){
-            Gson gson = new Gson();
-            response.getWriter().write(gson.toJson(result));
-            response.getWriter().flush();
-        }
+        Gson gson = new Gson();
+
+        response.getWriter().write(gson.toJson(result));
+        response.getWriter().flush();
     }
 }

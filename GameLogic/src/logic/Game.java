@@ -29,6 +29,7 @@ public abstract class Game {
     //Timer
     int m_secondsPassed = 0;
     private Timer m_Timer = new Timer();
+
     TimerTask m_Task = new TimerTask() {
         @Override
         public void run() {
@@ -178,8 +179,6 @@ public abstract class Game {
         return m_Players;
     }
 
-
-
     abstract void setPlayers( );
 
     private void setGameType(){
@@ -272,6 +271,10 @@ public abstract class Game {
         m_GameInfo.setBoard(board);
     }
 
+    private boolean checkIfBoardLegal(){
+        return this.checkIfGameDone();
+    }
+
     abstract void initRandomBoardSquare(int randomRow, int randomCol, int colorIndex, int data);
 
     private int generateRandomPositionForRandomSquare(int i_BoardSize){
@@ -342,6 +345,7 @@ public abstract class Game {
     }
 
     public void playTurn(){
+
         m_CurrentPlayer.playTurn(m_Board, m_GameInfo , m_ChosenSquare, m_MarkMoves, m_PlayersMoves);
         loadBoardToGameInfo();
     }
@@ -355,5 +359,6 @@ public abstract class Game {
     public ArrayList<MoveData> getMarkMoves() {
         return m_MarkMoves;
     }
+
 
 }

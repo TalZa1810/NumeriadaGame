@@ -8,6 +8,7 @@ public class AdvancedGame extends Game {
 
     @Override
     public boolean checkIfNotPossibleMove() {
+
         boolean turnDone = true;
         Square squareToCheck;
 
@@ -47,6 +48,7 @@ public class AdvancedGame extends Game {
                 }
             }
         }
+
         loadBoardToGameInfo();
     }
 

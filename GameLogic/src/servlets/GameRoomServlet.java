@@ -76,103 +76,15 @@ public class GameRoomServlet extends HttpServlet {
             case Constants.IS_VISITOR:
                 //plyIsVisitor(request,response);
                 break;
-
+            case "isGameDone":
+                isGameDone(request,response);
+                break;
         }
     }
+
+
+
 /*
-    private void plyIsVisitor(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
-        response.setContentType("application/json");
-
-        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
-        String name = nameJson.substring(1, nameJson.length()-1);
-        Game currGame = getGameLogic(request);
-
-        boolean retVal=currGame.isVisitor(name);
-        String retJson = new Gson().toJson(retVal);
-
-        response.getWriter().write(retJson);
-        response.getWriter().flush();
-    }
-
-    /*
-
-    private void pullBoardVisitor(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        response.setContentType("application/json");
-        Game currGame = getGameLogic(request);
-        BoardInfo boardCurrPly = currGame.getCurrentBoardVisitor();
-        String board = new Gson().toJson(boardCurrPly);
-        response.getWriter().write(board);
-        response.getWriter().flush();
-    }
-
-    */
-/*
-
-    private Player getSpecificPlayerByName(HttpServletRequest request)
-    {
-        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
-        GameLogic currGame = getGameLogic(request);
-        Player currPly = searchAndGetPly(currGame.getPlayers(),nameJson);
-        return currPly;
-    }
-
-    private void prevOrNextOption(HttpServletRequest request, HttpServletResponse response)throws ServletException,IOException {
-        response.setContentType("application/json");
-
-        Player currPly =getSpecificPlayerByName(request);
-
-        boolean next=stringToBooleanRequest(request);
-
-        BoardInfo retBoard = currPly.getNextOrPrevReplay(next);
-        String retJson = resiveNullBoardToJason(retBoard,"Had come to last move to show");
-
-        response.getWriter().write(retJson);
-        response.getWriter().flush();
-    }
-
-    private void startReplay(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        response.setContentType("application/json");
-
-        GameLogic currGame = getGameLogic(request);
-        Player currPly =getSpecificPlayerByName(request);
-
-        boolean fromStart=stringToBooleanRequest(request);
-        BoardInfo original = currGame.getOriginalBoard();
-
-        BoardInfo retBoard = currPly.startReplayMove(fromStart,original);
-
-        String retJson = resiveNullBoardToJason(retBoard,"Has no Moves Done");
-
-        response.getWriter().write(retJson);
-        response.getWriter().flush();
-    }
-
-    private boolean stringToBooleanRequest(HttpServletRequest request){
-        String mssg = request.getParameter(Constants.REQUEST_TYPE);
-        boolean isTrue=false;
-        if(mssg.equals("true")){
-            isTrue= true;
-        }
-        return isTrue;
-    }
-
-    private String resiveNullBoardToJason(BoardInfo board ,String mssgToSend)
-    {
-        String retJson;
-        if(board != null)
-        {
-            String existBoard = new Gson().toJson(true);
-            String Board = new Gson().toJson(board);
-            retJson = "["+existBoard+","+Board+"]";
-        }
-        else
-        {
-            String existBoard = new Gson().toJson(false);
-            String message = new Gson().toJson(mssgToSend);
-            retJson = "["+existBoard+","+message+"]";
-        }
-        return retJson;
-    }
 
     private void checkAndManageFirstPlayer(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         String isComputer = "false";
@@ -317,28 +229,6 @@ public class GameRoomServlet extends HttpServlet {
 
             String bothJson = "[" + gameInfo + "," + board + "]";
 
-
-            /*
-            if(responseCanPlay.getKey()){
-                String signString = request.getParameter(Constants.REQUEST_TYPE);
-                BoardInfo.BoardOptions sign =  BoardInfo.BoardOptions.ParseFromString(signString);
-
-                LinkedList<Cell> moveCellList = new LinkedList<>();
-                javafx.util.Pair[] selectedCoords = gson.fromJson(request.getParameter(Constants.SELECTED_COORDS), javafx.util.Pair[].class);
-                for (javafx.util.Pair coordinate : selectedCoords) {
-                    moveCellList.add(new Cell(Integer.parseInt((String) coordinate.getKey()), Integer.parseInt((String) coordinate.getValue()), sign));
-                }
-                currGame.DoMoveOfCurrPlayer(new GameMove(moveCellList));
-                String retVal = new Gson().toJson(true);
-                String perfectRowBlockJson = new Gson().toJson(currGame.getRowList());
-                String perfectColBlockJson = new Gson().toJson(currGame.getColumnList());
-                resultParameter = "["+retVal+","+perfectRowBlockJson+","+perfectColBlockJson+"]";
-            }else {
-                String canMake = new Gson().toJson(responseCanPlay.getKey());
-                String message = new Gson().toJson(responseCanPlay.getValue());
-                resultParameter = "["+canMake+","+message+"]";
-            }*/
-
             response.getWriter().write(bothJson);
             response.getWriter().flush();
 
@@ -350,10 +240,20 @@ public class GameRoomServlet extends HttpServlet {
         private String canPlayerPlay(HttpServletRequest request, Game currGame) {
 
             String retPair = "true";
-            PlayerData userFromSession = SessionUtils.getLoginUser(request);
-            if(!userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
-                retPair = "Not Your Turn";
+
+            if (m_GameFull){
+                PlayerData userFromSession = SessionUtils.getLoginUser(request);
+                if(!userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
+                    retPair = "Not Your Turn";
+                }
+                else{
+                    //currGame.getCurrentPlayer().
+                }
             }
+            else{
+                retPair = "Game is not full yet";
+            }
+
             return retPair;
         }
 
@@ -371,30 +271,38 @@ public class GameRoomServlet extends HttpServlet {
         return gamesManager.getSpecificGameInfo(currGameTile);
     }
 
+    private void isGameDone(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
+        Game currGame = getGame(request);
+        String gameInfo = new Gson().toJson(currGame.getGameInfo());
+        response.getWriter().write(gameInfo);
+        response.getWriter().flush();
+    }
 
-        private void getBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
-            response.setContentType("application/json");
-            Game currGame = getGame(request);
-            // SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
-            String boardJson = new Gson().toJson(currGame.getBoard());
-            response.getWriter().write(boardJson);
-            response.getWriter().flush();
-        }
 
-        private void isGameStarted(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
-            response.setContentType("application/json");
-            String isGameStarted = "false";
-            Game currGame = getGame(request);
+   private void getBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException   {
+       response.setContentType("application/json");
+       Game currGame = getGame(request);
+       // SimpleBoard responseBoard = new SimpleBoard(board.getBoard(), board.getRowBlocks(), board.getColBlocks());
+       String boardJson = new Gson().toJson(currGame.getBoard());
+       response.getWriter().write(boardJson);
+       response.getWriter().flush();
+   }
 
-            if(m_GameFull){
-                isGameStarted = "true";
-                currGame.setIsActiveGame(true);
-                controller.setGameStarted(true);
-                controller.startGameClicked(currGame);
-            }
-            response.getWriter().write(isGameStarted);
-            response.getWriter().flush();
-        }
+   private void isGameStarted(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+       response.setContentType("application/json");
+       String isGameStarted = "false";
+       Game currGame = getGame(request);
+
+       if(m_GameFull){
+           isGameStarted = "true";
+           currGame.setIsActiveGame(true);
+           controller.setGameStarted(true);
+           controller.startGameClicked(currGame);
+       }
+       response.getWriter().write(isGameStarted);
+       response.getWriter().flush();
+   }
 /*
         private void passTurn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
             response.setContentType("application/json");
@@ -424,7 +332,6 @@ public class GameRoomServlet extends HttpServlet {
 
 
     private void gameStatus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 
         response.setContentType("application/json");
         String nameJson = new Gson().toJson(((PlayerData) request.getSession(false).getAttribute(Constants.LOGIN_USER)).getName());

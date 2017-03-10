@@ -40,7 +40,35 @@ public class GameInfo {
     private boolean m_ErrorFound = false;
     private String m_ErrorMsg = "";
 
+    private boolean m_TechnicalVictory;
+    private String m_WinnerName;
+    private boolean m_FinishAllRound = false ;
 
+
+    public void setTechnicalVictory(boolean m_TechnicalVictory) {
+        this.m_TechnicalVictory = m_TechnicalVictory;
+    }
+
+
+    public boolean isTechnicalVictory() {
+        return m_TechnicalVictory;
+    }
+
+    public String getWinnerName() {
+        return m_WinnerName;
+    }
+
+    public void setWinnerName(String m_WinnerName) {
+        this.m_WinnerName = m_WinnerName;
+    }
+
+    public boolean isFinishAllRound() {
+        return m_FinishAllRound;
+    }
+
+    public void setFinishAllRound(boolean m_FinishAllRound) {
+        this.m_FinishAllRound = m_FinishAllRound;
+    }
 
     public ArrayList<MoveData> getMarkMoves() {
         return m_MarkMoves;

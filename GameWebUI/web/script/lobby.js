@@ -1,7 +1,6 @@
 var refreshRate = 2000; //miliseconds
 
-$(document).ready(function ()
-{
+$(document).ready(function () {
     ajaxIsAlreadyPlaying();
 
     $.ajaxSetup({cache: false});
