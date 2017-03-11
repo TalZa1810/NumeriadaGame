@@ -13,10 +13,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /*
 
@@ -28,8 +26,8 @@ import GriddlerWeb.jaxb.schema.generated.Square;
 
 public class GamesManager
 {
-    private final Map<String, GameInfo> m_GamesInfoMap;
-    private final Map<String, Game> m_GamesMap;
+    private final HashMap<String, GameInfo> m_GamesInfoMap;
+    private final HashMap<String, Game> m_GamesMap;
     GameDescriptor m_GameDescriptor = new GameDescriptor();
     Validator m_Validator = new Validator();
 
@@ -157,64 +155,13 @@ public class GamesManager
         return game;
     }
 
-    public Map<String, GameInfo> getGames() {
-        return Collections.unmodifiableMap(m_GamesInfoMap);
-    }
-/*
-    //region Load Game
-    public void getSolutionAndBlocks(ArrayList<Cell> i_SolutionCells,ArrayList<BlockValues>[] i_RowBlock, ArrayList<BlockValues>[] i_ColBlocks)
-    {
-        getBlocks(i_RowBlock, i_ColBlocks);
-        List<Square> solutionSquares = m_XmlManager.getGameData().getBoard().getSolution().getSquare();
-        for (Square currSquare : solutionSquares) {
-            int currR = currSquare.getRow().intValue();
-            int currC = currSquare.getColumn().intValue();
-            i_SolutionCells.add(new Cell(currR, currC, null));
-        }
+    public HashMap<String, GameInfo> getGamesInfosMap() {
+        return m_GamesInfoMap;
     }
 
-    private void getBlocks(ArrayList<BlockValues>[]i_RowBlocks,ArrayList<BlockValues>[] i_CollBlocks)
-    {
-        List<Slice> allSlices = m_XmlManager.getGameData().getBoard().getDefinition().getSlices().getSlice();
-        allSlices.sort((a, b) -> a.getId().intValue() - b.getId().intValue());
-        boolean incrRow=false;
-        int indexRowArray = 0, indexColArray = 0;
-        initializeBlocks(i_RowBlocks,i_CollBlocks);
-        for (Slice currSlice : allSlices)
-        {
-            String[] sizeB = currSlice.getBlocks().trim().split(",");
-            for (String currBlock : sizeB)
-            {
-                currBlock=currBlock.trim();
-                int currNum=Integer.parseInt(currBlock);
-                BlockValues blockToAdd = new BlockValues(currNum);
-                if (currSlice.getOrientation().equals("row"))
-                {
-                    i_RowBlocks[indexRowArray].add(blockToAdd);
-                    incrRow=true;
-                } else
-                {
-                    i_CollBlocks[indexColArray].add(blockToAdd);
-                    incrRow=false;
-                }
-            }
-            if(incrRow) { indexRowArray++;}
-            else    { indexColArray++;}
-        }
+    public HashMap<String, Game> getGamesMap() {
+        return m_GamesMap;
     }
-
-    private void initializeBlocks(ArrayList<BlockValues>[]i_RowBlocks,ArrayList<BlockValues>[]i_CollBlocks)
-    {
-        for(int index = 0; index < i_RowBlocks.length; index++)
-        {
-            i_RowBlocks[index] = new ArrayList<>();
-        }
-        for(int index=0; index < i_CollBlocks.length; index++)
-        {
-            i_CollBlocks[index] = new ArrayList<>();
-        }
-    }
-    */
 
     public Game getSpecificGame(String gameTitleToJoin)
     {

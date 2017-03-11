@@ -1,4 +1,4 @@
-var refreshRate = 500; //miliseconds
+var refreshRate = 300; //miliseconds
 
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
@@ -70,7 +70,7 @@ function announceWinner (gameDetails) {
                var playersList = $('<div><p>' + declareTie + '</p><br></div>');
 
                gameDetails.m_Players.forEach(function (player) {
-                   $('<p> </p>').text(player.m_Name + '   ' + player.m_Score + '<br>').appendTo(playersList);
+                   $('<p> </p> <br>').text(player.m_Name + '   ' + player.m_Score).appendTo(playersList);
                });
 
                openPopup(playersList);

@@ -142,6 +142,18 @@ public abstract class Game {
         return m_NumOfPlayersWithoutPossibleMove;
     }
 
+    public void removePlayer(String username) {
+        for(Player player: m_Players) {
+            if(player.getName().equals(username)){
+                m_Players.remove(player);
+                m_GameInfo.removePlayer(username);
+                m_NumOfPlayers -= 1;
+                m_GameInfo.setNumOfPlayers(m_NumOfPlayers);
+                break;
+            }
+        }
+    }
+
     public enum eGameMode {
         HumanVsHuman, HumanVsComputer
     }

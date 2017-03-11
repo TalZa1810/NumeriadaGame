@@ -44,6 +44,7 @@ public class GameInfo {
     private boolean m_TechnicalVictory;
     private String m_WinnerName;
     private boolean m_FinishAllRound = false ;
+    private boolean m_GameEmptyOfPlayers  = false;
 
 
     public void setTechnicalVictory(boolean m_TechnicalVictory) {
@@ -337,5 +338,22 @@ public class GameInfo {
 
     public String getErrorMsg() {
         return m_ErrorMsg ;
+    }
+
+    public void setGameEmptyOfPlayers(boolean gameEmptyOfPlayers) {
+        this.m_GameEmptyOfPlayers = gameEmptyOfPlayers;
+    }
+
+    public boolean getGameEmptyOfPlayers() {
+        return m_GameEmptyOfPlayers;
+    }
+
+    public void removePlayer(String username) {
+        for(PlayerData player: m_Players){
+            if(player.getName().equals(username)){
+                m_Players.remove(player);
+                break;
+            }
+        }
     }
 }

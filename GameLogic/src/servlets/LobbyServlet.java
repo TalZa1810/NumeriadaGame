@@ -4,6 +4,7 @@ import UILogic.GamesManager;
 import UILogic.UserManager;
 import com.google.gson.Gson;
 import logic.Game;
+import shared.GameInfo;
 import sharedStructures.PlayerData;
 import utils.Constants;
 import utils.ServletUtils;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Set;
 
 @WebServlet(name = "LobbyServlet", urlPatterns = {"/lobby"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
@@ -37,14 +40,30 @@ public class LobbyServlet extends HttpServlet{
     }
 
     private void gameAndUserLists(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+        GameInfo gameInfo;
+
         response.setContentType("application/json");
 
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         GamesManager gamesManager = ServletUtils.getGamesManager(getServletContext());
         Gson gson = new Gson();
 
+        HashMap<String, GameInfo> gamesInfo = gamesManager.getGamesInfosMap();
+        HashMap<String, Game> games = gamesManager.getGamesMap();
+
+        Set<String> titles = gamesInfo.keySet();
+
+        for(String title: titles) {
+            gameInfo = gamesInfo.get(title);
+            if(!gameInfo.isActiveGame() && gameInfo.isFinishAllRound() && gameInfo.getGameEmptyOfPlayers()){
+                gamesInfo.remove(title);
+                games.remove(title);
+            }
+        }
+
+
         String usersJson = gson.toJson(userManager.getUsers());
-        String gameDetalisJson = gson.toJson(gamesManager.getGames());
+        String gameDetalisJson = gson.toJson(gamesManager.getGamesInfosMap());
 
         String bothJson = "["+usersJson+","+gameDetalisJson+"]"; //Put both objects in an array of 2 elements
         response.getWriter().write(bothJson);

@@ -443,18 +443,23 @@ public class GameController implements Initializable{
     }
 
 
-    public void quitButtonClicked(Game game, boolean gameStarted){
+    public void quitButtonClicked(Game game, boolean gameStarted, String username){
         int count = 0;
         GameInfo gameInfo = game.getGameInfo();
 
-        if(!gameStarted){
-            if(gameDone){
-                removeCurrentPlayerFromList(game);
+        if(gameDone){
+            removePlayer(game, username);
+            if (gameInfo.getPlayers().size() == 0) {
+                gameInfo.setGameEmptyOfPlayers(true);
             }
-            else {
-                int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
-                removeCurrentPlayerFromList(game);
-                gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
+        }
+
+        else if(!gameStarted){
+            int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
+            removeCurrentPlayerFromList(game);
+            gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getPlayers().size()));
+            if (gameInfo.getPlayers().size() == 0) {
+                gameInfo.setGameEmptyOfPlayers(true);
             }
         }
         else if (gameInfo.getNumOfPlayers() > 1) {
@@ -494,6 +499,10 @@ public class GameController implements Initializable{
                 startGameIteration(game);
             }
         }
+    }
+
+    private void removePlayer(Game game, String username) {
+        game.removePlayer(username);
     }
 
     private void removeCurrentPlayerCellsFromBoard(Game game) {
@@ -630,9 +639,6 @@ public class GameController implements Initializable{
         gameDone = game.makeMove();
         game.getGameInfo().setMarkerRow( game.getGameInfo().getChosenRow());
         game.getGameInfo().setMarkerCol( game.getGameInfo().getChosenCol());
-        //updateBoardAfterMove(game);
-        //updateScoresAfterMove();
-        //updateCurrPlayer();
         game.setNumOfPlayersWithoutPossibleMove(0);
         if (gameDone) {
             gameStarted = false;

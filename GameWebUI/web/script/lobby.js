@@ -135,25 +135,25 @@ function refreshGameList(games) {
         var players = gameValue.m_TotalPlayers;
         var signedUpPlayers = gameValue.m_Players.length ;
         var gameStatus;
-        if(!gameValue.m_isGameActive && gameValue.m_Players.length < gameValue.m_NumOfPlayers){
+        if(!gameValue.m_isGameActive && gameValue.m_Players.length < gameValue.m_TotalPlayers){
             gameStatus = "Available"
         }else {
             gameStatus = "Not Available"
         }
 
-        if (gameValue.m_isGameActive || !gameValue.m_FinishAllRound ){
-            $('<th>' + gameKey + '</th>').appendTo(gameList);
-            $('<th>' + gameValue.m_Organizer + '</th>').appendTo(gameList);
-            $('<th>' + players + '</th>').appendTo(gameList);
-            $('<th>' + signedUpPlayers + '</th>').appendTo(gameList);
-            $('<th>' + bordSize + '</th>').appendTo(gameList);
-            $('<th>' + gameStatus + '</th>').appendTo(gameList);
-            gameList.appendTo($("#gameTable"));
 
-            if(gameKey == selected) {
-                gameList.addClass('success');
-            }
+        $('<th>' + gameKey + '</th>').appendTo(gameList);
+        $('<th>' + gameValue.m_Organizer + '</th>').appendTo(gameList);
+        $('<th>' + players + '</th>').appendTo(gameList);
+        $('<th>' + signedUpPlayers + '</th>').appendTo(gameList);
+        $('<th>' + bordSize + '</th>').appendTo(gameList);
+        $('<th>' + gameStatus + '</th>').appendTo(gameList);
+        gameList.appendTo($("#gameTable"));
+
+        if(gameKey == selected) {
+            gameList.addClass('success');
         }
+
     })
 }
 

@@ -148,64 +148,11 @@ public class GameRoomServlet extends HttpServlet {
         response.getWriter().flush();
     }
 
-    /*
-        private void computerMove(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
-        {
-            response.setContentType("application/json");
-            String resultPar;
-            ArrayList<GameMove> movesDone;
-            GameLogic currGame = getGameLogic(request);
-            movesDone = currGame.manageComputerMove();
-            String firstMove = getCellInJson(movesDone.get(0));
-            String secondMove = getCellInJson(movesDone.get(1));
-            resultPar = "["+firstMove+","+secondMove+"]";
-
-            response.getWriter().write(resultPar);
-            response.getWriter().flush();
-        }
-        private void undoRedoMove(HttpServletRequest request, HttpServletResponse response, String action)  throws ServletException, IOException
-        {
-            response.setContentType("application/json");
-            GameLogic currGame = getGameLogic(request);
-            GameMove gameMove = null;
-            if (action.equals(Constants.UNDO)) {
-                gameMove = currGame.UndoLastMoveFromPlayer();
-
-            }else {
-                gameMove = currGame.RedoLastMoveFromPlayer();
-            }
-            if(gameMove != null){
-                String cellsToJson = getCellInJson(gameMove);
-                String resultParameter;
-                String perfectRowBlockJson = new Gson().toJson(currGame.getRowList());
-                String perfectColBlockJson = new Gson().toJson(currGame.getColumnList());
-                resultParameter = "["+cellsToJson+","+perfectRowBlockJson+","+perfectColBlockJson+"]";
-
-                response.getWriter().write(resultParameter);
-                response.getWriter().flush();
-            }
-        }
-
-        private String getCellInJson(GameMove gameMove)
-        {
-            List<CellUI> listCell = new ArrayList<>();
-
-            LinkedList<Cell> gameMoveCells = gameMove.getCells();
-            for (Cell cell: gameMoveCells) {
-                listCell.add(new CellUI(cell.getPoint().x, cell.getPoint().y, cell.getStatus().toString()));
-            }
-
-            String cellsInJson = new Gson().toJson(listCell);
-            return cellsInJson;
-        }
-*/
-
 
         private void handleDoMove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
             response.setContentType("application/json");
             Gson gson = new Gson();
-            String resultParameter;
             Game currGame = getGame(request);
 
             //load chosen move to game info
@@ -273,6 +220,7 @@ public class GameRoomServlet extends HttpServlet {
         response.setContentType("application/json");
         Game currGame = getGame(request);
         String gameInfo = new Gson().toJson(currGame.getGameInfo());
+
         response.getWriter().write(gameInfo);
         response.getWriter().flush();
     }
@@ -310,7 +258,7 @@ public class GameRoomServlet extends HttpServlet {
        Game currGame = getGame(request);
        PlayerData userFromSession = SessionUtils.getLoginUser(request);
 
-       controller.quitButtonClicked(currGame, controller.getGameStarted());
+       controller.quitButtonClicked(currGame, controller.getGameStarted(),userFromSession.getName());
        request.getSession(true).removeAttribute(Constants.GAME_TITLE);
        userFromSession.setIsPlaying(false);
 
