@@ -141,16 +141,18 @@ function refreshGameList(games) {
             gameStatus = "Not Available"
         }
 
-        $('<th>' + gameKey + '</th>').appendTo(gameList);
-        $('<th>' + gameValue.m_Organizer + '</th>').appendTo(gameList);
-        $('<th>' + players + '</th>').appendTo(gameList);
-        $('<th>' + signedUpPlayers + '</th>').appendTo(gameList);
-        $('<th>' + bordSize + '</th>').appendTo(gameList);
-        $('<th>' + gameStatus + '</th>').appendTo(gameList);
-        gameList.appendTo($("#gameTable"));
+        if (gameValue.m_isGameActive || !gameValue.m_FinishAllRound ){
+            $('<th>' + gameKey + '</th>').appendTo(gameList);
+            $('<th>' + gameValue.m_Organizer + '</th>').appendTo(gameList);
+            $('<th>' + players + '</th>').appendTo(gameList);
+            $('<th>' + signedUpPlayers + '</th>').appendTo(gameList);
+            $('<th>' + bordSize + '</th>').appendTo(gameList);
+            $('<th>' + gameStatus + '</th>').appendTo(gameList);
+            gameList.appendTo($("#gameTable"));
 
-        if(gameKey == selected) {
-            gameList.addClass('success');
+            if(gameKey == selected) {
+                gameList.addClass('success');
+            }
         }
     })
 }

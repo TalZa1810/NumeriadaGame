@@ -76,16 +76,14 @@ public class GameRoomServlet extends HttpServlet {
             case Constants.IS_VISITOR:
                 //plyIsVisitor(request,response);
                 break;
-            case "isGameDone":
+            case Constants.IS_GAME_DONE:
                 isGameDone(request,response);
                 break;
         }
     }
 
 
-
 /*
-
     private void checkAndManageFirstPlayer(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         String isComputer = "false";
         GameLogic currGame = getGameLogic(request);
@@ -304,22 +302,8 @@ public class GameRoomServlet extends HttpServlet {
        response.getWriter().write(isGameStarted);
        response.getWriter().flush();
    }
-/*
-        private void passTurn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
-            response.setContentType("application/json");
-            boolean nextPlayerIsComputer = false;
-            String result = "true";
-            GameLogic currGame = getGameLogic(request);
-            if(canPlayerPlay(request, currGame,false).getKey()) {
-                currGame.PassTurn();
 
-            }else {
-                result = "false";
-            }
-            response.getWriter().write(result);
-            response.getWriter().flush();
-        }
-*/
+
    private void exitGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
 
        response.setContentType("text/html");
@@ -329,6 +313,10 @@ public class GameRoomServlet extends HttpServlet {
        controller.quitButtonClicked(currGame, controller.getGameStarted());
        request.getSession(true).removeAttribute(Constants.GAME_TITLE);
        userFromSession.setIsPlaying(false);
+
+
+
+
    }
 
 

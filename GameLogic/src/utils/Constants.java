@@ -51,7 +51,7 @@ public class Constants
     public static final String PREV_OR_NEXT="prevOrNext";
     public static final String PULL_VISITOR_BOARD="pullVisitorBoard";
     public static final String IS_VISITOR="isVisitor";
-
+    public static final String IS_GAME_DONE = "isGameDone";
 
 
 }

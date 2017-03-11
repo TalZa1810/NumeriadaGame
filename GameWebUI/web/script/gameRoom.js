@@ -18,6 +18,7 @@ $(document).ready(function () {
     realPlayer();
 });
 
+
 function ajaxBoardBtnClicked(btnClicked) {
 
     var actionType = "doMove";
@@ -63,9 +64,16 @@ function announceWinner (gameDetails) {
        if (gameDetails.m_TechnicalVictory === true) {
            openPopup(gameDetails.m_ErrorMsg);
        } else {
-           if(gameDetails.m_WinnerName === undefined)
-           {
-               openPopup("We Have No Winner")
+           if(gameDetails.m_WinnerName === undefined) {
+
+               var declareTie= "It's a tie. The players points are:";
+               var playersList = $('<div><p>' + declareTie + '</p><br></div>');
+
+               gameDetails.m_Players.forEach(function (player) {
+                   $('<p> </p>').text(player.m_Name + '   ' + player.m_Score + '<br>').appendTo(playersList);
+               });
+
+               openPopup(playersList);
            }
            else
                openPopup(gameDetails.m_WinnerName + " is the winner!!!");
@@ -98,7 +106,7 @@ function startIfFirstPlayerComputer() {
         },
         success:function (isComp){
             if(isComp === "true"){
-                setInterval(ajaxBoard,refreshRate); //onli if is computer it will pull every min
+                setInterval(ajaxBoard,refreshRate); //only if is computer it will pull every min
                 $('#GameAction').hide();
             }
             else
@@ -238,15 +246,3 @@ function openPopup(msg) {
 function closePopup() {
     $("#popup").hide();
 }
-/*
-function openPopupFinishedGame(msg) {
-    //clearInterval(gameDone);
-    $("#messageFinish").html(msg);
-    $("#popupFinishedGame").show();
-}
-
-function closePopupFinishedGame() {
-    $("#popupFinishedGame").hide();
-    window.location.replace("lobby.html");
-}
-*/
