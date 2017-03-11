@@ -104,11 +104,6 @@ public class GamesManager
         gameInfo.setGameTitle(m_GameDescriptor.getDynamicPlayers().getGameTitle());
         m_Validator.checkBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
 
-        //TODO: changed all validator exceptions to error messages
-
-
-
-
         gameInfo.setBoardSize(m_GameDescriptor.getBoard().getSize().intValue());
         gameInfo.setBoardStructure(m_GameDescriptor.getBoard().getStructure().getType());
 
@@ -116,8 +111,9 @@ public class GamesManager
             gameInfo.setRangeFrom(m_GameDescriptor.getBoard().getStructure().getRange().getFrom());
             gameInfo.setRangeTo(m_GameDescriptor.getBoard().getStructure().getRange().getTo());
         }
-        //TODO: check if num of players in xml file is the min and max of players
+
         gameInfo.setNumOfPlayers(m_GameDescriptor.getDynamicPlayers().getTotalPlayers());
+        gameInfo.setTotalPlayers(m_GameDescriptor.getDynamicPlayers().getTotalPlayers());
         gameInfo.initBoard();
         setBoardValuesFromXML(gameInfo);
     }

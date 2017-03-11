@@ -45,7 +45,7 @@ public abstract class Player {
         if ( i_ChosenSquare != null ){
             addToPlayerScore(Integer.parseInt(i_ChosenSquare.getSquareSymbol()));
             updatePlayerScoreInGameInfo(this, i_GameInfo);
-            i_Board.changeMarker(i_Board.getMark(), i_ChosenSquare);
+            i_Board.changeMarker(i_Board.getSquareInPos(i_Board.getMark().getRow(), i_Board.getMark().getColumn()), i_Board.getSquareInPos(i_ChosenSquare.getRow(), i_ChosenSquare.getColumn()));
         }
     }
 

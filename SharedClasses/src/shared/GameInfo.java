@@ -39,6 +39,7 @@ public class GameInfo {
     private ArrayList<MoveData> m_MarkMoves = new ArrayList<MoveData>();
     private boolean m_ErrorFound = false;
     private String m_ErrorMsg = "";
+    private int m_TotalPlayers;
 
     private boolean m_TechnicalVictory;
     private String m_WinnerName;
@@ -49,6 +50,9 @@ public class GameInfo {
         this.m_TechnicalVictory = m_TechnicalVictory;
     }
 
+    public int getTotalPlayers() { return m_TotalPlayers; }
+
+    public void setTotalPlayers(int players) { m_TotalPlayers = players; }
 
     public boolean isTechnicalVictory() {
         return m_TechnicalVictory;

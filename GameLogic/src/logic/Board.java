@@ -96,12 +96,12 @@ public class Board {
         return m_BoardSize;
     }
 
-    public void changeMarker(Square i_SquareToChange, Square i_MarkToChange) {
-        i_SquareToChange.swapSquare(i_MarkToChange);
-        setMark(i_MarkToChange);
-        i_SquareToChange.setSquareSymbol("");
-        i_SquareToChange.setColor(eColor.BLACK);
-        i_MarkToChange.setColor(eColor.BLACK);
+    public void changeMarker(Square currMarker, Square currChosenSquare) {
+        currMarker.swapSquare(currChosenSquare);
+        currMarker.setSquareSymbol("");
+        currMarker.setColor(eColor.BLACK);
+        currChosenSquare.setColor(eColor.BLACK);
+        setMark(currChosenSquare);
     }
 
     public void setMark(Square i_Mark) {

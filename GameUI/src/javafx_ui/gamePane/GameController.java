@@ -448,43 +448,51 @@ public class GameController implements Initializable{
         GameInfo gameInfo = game.getGameInfo();
 
         if(!gameStarted){
-            int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
-            removeCurrentPlayerFromList(game);
-            gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
-        }
-        else if  (gameInfo.getNumOfPlayers() > 1) {
+            if(gameDone){
+                removeCurrentPlayerFromList(game);
+            }
+            else {
                 int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
-                removeCurrentPlayerCellsFromBoard(game);
                 removeCurrentPlayerFromList(game);
                 gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
+            }
+        }
+        else if (gameInfo.getNumOfPlayers() > 1) {
+            int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
+            removeCurrentPlayerCellsFromBoard(game);
+            removeCurrentPlayerFromList(game);
+            gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getNumOfPlayers()));
 
-                if (gameInfo.getNumOfPlayers() == 1 ) {
-                    gameInfo.setTechnicalVictory(true);
-                    gameInfo.setErrorFound(true);
-                    gameInfo.setErrorMsg(m_Notifier.notifyOnePlayerLeft() + " You have " + gameInfo.getCurrPlayer().getScore() + " points!");
-                }
+
+            if (gameInfo.getNumOfPlayers() == 1 ) {
+                gameInfo.setTechnicalVictory(true);
+                gameInfo.setErrorFound(true);
+                gameInfo.setFinishAllRound(true);
+                gameInfo.setErrorMsg(m_Notifier.notifyOnePlayerLeft() + " You have " + gameInfo.getCurrPlayer().getScore() + " points!");
+                return;
+            }
 
 
-                //count computer players
-                while (gameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && gameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
-                    gameInfo.setCurrPlayer(gameInfo.getPlayers().get(++nextPlayerIndex % gameInfo.getNumOfPlayers()));
-                    count++;
-                }
+            //count computer players
+            while (gameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && gameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
+                gameInfo.setCurrPlayer(gameInfo.getPlayers().get(++nextPlayerIndex % gameInfo.getNumOfPlayers()));
+                count++;
+            }
 
-                //there are still human players
-                //TODO: AFTER QUITTING MAKING SURE THAT THE NEXT PLAYER WON'T PLAY TWICE
-                if (count < gameInfo.getNumOfPlayers()) {
-                    game.updateCurrPlayer( nextPlayerIndex % gameInfo.getNumOfPlayers());
-                    if (gameInfo.getNumOfPlayers() == 1) {
-                        if(gameInfo.getGameType().equals("Basic")){
-                            game.setNumOfPlayersWithoutPossibleMove(1);
-                        }
-                        startGameIteration(game);
+            //there are still human players
+            //TODO: AFTER QUITTING MAKING SURE THAT THE NEXT PLAYER WON'T PLAY TWICE
+            if (count < gameInfo.getNumOfPlayers()) {
+                game.updateCurrPlayer( nextPlayerIndex % gameInfo.getNumOfPlayers());
+                if (gameInfo.getNumOfPlayers() == 1) {
+                    if(gameInfo.getGameType().equals("Basic")){
+                        game.setNumOfPlayersWithoutPossibleMove(1);
                     }
-                }
-                else {
                     startGameIteration(game);
                 }
+            }
+            else {
+                startGameIteration(game);
+            }
         }
     }
 

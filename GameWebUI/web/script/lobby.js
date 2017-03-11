@@ -132,7 +132,7 @@ function refreshGameList(games) {
     {
         var gameList = $('<tr value="'+gameKey+'"> </tr>');
         var bordSize = gameValue.m_BoardSize;
-        var players = gameValue.m_NumOfPlayers;
+        var players = gameValue.m_TotalPlayers;
         var signedUpPlayers = gameValue.m_Players.length ;
         var gameStatus;
         if(!gameValue.m_isGameActive && gameValue.m_Players.length < gameValue.m_NumOfPlayers){
@@ -208,7 +208,9 @@ function uploadFile() {
         enctype: "multipart/form-data",
         dataType: 'json',
         success: function (message) {
-            openPopup(message);
+            if(message != "success") {
+                openPopup(message);
+            }
         }
     })
 }

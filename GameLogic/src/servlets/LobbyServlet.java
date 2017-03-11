@@ -29,9 +29,9 @@ public class LobbyServlet extends HttpServlet{
         String isAlreadyPlaying = "false";
         PlayerData userFromSession = SessionUtils.getLoginUser(request);
 
-        //if(userFromSession.isPlaying()){
-        //    isAlreadyPlaying = "true";
-        //}
+        if(userFromSession.getIsPlaying()){
+            isAlreadyPlaying = "true";
+        }
         response.getWriter().write(isAlreadyPlaying);
         response.getWriter().flush();
     }

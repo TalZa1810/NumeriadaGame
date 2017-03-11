@@ -24,8 +24,6 @@ public class Validator {
 
     public void checkBoardSize(int i_Size) throws Exception {
         if(i_Size > 50 || i_Size < 5) {
-            //m_GameInfo.setErrorFound(true);
-            //m_GameInfo.setErrorMsg("Invalid board size");
             throw(new Exception("Invalid board size\n"));
         }
     }
@@ -55,24 +53,16 @@ public class Validator {
         }
 
         if(!validInput) {
-            //m_GameInfo.setErrorFound(true);
-            //m_GameInfo.setErrorMsg(exceptionMessage);
             throw(new Exception(exceptionMessage));
         }
     }
 
     public void checkRangeForRandomBoard(String i_GameType) throws Exception {
         if(m_GameInfo.getRangeFrom() > m_GameInfo.getRangeTo()){
-            //m_GameInfo.setErrorFound(true);
-            //m_GameInfo.setErrorMsg("Invalid file. Illegal range of numbers: FROM is bigger than TO");
-
             throw(new Exception("Invalid file. Illegal range of numbers: FROM is bigger than TO\n"));
         }
 
         if(m_GameInfo.getRangeTo() - m_GameInfo.getRangeFrom() + 1 > (m_GameInfo.getBoardSize() * m_GameInfo.getBoardSize()) - 1){
-
-            //m_GameInfo.setErrorFound(true);
-            // m_GameInfo.setErrorMsg("Invalid file. Range of numbers is bigger than size of board");
             throw(new Exception("Invalid file. Range of numbers is bigger than size of board\n"));
         }
 
@@ -80,8 +70,6 @@ public class Validator {
             int amountOfNumbersOfEachNumber = (m_GameInfo.getBoardSize() * m_GameInfo.getBoardSize() - 1) / (m_GameInfo.getRangeTo() - m_GameInfo.getRangeFrom() + 1);
             if (amountOfNumbersOfEachNumber % m_GameInfo.getNumOfPlayers() != 0) {
                 throw (new Exception("Invalid file. Range of numbers doesn't match number of players(unfair game for some players)\n"));
-                //m_GameInfo.setErrorFound(true);
-                //m_GameInfo.setErrorMsg("Invalid file. Range of numbers doesn't match number of players(unfair game for some players)");
             }
         }
     }
@@ -100,9 +88,6 @@ public class Validator {
         }
 
         if(!validInput) {
-            //m_GameInfo.setErrorFound(true);
-            //m_GameInfo.setErrorMsg(exceptionMessage);
-
             throw(new Exception(exceptionMessage));
         }
     }
@@ -113,9 +98,6 @@ public class Validator {
         for(GameDescriptor.Players.Player p: players){
             validIds = ids.add(p.getId().intValue());
             if(!validIds){
-                //m_GameInfo.setErrorFound(true);
-                //m_GameInfo.setErrorMsg("Invalid file. Two players with same ID");
-
                 throw(new Exception("Invalid file. Two players with same ID\n"));
             }
         }
@@ -139,9 +121,6 @@ public class Validator {
             validColors = colors.add(p.getColor());
             if(!validColors){
                 throw(new Exception("Invalid file. Two players with same color\n"));
-
-                //m_GameInfo.setErrorFound(true);
-                //m_GameInfo.setErrorMsg("Invalid file. Two players with same color");
             }
         }
     }

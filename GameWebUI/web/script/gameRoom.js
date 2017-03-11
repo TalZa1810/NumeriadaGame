@@ -1,6 +1,5 @@
 var refreshRate = 500; //miliseconds
 
-
 $(document).ready(function () {
     $.ajaxSetup({cache: false});
 
@@ -14,7 +13,6 @@ $(document).ready(function () {
     ajaxGamesDeatilsAndPlayers();
     GamesDeatilsAndPlayers = setInterval(ajaxGamesDeatilsAndPlayers, refreshRate);
 
-    setInterval(ajaxGameDone, refreshRate);
     getBoard($('#board'));
 
     realPlayer();
@@ -33,11 +31,9 @@ function ajaxBoardBtnClicked(btnClicked) {
         success:function (gameData){
             var gameInfo = gameData[0];
             var board = gameData[1];
-            if(gameInfo.m_ErrorFound){
+            if(gameInfo.m_ErrorFound) {
                 openPopup(gameInfo.m_ErrorMsg)
             }
-
-            isGameFinished(gameInfo);
         }
     });
 }
@@ -51,27 +47,28 @@ function ajaxGameDone() {
             "ActionType": actionType
         },
         success:function (gameData){
-            if (gameData.m_FinishAllRound){
-                isGameFinished(gameData);
+            if(gameData.m_FinishAllRound === true) {
+                announceWinner(gameData);
             }
         }
     });
-
 }
 
 
-function isGameFinished (gameDetails) {
+function announceWinner (gameDetails) {
 
    if  (gameDetails.m_FinishAllRound === true){
+       clearInterval(gameDone);
+
        if (gameDetails.m_TechnicalVictory === true) {
-           openPopupFinishedGame("Technical Victory To " + gameDetails.m_WinnerName + "!!!");
+           openPopup(gameDetails.m_ErrorMsg);
        } else {
            if(gameDetails.m_WinnerName === undefined)
            {
-               openPopupFinishedGame("We Have No Winner")
+               openPopup("We Have No Winner")
            }
            else
-               openPopupFinishedGame(gameDetails.m_WinnerName + " is Win!!!");
+               openPopup(gameDetails.m_WinnerName + " is the winner!!!");
        }
        $('#GameAction').hide();
        $('#GameInfo').hide();
@@ -145,6 +142,13 @@ function ajaxGamesDeatilsAndPlayers() {
             refreshPlayerList(players, PlayerFromSesion);
             $('#board').empty();
             createBoard(board, $('#board'), actionType);
+
+            /*
+            if(gameDone && !gameDoneHappened) {
+                gameDoneHappened = true;
+                announceWinner(gameDetails);
+            }
+            */
         }
     });
 }
@@ -214,6 +218,7 @@ function ajaxIsGameStarted() {
 
                 clearInterval(startGame);
                 $('#GameInfo').fadeIn(200);
+                gameDone = setInterval(ajaxGameDone, refreshRate);
                 startIfFirstPlayerComputer();
             }
         },
@@ -233,8 +238,9 @@ function openPopup(msg) {
 function closePopup() {
     $("#popup").hide();
 }
-
+/*
 function openPopupFinishedGame(msg) {
+    //clearInterval(gameDone);
     $("#messageFinish").html(msg);
     $("#popupFinishedGame").show();
 }
@@ -243,3 +249,4 @@ function closePopupFinishedGame() {
     $("#popupFinishedGame").hide();
     window.location.replace("lobby.html");
 }
+*/

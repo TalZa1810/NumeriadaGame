@@ -105,7 +105,7 @@ public abstract class Game {
     }
 
     public boolean isFull() {
-        return m_Players.size() == m_NumOfPlayers;
+        return m_Players.size() == m_GameInfo.getTotalPlayers();
     }
 
     public void addPlayer(String playerName, boolean trueForHuman) {
@@ -239,7 +239,7 @@ public abstract class Game {
                     randomRow = generateRandomPositionForRandomSquare(boardSize);
                 }
 
-                initRandomBoardSquare(randomRow, randomCol, j + 1 ,i);
+                initRandomBoardSquare(randomRow, randomCol, (j % m_GameInfo.getTotalPlayers())+ 1 ,i);
             }
         }
 

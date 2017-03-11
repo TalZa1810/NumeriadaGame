@@ -300,6 +300,7 @@ public class GameRoomServlet extends HttpServlet {
            controller.setGameStarted(true);
            controller.startGameClicked(currGame);
        }
+
        response.getWriter().write(isGameStarted);
        response.getWriter().flush();
    }
@@ -319,16 +320,16 @@ public class GameRoomServlet extends HttpServlet {
             response.getWriter().flush();
         }
 */
-        private void exitGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
+   private void exitGame(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException    {
 
-            response.setContentType("text/html");
-            Game currGame = getGame(request);
-            PlayerData userFromSession = SessionUtils.getLoginUser(request);
+       response.setContentType("text/html");
+       Game currGame = getGame(request);
+       PlayerData userFromSession = SessionUtils.getLoginUser(request);
 
-            controller.quitButtonClicked(currGame, controller.getGameStarted());
-            request.getSession(true).removeAttribute(Constants.GAME_TITLE);
-            userFromSession.setIsPlaying(false);
-        }
+       controller.quitButtonClicked(currGame, controller.getGameStarted());
+       request.getSession(true).removeAttribute(Constants.GAME_TITLE);
+       userFromSession.setIsPlaying(false);
+   }
 
 
     private void gameStatus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -341,7 +342,7 @@ public class GameRoomServlet extends HttpServlet {
         GameInfo currGameInfo = getGameInfo(request);
         ArrayList<Player> gamePlayers = currGame.getPlayers();
 
-        if(currGame.getNumOfPlayers() == currGame.getPlayers().size()){
+        if(currGame.getGameInfo().getTotalPlayers() == currGame.getPlayers().size()){
             m_GameFull = true;
         }
 
