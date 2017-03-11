@@ -1,7 +1,6 @@
 package utils;
 
-public class Constants
-{
+public class Constants  {
     // servlet / session information
     public static final String LOGIN_USER = "loginuser";
     public static final String USER_NAME = "username";
@@ -17,8 +16,6 @@ public class Constants
 ////////////////////////////////////////////
 
     public static final String ACTION_TYPE = "ActionType";
-    public static final String REQUEST_TYPE = "requestType";
-    public static final String SELECTED_COORDS = "selectedCoords";
 
     // login servlet
     public static final String PERFOME_LOGIN = "PerformLogIn";
@@ -34,10 +31,6 @@ public class Constants
 
     // game room servlet
     public static final String DO_MOVE = "doMove";
-    public static final String UNDO = "Undo";
-    public static final String REDO = "Redo";
-    public static final String PASS_TURN = "PassTurn";
-    public static final String PERFOME_MOVE_AS_COMPUTER = "PerformeMoveAsComputer";
     public static final String GAME_STATUS = "GameStatus";
     public static final String EXIT_GAME = "ExitGame";
 
@@ -45,13 +38,5 @@ public class Constants
     public static final String IS_GAME_STARTED = "isGameStarted";
     public static final String GET_BOARD = "getBoard";
     public static final String GET_SHOW_BOARD="getShowBoard";
-    public static final String PULL_BOARD = "pullBoard";
-    public static final String FIRST_PLY_COMP="firstPlyComputer";
-    public static final String REPLAY="replay";
-    public static final String PREV_OR_NEXT="prevOrNext";
-    public static final String PULL_VISITOR_BOARD="pullVisitorBoard";
-    public static final String IS_VISITOR="isVisitor";
     public static final String IS_GAME_DONE = "isGameDone";
-
-
 }

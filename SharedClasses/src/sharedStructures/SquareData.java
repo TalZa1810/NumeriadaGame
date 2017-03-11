@@ -1,8 +1,5 @@
 package sharedStructures;
 
-/**
- * Created by Tal on 12/31/2016.
- */
 public class SquareData {
     private int m_Row;
     private int m_Col;

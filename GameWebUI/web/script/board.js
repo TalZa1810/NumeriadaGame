@@ -1,5 +1,3 @@
-
-
 $(document).on("click", "td.toggler", function () {
     $(this).toggleClass('selected');
 });
@@ -7,8 +5,6 @@ $(document).on("click", "td.toggler", function () {
 $(document).ready(function () {
     $('#buttonPassTurn').on("click", ajaxPassTurn);
 });
-
-
 
 $(document).on("click", "#buttonPerformeMove", function (e) {
     var userAction = $('.optionSelected').html();
@@ -57,9 +53,6 @@ function ajaxPassTurn() {
 
 }
 
-
-
-
 function doMove(move) {
     var actionType = "doMove";
     var selectedCoords = [];
@@ -97,25 +90,6 @@ function updatePerfectBlock(rowBlock, colBlock) {
     updateSpecificBlocks(colBlock,false)
 }
 
-/*
-function updateSpecificBlocks (blocks,isRow) {
-    var direction = (isRow) ? "row" : "column";
-    for(var currSlice = 0; currSlice <blocks.length ; currSlice++)
-    {
-        for(var currBlock = 0 ;currBlock < blocks[currSlice].length ; currBlock++)
-        {
-            if(blocks[currSlice][currBlock].m_IsPerfect)
-            {
-                $('td[' + direction + '=' + currSlice + '][blockIndex=' + currBlock + ']').addClass("perfected");
-            }
-            else
-            {
-                $('td[' + direction + '=' + currSlice + '][blockIndex=' + currBlock + ']').removeClass("perfected");
-            }
-            }
-        }
-
-}*/
 
 function Coordinate(row, column) {
     this.key = row;

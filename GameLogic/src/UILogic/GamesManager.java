@@ -1,6 +1,5 @@
 package UILogic;
 
-
 import Generated.GameDescriptor;
 import logic.AdvancedGame;
 import logic.BasicGame;
@@ -16,16 +15,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
-/*
+public class GamesManager {
 
-import GriddlerWeb.GameLogic.GameLogic;
-import GriddlerWeb.GameLogic.XmlManager;
-import GriddlerWeb.jaxb.schema.generated.Slice;
-import GriddlerWeb.jaxb.schema.generated.Square;
-*/
-
-public class GamesManager
-{
     private final HashMap<String, GameInfo> m_GamesInfoMap;
     private final HashMap<String, Game> m_GamesMap;
     GameDescriptor m_GameDescriptor = new GameDescriptor();

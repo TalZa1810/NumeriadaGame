@@ -1,6 +1,5 @@
 package shared;
 
-
 import Generated.GameDescriptor;
 import sharedStructures.PlayerData;
 import sharedStructures.SquareData;

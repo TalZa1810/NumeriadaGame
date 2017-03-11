@@ -1,14 +1,12 @@
 package utils;
 
-/*import UILogic.GamesManager;*/
-
 import UILogic.GamesManager;
 import UILogic.UserManager;
 
 import javax.servlet.ServletContext;
 
-public class ServletUtils
-{
+public class ServletUtils  {
+
 	public static UserManager getUserManager(ServletContext servletContext) {
 	if (servletContext.getAttribute(Constants.USER_MANAGER_ATTRIBUTE_NAME) == null) {
 	    servletContext.setAttribute(Constants.USER_MANAGER_ATTRIBUTE_NAME, new UserManager());

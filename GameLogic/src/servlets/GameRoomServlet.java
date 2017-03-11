@@ -34,15 +34,6 @@ public class GameRoomServlet extends HttpServlet {
             case Constants.DO_MOVE:
                 handleDoMove(request,response);
                 break;
-            case Constants.UNDO:
-                //undoRedoMove(request, response, action);
-                break;
-            case Constants.REDO:
-                //undoRedoMove(request, response, action);
-                break;
-            case Constants.PASS_TURN:
-                //passTurn(request, response);
-                break;
             case Constants.GAME_STATUS:
                 gameStatus(request, response);
                 break;
@@ -58,80 +49,11 @@ public class GameRoomServlet extends HttpServlet {
             case Constants.GET_SHOW_BOARD:
                 getShowBoard(request, response);
                 break;
-            case Constants.PULL_BOARD:
-                //pullBoard(request,response);
-                break;
-            case Constants.FIRST_PLY_COMP:
-                //checkAndManageFirstPlayer(request,response);
-                break;
-            case Constants.REPLAY:
-                //startReplay(request,response);
-                break;
-            case Constants.PREV_OR_NEXT:
-                //prevOrNextOption(request,response);
-                break;
-            case Constants.PULL_VISITOR_BOARD:
-                //pullBoardVisitor(request,response);
-                break;
-            case Constants.IS_VISITOR:
-                //plyIsVisitor(request,response);
-                break;
             case Constants.IS_GAME_DONE:
                 isGameDone(request,response);
                 break;
         }
     }
-
-
-/*
-    private void checkAndManageFirstPlayer(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        String isComputer = "false";
-        GameLogic currGame = getGameLogic(request);
-        ArrayList<Player> players = currGame.getPlayers();
-        String nameJson = new Gson().toJson(((PlayerData)request.getSession(false).getAttribute(Constants.LOGIN_USER)).GetName());
-
-       Player thisPly = searchAndGetPly(players,nameJson);
-
-        if(!thisPly.isHuman()){
-            isComputer="true";
-            String thisPlyName = thisPly.getName();
-            String firstPly = players.get(0).getName();
-            if(firstPly.equals(thisPlyName)){
-                currGame.manageComputerMove();
-                currGame.PassTurn();
-            }
-        }
-        response.getWriter().write(isComputer);
-        response.getWriter().flush();
-    }
-
-    private void pullBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-
-        response.setContentType("application/json");
-        Player boardFromPly = getSpecificPlayerByName(request);
-        BoardInfo currBoard = boardFromPly.getBoard();
-
-        String board = new Gson().toJson(currBoard);
-        response.getWriter().write(board);
-        response.getWriter().flush();
-    }
-
-    private Player searchAndGetPly(ArrayList<Player>i_AllPlayes , String nameJson) {
-        Player retPly = null;
-        for(Player currPly : i_AllPlayes)
-        {
-            String name = nameJson.substring(1, nameJson.length()-1);
-            String currPlayerName = currPly.getName();
-
-            if(name.equals(currPlayerName))
-            {
-                retPly = currPly;
-                break;
-            }
-        }
-        return retPly;
-    }
-    */
 
     private void getShowBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
@@ -149,58 +71,58 @@ public class GameRoomServlet extends HttpServlet {
     }
 
 
-        private void handleDoMove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void handleDoMove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            response.setContentType("application/json");
-            Gson gson = new Gson();
-            Game currGame = getGame(request);
+        response.setContentType("application/json");
+        Gson gson = new Gson();
+        Game currGame = getGame(request);
 
-            //load chosen move to game info
-            currGame.getGameInfo().setChosenRow(Integer.parseInt(request.getParameter("row")));
-            currGame.getGameInfo().setChosenCol(Integer.parseInt(request.getParameter("column")));
+        //load chosen move to game info
+        currGame.getGameInfo().setChosenRow(Integer.parseInt(request.getParameter("row")));
+        currGame.getGameInfo().setChosenCol(Integer.parseInt(request.getParameter("column")));
 
-            String responseCanPlay = canPlayerPlay(request,currGame);
+        String responseCanPlay = canPlayerPlay(request,currGame);
 
-            if(responseCanPlay.equals("true")){
-                controller.makeMoveClicked(currGame);
-            }
-            else{
-                currGame.getGameInfo().setErrorFound(true);
-                currGame.getGameInfo().setErrorMsg(responseCanPlay);
-            }
-
-            String gameInfo = gson.toJson(currGame.getGameInfo());
-            String board = gson.toJson(currGame.getBoard());
-
-            String bothJson = "[" + gameInfo + "," + board + "]";
-
-            response.getWriter().write(bothJson);
-            response.getWriter().flush();
-
-            currGame.getGameInfo().setErrorFound(false);
-            currGame.getGameInfo().setErrorMsg("");
+        if(responseCanPlay.equals("true")){
+            controller.makeMoveClicked(currGame);
+        }
+        else{
+            currGame.getGameInfo().setErrorFound(true);
+            currGame.getGameInfo().setErrorMsg(responseCanPlay);
         }
 
+        String gameInfo = gson.toJson(currGame.getGameInfo());
+        String board = gson.toJson(currGame.getBoard());
 
-        private String canPlayerPlay(HttpServletRequest request, Game currGame) {
+        String bothJson = "[" + gameInfo + "," + board + "]";
 
-            String retPair = "true";
+        response.getWriter().write(bothJson);
+        response.getWriter().flush();
 
-            if (m_GameFull){
-                PlayerData userFromSession = SessionUtils.getLoginUser(request);
-                if(!userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
-                    retPair = "Not Your Turn";
-                }
-                else{
-                    //currGame.getCurrentPlayer().
-                }
+        currGame.getGameInfo().setErrorFound(false);
+        currGame.getGameInfo().setErrorMsg("");
+    }
+
+
+    private String canPlayerPlay(HttpServletRequest request, Game currGame) {
+
+        String retPair = "true";
+
+        if (m_GameFull){
+            PlayerData userFromSession = SessionUtils.getLoginUser(request);
+            if(!userFromSession.getName().equals(currGame.getCurrentPlayer().getName())) {
+                retPair = "Not Your Turn";
             }
             else{
-                retPair = "Game is not full yet";
+                //currGame.getCurrentPlayer().
             }
-
-            return retPair;
         }
+        else{
+            retPair = "Game is not full yet";
+        }
+
+        return retPair;
+    }
 
     private Game getGame(HttpServletRequest request) {
 
@@ -262,9 +184,6 @@ public class GameRoomServlet extends HttpServlet {
        request.getSession(true).removeAttribute(Constants.GAME_TITLE);
        userFromSession.setIsPlaying(false);
 
-
-
-
    }
 
 
@@ -292,39 +211,7 @@ public class GameRoomServlet extends HttpServlet {
         response.getWriter().write(bothJson);
         response.getWriter().flush();
     }
-/*
-    private String getGameDetalisJson(GameLogic game)     {
 
-        GameDetails gameDetalis = new GameDetails(game.getCurrentPlayer().getName(), game.getCurrGameRound(), game.getTotalRounds(),
-                game.getCurrMoveOfSamePlayer(), game.getGameTitle(), game.getWinnerName(), game.getTechnicalVictory(), game.getFinishAllRound());
-        Gson gson = new Gson();
-        String gameDetalisJson =  gson.toJson(gameDetalis);
-        return gameDetalisJson;
-    }
-
-    private String getPlayesToJson(List<Player> gamePlayers) {
-
-        UserManager userManage = new UserManager();
-        for (Player ply: gamePlayers) {
-            String score = Float.toString(ply.getScore());
-            String userType = getUserType(ply.isHuman());
-            userManage.addUser(new PlayerData(ply.getName(), userType, score));
-        }
-
-        Gson gson = new Gson();
-        String playerJson =  gson.toJson(userManage.getUsers());
-        return playerJson;
-    }
-
-    private String getUserType(boolean human)   {
-        if(human == true){
-            return Constants.HUMAN;
-        }
-        else {
-            return Constants.MACHINE;
-        }
-    }
-    */
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -335,8 +222,6 @@ public class GameRoomServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
-
 
 
     @Override
@@ -355,25 +240,6 @@ public class GameRoomServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
 
-/*
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-
-/*
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-*/
 
 
 
