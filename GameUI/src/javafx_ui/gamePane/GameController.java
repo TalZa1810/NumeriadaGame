@@ -456,7 +456,7 @@ public class GameController implements Initializable{
 
         else if(!gameStarted){
             int nextPlayerIndex = gameInfo.getIndexOfPlayer(gameInfo.getCurrPlayer());
-            removeCurrentPlayerFromList(game);
+            removePlayer(game, username);
             gameInfo.setCurrPlayer(gameInfo.getPlayers().get(nextPlayerIndex % gameInfo.getPlayers().size()));
             if (gameInfo.getPlayers().size() == 0) {
                 gameInfo.setGameEmptyOfPlayers(true);
@@ -477,7 +477,7 @@ public class GameController implements Initializable{
                 return;
             }
 
-
+//
             //count computer players
             while (gameInfo.getCurrPlayer().getType().name().equals(ePlayerType.Computer.name()) && gameInfo.getNumOfPlayers() > 1 && count < m_GameInfo.getNumOfPlayers()) {
                 gameInfo.setCurrPlayer(gameInfo.getPlayers().get(++nextPlayerIndex % gameInfo.getNumOfPlayers()));

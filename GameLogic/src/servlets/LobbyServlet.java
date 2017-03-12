@@ -55,7 +55,7 @@ public class LobbyServlet extends HttpServlet{
 
         for(String title: titles) {
             gameInfo = gamesInfo.get(title);
-            if(!gameInfo.isActiveGame() && gameInfo.isFinishAllRound() && gameInfo.getGameEmptyOfPlayers()){
+            if(gameInfo.getGameEmptyOfPlayers()){
                 gamesInfo.remove(title);
                 games.remove(title);
             }
